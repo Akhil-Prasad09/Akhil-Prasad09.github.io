@@ -20,3 +20,13 @@ body { background: var(--color-surface); color: var(--color-ink); }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* StaggeredMenu (mobile nav) bakes a 2em header padding via an injected
+   <style> tag we can't reach through className alone; shrink it here so
+   the visible toggle bar stays inside the 72px nav height budget. */
+.staggered-nav-compact .staggered-menu-header {
+  padding: 12px 16px !important;
+}
+.staggered-nav-compact .sm-logo-img {
+  height: 28px !important;
+}

@@ -1,3 +1,12 @@
+import { Nav } from "@/components/sections/Nav";
+import { Footer } from "@/components/sections/Footer";
+
 export default function Home() {
-  return <main className="min-h-[100dvh]" />;
+  return (
+    <>
+      <Nav />
+      <main className="min-h-[100dvh]" />
+      <Footer />
+    </>
+  );
 }
