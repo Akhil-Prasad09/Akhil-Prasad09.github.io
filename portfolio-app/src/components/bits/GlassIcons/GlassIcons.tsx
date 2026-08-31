@@ -7,6 +7,9 @@ export interface GlassIconsItem {
   color: string;
   label: string;
   customClass?: string;
+  /** When set, the tile renders as a real <a> instead of an inert <button>. */
+  href?: string;
+  download?: boolean;
 }
 
 export interface GlassIconsProps {
@@ -33,12 +36,17 @@ const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
 
   return (
     <div className={`grid gap-[5em] grid-cols-2 md:grid-cols-3 mx-auto py-[3em] overflow-visible ${className || ''}`}>
-      {items.map((item, index) => (
-        <button
+      {items.map((item, index) => {
+        const Tag = item.href ? 'a' : 'button';
+        const tagProps = item.href
+          ? { href: item.href, download: item.download }
+          : { type: 'button' as const };
+        return (
+        <Tag
           key={index}
-          type="button"
+          {...tagProps}
           aria-label={item.label}
-          className={`relative bg-transparent outline-none border-none cursor-pointer w-[4.5em] h-[4.5em] [perspective:24em] [transform-style:preserve-3d] [-webkit-tap-highlight-color:transparent] group ${
+          className={`relative bg-transparent border-none cursor-pointer w-[4.5em] h-[4.5em] [perspective:24em] [transform-style:preserve-3d] [-webkit-tap-highlight-color:transparent] group ${
             item.customClass || ''
           }`}
         >
@@ -56,7 +64,7 @@ const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
               boxShadow: '0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset'
             }}
           >
-            <span className="m-auto flex h-[1.5em] w-[1.5em] items-center justify-center text-white" aria-hidden="true">
+            <span className="m-auto flex h-[1.5em] w-[1.5em] items-center justify-center text-[#fafafa]" aria-hidden="true">
               {item.icon}
             </span>
           </span>
@@ -64,8 +72,9 @@ const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
           <span className="absolute top-full left-0 right-0 text-center whitespace-nowrap leading-[2] text-base opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] translate-y-0 group-hover:opacity-100 group-hover:[transform:translateY(20%)]">
             {item.label}
           </span>
-        </button>
-      ))}
+        </Tag>
+        );
+      })}
     </div>
   );
 };

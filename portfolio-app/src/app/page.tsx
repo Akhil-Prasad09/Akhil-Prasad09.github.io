@@ -6,6 +6,9 @@ import { MediaBridge } from "@/components/sections/MediaBridge";
 import { Experience } from "@/components/sections/Experience";
 import { TechMarquee } from "@/components/sections/TechMarquee";
 import { Capabilities } from "@/components/sections/Capabilities";
+import { Benchmarks } from "@/components/sections/Benchmarks";
+import { Education } from "@/components/sections/Education";
+import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
@@ -20,6 +23,9 @@ export default function Home() {
         <Experience />
         <TechMarquee />
         <Capabilities />
+        <Benchmarks />
+        <Education />
+        <Contact />
       </main>
       <Footer />
     </>

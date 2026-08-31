@@ -16,6 +16,7 @@ export interface Role {
   points: string[];                                 // <= 3, <= 25 words each
 }
 export interface Certification { name: string; issuer: string; date: string }
+export interface Education { school: string; degree: string; period: string; note: string }
 export interface Stat { label: string; value: number; suffix: string; decimals?: number }
 
 export const profile = {
@@ -183,6 +184,12 @@ export const roles: Role[] = [
 export const certifications: Certification[] = [
   { name: "Artificial Intelligence Fundamentals", issuer: "IBM", date: "Oct 2024" },
   { name: "Data Analytics Job Simulation", issuer: "Deloitte Australia via Forage", date: "Oct 2025" },
+];
+
+export const education: Education[] = [
+  { school: "Matrusri Engineering College", degree: "B.Tech, Information Technology", period: "2023 to 2027", note: "CGPA 8.64" },
+  { school: "Sri Chaitanya Junior Kalasala", degree: "Higher Secondary", period: "2023", note: "93%" },
+  { school: "The Hyderabad Public School", degree: "Secondary", period: "2021", note: "89%" },
 ];
 
 export const skills: string[] = [
