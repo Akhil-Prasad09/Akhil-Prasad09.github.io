@@ -1,11 +1,12 @@
-import { projects, certifications, education, roles, stats, capabilities } from "../src/data/content.js";
-// Run via tsx; assertions below are the acceptance contract.
+import { projects, certifications, education, roles, stats, capabilities } from "../src/data/content.ts";
+// Run by `npm run check`; assertions below are the acceptance contract. Counts
+// are floors, not fixtures: appending to content.ts must never fail the gate.
 const assert = (c, msg) => { if (!c) { console.error("FAIL:", msg); process.exit(1); } };
-assert(projects.length === 7, "7 projects");
+assert(projects.length >= 7, "at least 7 projects");
 assert(projects.filter(p => p.tier === "featured").length === 2, "2 featured");
 assert(new Set(projects.map(p => p.slug)).size === projects.length, "unique slugs");
-assert(roles.length === 4, "4 roles");
-assert(certifications.length === 2, "2 certifications");
+assert(roles.length >= 4, "at least 4 roles");
+assert(certifications.length >= 2, "at least 2 certifications");
 assert(education.length >= 1, "at least 1 education entry");
 assert(capabilities.length === 4, "4 capability clusters");
 assert(stats.length >= 4, "at least 4 stats");

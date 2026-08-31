@@ -10,16 +10,18 @@ export function Education() {
 
       <AnimatedContent distance={0} duration={0.6} threshold={0.15}>
         <dl className="divide-y divide-white/10 border-y border-white/10">
+          {/* One <div> per entry is the only wrapper <dl> allows; the columns
+              come from explicit grid placement rather than a second nested div. */}
           {education.map((e) => (
             <div
               key={e.school}
-              className="grid grid-cols-1 gap-1 py-6 md:grid-cols-[1fr_auto] md:items-baseline md:gap-8"
+              className="grid grid-cols-1 gap-y-1 py-6 md:grid-cols-[1fr_auto] md:items-baseline md:gap-x-8"
             >
-              <div>
-                <dt className="text-xl tracking-tight text-ink">{e.school}</dt>
-                <dd className="mt-1 text-ink-dim">{e.degree}</dd>
-              </div>
-              <dd className="font-mono text-sm text-ink-dim md:text-right">
+              <dt className="text-xl tracking-tight text-ink md:col-start-1 md:row-start-1">
+                {e.school}
+              </dt>
+              <dd className="text-ink-dim md:col-start-1 md:row-start-2">{e.degree}</dd>
+              <dd className="font-mono text-sm text-ink-dim md:col-start-2 md:row-start-1 md:text-right">
                 {e.period} / {e.note}
               </dd>
             </div>
@@ -33,13 +35,13 @@ export function Education() {
           {certifications.map((c) => (
             <div
               key={c.name}
-              className="grid grid-cols-1 gap-1 py-5 md:grid-cols-[1fr_auto] md:items-baseline md:gap-8"
+              className="grid grid-cols-1 gap-y-1 py-5 md:grid-cols-[1fr_auto] md:items-baseline md:gap-x-8"
             >
-              <div>
-                <dt className="text-ink">{c.name}</dt>
-                <dd className="mt-1 text-sm text-ink-dim">{c.issuer}</dd>
-              </div>
-              <dd className="font-mono text-sm text-ink-dim md:text-right">{c.date}</dd>
+              <dt className="text-ink md:col-start-1 md:row-start-1">{c.name}</dt>
+              <dd className="text-sm text-ink-dim md:col-start-1 md:row-start-2">{c.issuer}</dd>
+              <dd className="font-mono text-sm text-ink-dim md:col-start-2 md:row-start-1 md:text-right">
+                {c.date}
+              </dd>
             </div>
           ))}
         </dl>

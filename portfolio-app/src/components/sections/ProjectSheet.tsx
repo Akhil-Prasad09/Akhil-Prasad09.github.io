@@ -92,7 +92,7 @@ export function ProjectSheet({ project, onClose }: { project: Project; onClose: 
             <p className="mt-2 text-ink-dim">{project.tagline}</p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {project.metrics.map(m => (
-                <div key={m.label} className="rounded-[20px] border border-white/10 p-4">
+                <div key={m.label} className="rounded-card border border-white/10 p-4">
                   <div className="text-sm text-ink-dim">{m.label}</div>
                   <div className="font-mono text-xl">{m.value}</div>
                 </div>
@@ -102,7 +102,7 @@ export function ProjectSheet({ project, onClose }: { project: Project; onClose: 
             <div className="mt-8 grid gap-4">
               {project.media.map(m => (
                 <Image key={m.src} src={m.src} alt={m.alt} width={1200} height={800}
-                  className="w-full rounded-[20px] border border-white/10" unoptimized={m.kind === "gif"} />
+                  className="w-full rounded-card border border-white/10" unoptimized={m.kind === "gif"} />
               ))}
             </div>
           </div>

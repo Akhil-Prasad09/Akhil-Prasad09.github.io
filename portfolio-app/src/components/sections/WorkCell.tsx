@@ -3,6 +3,7 @@
 import Image from "next/image";
 import BorderGlow from "@/components/bits/BorderGlow";
 import HalftoneReveal from "@/components/bits/HalftoneReveal";
+import WebGLBoundary from "@/components/bits/WebGLBoundary";
 import TiltedCard from "@/components/bits/TiltedCard";
 import type { Project } from "@/data/content";
 
@@ -21,7 +22,7 @@ export function WorkCell({
       type="button"
       onClick={() => onOpen(project.slug)}
       aria-haspopup="dialog"
-      className={`text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 rounded-[20px] ${
+      className={`text-left transition-transform active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 rounded-card ${
         isFeatured ? "md:col-span-3 md:row-span-2" : "md:col-span-2"
       }`}
     >
@@ -42,11 +43,15 @@ export function WorkCell({
                 height={600}
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              <HalftoneReveal
-                src={media.src}
-                borderRadius="16px"
-                className="absolute inset-0"
-              />
+              {/* Decorative overlay on top of the real <Image> above it, so a
+                  dead WebGL context just leaves the plain photo showing. */}
+              <WebGLBoundary defer placeholderClassName="absolute inset-0">
+                <HalftoneReveal
+                  src={media.src}
+                  borderRadius="16px"
+                  className="absolute inset-0"
+                />
+              </WebGLBoundary>
             </div>
           ) : (
             <TiltedCard

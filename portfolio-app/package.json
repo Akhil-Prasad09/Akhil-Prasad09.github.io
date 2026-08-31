@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-content.mjs && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-output.mjs",
+    "postbuild": "npm run check"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -29,5 +31,8 @@
     "@types/three": "^0.185.4",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=22.18"
   }
 }

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { GithubLogo, LinkedinLogo, EnvelopeSimple, FileArrowDown } from "@phosphor-icons/react";
 import GlassIcons from "@/components/bits/GlassIcons";
 import SpecularButton from "@/components/bits/SpecularButton";
+import WebGLBoundary from "@/components/bits/WebGLBoundary";
 import { Portrait } from "./Portrait";
 import { profile } from "@/data/content";
 
@@ -23,16 +24,18 @@ export function Contact() {
   return (
     <section id="contact" className="relative overflow-hidden px-4 py-24">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 opacity-25">
-        <Beams
-          beamNumber={8}
-          beamWidth={2.4}
-          beamHeight={18}
-          lightColor="#38bdf8"
-          speed={0.9}
-          noiseIntensity={0.9}
-          scale={0.18}
-          rotation={28}
-        />
+        <WebGLBoundary defer placeholderClassName="h-full w-full">
+          <Beams
+            beamNumber={8}
+            beamWidth={2.4}
+            beamHeight={18}
+            lightColor="#38bdf8"
+            speed={0.9}
+            noiseIntensity={0.9}
+            scale={0.18}
+            rotation={28}
+          />
+        </WebGLBoundary>
       </div>
 
       {/* The portrait track needs a real size, not auto: Portrait is w-full and
@@ -58,18 +61,26 @@ export function Contact() {
                 so the anchor carries the href and the label while the inner
                 button is aria-hidden and untabbable. */}
             <a href={`mailto:${profile.email}`} aria-label="Get in touch">
-              <SpecularButton
-                size="lg"
-                textColor="#fafafa"
-                tint="#38bdf8"
-                tintOpacity={0.1}
-                lineColor="#38bdf8"
-                autoAnimate
-                tabIndex={-1}
-                ariaHidden
+              <WebGLBoundary
+                fallback={
+                  <span className="inline-flex items-center rounded-full border border-accent px-6 py-3 text-ink">
+                    Get in touch
+                  </span>
+                }
               >
-                Get in touch
-              </SpecularButton>
+                <SpecularButton
+                  size="lg"
+                  textColor="#fafafa"
+                  tint="#38bdf8"
+                  tintOpacity={0.1}
+                  lineColor="#38bdf8"
+                  autoAnimate
+                  tabIndex={-1}
+                  ariaHidden
+                >
+                  Get in touch
+                </SpecularButton>
+              </WebGLBoundary>
             </a>
           </div>
 

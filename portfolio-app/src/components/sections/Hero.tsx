@@ -2,6 +2,7 @@ import SplitText from "@/components/bits/SplitText";
 import TextType from "@/components/bits/TextType";
 import SpecularButton from "@/components/bits/SpecularButton";
 import BorderGlow from "@/components/bits/BorderGlow";
+import WebGLBoundary from "@/components/bits/WebGLBoundary";
 import { profile } from "@/data/content";
 import { HeroSilk } from "./HeroSilk";
 
@@ -37,18 +38,29 @@ export function Hero() {
               The inner button is aria-hidden + untabbable so the anchor (with its
               own aria-label) is the single control in the a11y tree and tab order. */}
           <a href={`mailto:${profile.email}`} aria-label="Get in touch">
-            <SpecularButton
-              size="lg"
-              textColor="#fafafa"
-              tint="#38bdf8"
-              tintOpacity={0.1}
-              lineColor="#38bdf8"
-              autoAnimate
-              tabIndex={-1}
-              ariaHidden
+            {/* SpecularButton paints its face in WebGL, so its fallback has to
+                carry the visible label; the anchor around it is what actually
+                works either way. */}
+            <WebGLBoundary
+              fallback={
+                <span className="inline-flex items-center rounded-full border border-accent px-6 py-3 text-ink">
+                  Get in touch
+                </span>
+              }
             >
-              Get in touch
-            </SpecularButton>
+              <SpecularButton
+                size="lg"
+                textColor="#fafafa"
+                tint="#38bdf8"
+                tintOpacity={0.1}
+                lineColor="#38bdf8"
+                autoAnimate
+                tabIndex={-1}
+                ariaHidden
+              >
+                Get in touch
+              </SpecularButton>
+            </WebGLBoundary>
           </a>
           <a
             href="#work"

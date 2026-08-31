@@ -385,8 +385,12 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   }, [closeOnClickAway, open, closeMenu]);
 
   return (
+    /* pointer-events-none is load-bearing in the fixed variant: this element covers
+       the whole viewport, and without it every tap on the page below lands here
+       instead of the content. The wrapper, header and panel inside all re-enable
+       pointer events for the parts that are actually interactive. */
     <div
-      className={`sm-scope z-40 ${isFixed ? 'fixed top-0 left-0 w-screen h-screen overflow-hidden' : 'w-full h-full'}`}
+      className={`sm-scope z-40 ${isFixed ? 'pointer-events-none fixed top-0 left-0 w-screen h-screen overflow-hidden' : 'w-full h-full'}`}
     >
       <div
         className={

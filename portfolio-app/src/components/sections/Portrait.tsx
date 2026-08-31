@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import WebGLBoundary from "@/components/bits/WebGLBoundary";
 import { profile } from "@/data/content";
 
 // ElasticMesh is a WebGL (ogl) canvas; it must not run during SSR or the
@@ -9,6 +10,16 @@ import { profile } from "@/data/content";
 const ElasticMesh = dynamic(() => import("@/components/bits/ElasticMesh"), { ssr: false });
 
 const SRC = "/media/portrait.webp";
+
+// Stands in for the mesh both before the image loads and if WebGL is unavailable.
+const MONOGRAM = (
+  <div
+    aria-hidden="true"
+    className="flex h-full w-full items-center justify-center text-7xl tracking-tighter text-ink-dim md:text-8xl"
+  >
+    AP
+  </div>
+);
 
 /**
  * The portrait file may not exist yet. fs checks are not available client side,
@@ -37,21 +48,18 @@ export function Portrait() {
       className="aspect-square w-full max-w-sm overflow-hidden rounded-card border border-white/10 bg-surface-2"
     >
       {hasImage ? (
-        <ElasticMesh
-          image={SRC}
-          borderRadius={20}
-          showGrid={false}
-          highlight="#38bdf8"
-          shading={0.45}
-          tilt={10}
-        />
+        <WebGLBoundary defer fallback={MONOGRAM} placeholderClassName="h-full w-full">
+          <ElasticMesh
+            image={SRC}
+            borderRadius={20}
+            showGrid={false}
+            highlight="#38bdf8"
+            shading={0.45}
+            tilt={10}
+          />
+        </WebGLBoundary>
       ) : (
-        <div
-          aria-hidden="true"
-          className="flex h-full w-full items-center justify-center text-7xl tracking-tighter text-ink-dim md:text-8xl"
-        >
-          AP
-        </div>
+        MONOGRAM
       )}
     </div>
   );
