@@ -35,7 +35,10 @@ export function Contact() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 md:grid-cols-[auto_1fr] md:gap-16">
+      {/* The portrait track needs a real size, not auto: Portrait is w-full and
+          its content (a glyph, or ElasticMesh's zero-intrinsic-width canvas)
+          cannot size a max-content track. */}
+      <div className="relative z-10 mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 md:grid-cols-[minmax(0,24rem)_1fr] md:gap-16">
         <Portrait />
 
         <div>
