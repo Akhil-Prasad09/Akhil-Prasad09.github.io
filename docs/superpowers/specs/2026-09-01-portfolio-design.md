@@ -37,7 +37,8 @@ Compact (smaller cells):
 3. **CAG Emotion Tracker** - InceptionV3 on FER-2013, 90%+ accuracy, sub-50ms latency.
 4. **DentalBot booking platform** - React/Vite + Express, live client, voice AI assistant. (AI mood still)
 5. **Hand-Gesture Media Controller** - MediaPipe, 30 FPS, sub-20ms. (AI mood still)
-6. **Green Basket** - vanilla JS storefront. (AI mood still)
+6. **Encrypted Chat Application** - PyQt5, sockets, SQLite, AES E2E, multithreaded server. (AI mood still)
+7. **Green Basket** - vanilla JS storefront. (AI mood still)
 
 ## Section map
 
@@ -51,7 +52,7 @@ Compact (smaller cells):
 | 4 | Selected work | Bento, exactly 7 cells (2 featured + 5 compact) | `MagicBento` structure, `BorderGlow` on cells (glowIntensity ~0.4, azure), `HalftoneReveal` on featured images, `TiltedCard` on compact cells | Pointer-aware edge lighting = Apple's "light catching the material"; reveal on scroll-into-view |
 | 5 | Project sheet | Overlay (not a section) | `GlassSurface` + hand-rolled Motion springs | Direct manipulation: shared-element expand, 1:1 drag, rubber-band, velocity projection, flick-to-dismiss. Spring: damping 0.8, response 0.3 |
 | 6 | Media bridge | Full-bleed scroll expansion | `ScrollExpand` | Transition from Work to Experience; AI video/still slot |
-| 7 | Experience | Sticky scroll stack (3 cards: AMIK, Handshake, Oasis) | `ScrollStack` | Sequence matches chronology |
+| 7 | Experience | Sticky scroll stack (4 cards: AMIK, Handshake, SkillCraft, Oasis) | `ScrollStack` | Sequence matches chronology |
 | 8 | Tech marquee | Kinetic strip - THE one marquee on the page | `ScrollVelocity` | Breadth without individual attention |
 | 9 | Capabilities | 2x2 asymmetric grid (LLM/GenAI, ML/CV, Backend/Serving, Web/Data) | `SpotlightCard` | Hover feedback |
 | 10 | Benchmark authoring | Terminal-motif editorial block | `DecryptedText`, `AnimatedList` | Thematically motivated: the work IS terminal benchmarks |
