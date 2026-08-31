@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   motion,
   useMotionValue,
   useTransform,
   useReducedMotion,
+  useDragControls,
   animate,
   type PanInfo,
 } from "motion/react";
@@ -18,14 +19,16 @@ const DISMISS_DISTANCE = 160;
 export function ProjectSheet({ project, onClose }: { project: Project; onClose: () => void }) {
   const y = useMotionValue(0);
   const reduce = useReducedMotion();
-  // Single writer for scrim opacity: derived from y and nothing else. y starts at the
-  // sheet height on enter, so this doubles as the fade-in. Never rebind opacity via
-  // initial/animate/exit — a second writer wins the first frame and kills the scrim.
-  const scrimOpacity = useTransform(y, [0, 400], [1, 0]);
+  const dragControls = useDragControls();
   const sheetRef = useRef<HTMLDivElement>(null);
-  // Drag only while the inner scroller is at the top (iOS sheet pattern). A boundary
-  // boolean, not a continuous value — React bails out when it doesn't change.
-  const [atTop, setAtTop] = useState(true);
+  // Enter/exit keyframes must be numeric: useTransform below interpolates y, and a
+  // "100%" string reads as NaN, which hard-cuts the scrim instead of fading it.
+  // The sheet remounts on every open, so computing this per render is fine.
+  const vh = typeof window !== "undefined" ? window.innerHeight : 1000;
+  // Single writer for scrim opacity: derived from y and nothing else. y starts at vh on
+  // enter, so this doubles as the fade-in. Never rebind opacity via initial/animate/exit
+  // — a second writer wins the first frame and kills the scrim.
+  const scrimOpacity = useTransform(y, [0, vh], [1, 0]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -44,7 +47,7 @@ export function ProjectSheet({ project, onClose }: { project: Project; onClose: 
   function handleDragEnd(_: unknown, info: PanInfo) {
     const projected = info.offset.y + projectMomentum(info.velocity.y);
     if (projected > DISMISS_DISTANCE && info.velocity.y >= 0) {
-      animate(y, window.innerHeight, { type: "spring", bounce: 0, duration: 0.3, velocity: info.velocity.y }).then(onClose);
+      animate(y, vh, { type: "spring", bounce: 0, duration: 0.3, velocity: info.velocity.y }).then(onClose);
     } else {
       animate(y, 0, { type: "spring", bounce: 0.2, duration: 0.4, velocity: info.velocity.y });
     }
@@ -58,26 +61,32 @@ export function ProjectSheet({ project, onClose }: { project: Project; onClose: 
       <motion.div
         ref={sheetRef}
         tabIndex={-1}
-        drag={reduce || !atTop ? false : "y"}
+        drag={reduce ? false : "y"}
+        dragControls={dragControls}
+        dragListener={false}                        /* handle-only: see the header strip below */
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={{ top: 0.15, bottom: 0.6 }}   /* rubber-band up, loose down */
         dragMomentum={false}                        /* our animate() owns the release */
         style={{ y }}
         onDragEnd={handleDragEnd}
-        initial={reduce ? { opacity: 0 } : { y: "100%" }}
+        initial={reduce ? { opacity: 0 } : { y: vh }}
         animate={reduce ? { opacity: 1 } : { y: 0 }}
-        exit={reduce ? { opacity: 0 } : { y: "100%" }}
+        exit={reduce ? { opacity: 0 } : { y: vh }}
         transition={{ type: "spring", bounce: 0.2, duration: 0.45 }}
-        className="absolute inset-x-0 bottom-0 top-16 rounded-t-[20px] border-t border-white/10 bg-surface-2/90 backdrop-blur-2xl"
+        className="absolute inset-x-0 bottom-0 top-16 flex flex-col rounded-t-[20px] border-t border-white/10 bg-surface-2/90 backdrop-blur-2xl"
       >
-        {/* Scroll surface is separate from the drag surface: Motion puts touch-action:pan-x
-            and user-select:none on the dragged element, which would kill touch scrolling
-            and text selection if the content lived there. */}
+        {/* The handle strip is the ONLY drag surface. Motion sets touch-action and
+            user-select on whatever listens for drag, and both inherit/intersect down the
+            tree — so a scroller nested under a drag listener can never scroll on touch or
+            select text. Isolating the listener here keeps the scroller fully native. */}
         <div
-          onScroll={e => setAtTop(e.currentTarget.scrollTop <= 0)}
-          className="h-full overflow-y-auto overscroll-contain rounded-t-[20px]"
+          onPointerDown={e => dragControls.start(e)}
+          style={{ touchAction: "none" }}
+          className="shrink-0 cursor-grab py-3 active:cursor-grabbing"
         >
-          <div aria-hidden className="sticky top-0 mx-auto mt-3 h-1.5 w-12 rounded-full bg-white/20" />
+          <div aria-hidden className="mx-auto h-1.5 w-12 rounded-full bg-white/20" />
+        </div>
+        <div className="flex-1 overflow-y-auto overscroll-contain">
           <div className="mx-auto max-w-3xl px-6 py-10">
             <h3 className="text-3xl tracking-tighter">{project.title}</h3>
             <p className="mt-2 text-ink-dim">{project.tagline}</p>
