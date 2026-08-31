@@ -62,7 +62,15 @@ function RoleCard({
 }) {
   const range: [number, number] = [index / total, (index + 1) / total];
   const scale = useTransform(progress, range, [1, 0.92]);
-  const dim = useTransform(progress, range, ["brightness(1)", "brightness(0.6)"]);
+  // Transformer-function form on purpose: useTransform only attaches its
+  // .accelerate hint when arg2 is an array, and "filter" is in motion's
+  // acceleratedValues, so the array form hands the dim to a WAAPI ViewTimeline
+  // whose range does not match this JS progress span. A function keeps it on
+  // the JS path. "scale" is not accelerable, which is why it needs no hatch.
+  const dim = useTransform(progress, (p) => {
+    const t = Math.min(1, Math.max(0, (p - range[0]) / (range[1] - range[0])));
+    return `brightness(${1 - 0.4 * t})`;
+  });
   const recedes = pinned && index < total - 1;
 
   return (
