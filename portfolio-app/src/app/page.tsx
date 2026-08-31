@@ -1,11 +1,16 @@
 import { Nav } from "@/components/sections/Nav";
+import { Hero } from "@/components/sections/Hero";
+import { Metrics } from "@/components/sections/Metrics";
 import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
   return (
     <>
       <Nav />
-      <main className="min-h-[100dvh]" />
+      <main>
+        <Hero />
+        <Metrics />
+      </main>
       <Footer />
     </>
   );
