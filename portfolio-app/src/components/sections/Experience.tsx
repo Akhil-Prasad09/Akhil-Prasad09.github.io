@@ -17,7 +17,7 @@ import { roles, type Role } from "@/data/content";
  * pinning for free; Motion only supplies the recede-and-dim on covered cards.
  */
 
-const PIN_TOP = 88; // nav is 72px tall, plus a little air
+const PIN_TOP = 88; // nav measures 58px, plus air so the pinned card clears it
 const PIN_STEP = 14; // sliver of each covered card left visible
 
 export function Experience() {
@@ -25,7 +25,7 @@ export function Experience() {
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: trackRef,
-    offset: ["start start", "end end"],
+    offset: ["start start", "end start"],
   });
 
   return (
@@ -62,7 +62,7 @@ function RoleCard({
 }) {
   const range: [number, number] = [index / total, (index + 1) / total];
   const scale = useTransform(progress, range, [1, 0.92]);
-  const opacity = useTransform(progress, range, [1, 0.55]);
+  const dim = useTransform(progress, range, ["brightness(1)", "brightness(0.6)"]);
   const recedes = pinned && index < total - 1;
 
   return (
@@ -72,7 +72,7 @@ function RoleCard({
     >
       <motion.article
         className="origin-top rounded-card border border-white/10 bg-surface-2 p-8 md:p-10"
-        style={recedes ? { scale, opacity } : undefined}
+        style={recedes ? { scale, filter: dim } : undefined}
       >
         <h3 className="text-2xl tracking-tight md:text-3xl">{role.org}</h3>
         <p className="mt-2 font-mono text-xs text-ink-dim md:text-sm">
