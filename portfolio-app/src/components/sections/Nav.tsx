@@ -48,7 +48,7 @@ export function Nav() {
             colors={["#131316", "#38bdf8"]}
             accentColor="#38bdf8"
             menuButtonColor="#fafafa"
-            openMenuButtonColor="#09090b"
+            openMenuButtonColor="#38bdf8"
             className="staggered-nav-compact"
           />
         </div>

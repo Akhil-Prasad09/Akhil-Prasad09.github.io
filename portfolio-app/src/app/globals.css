@@ -30,3 +30,16 @@ body { background: var(--color-surface); color: var(--color-ink); }
 .staggered-nav-compact .sm-logo-img {
   height: 28px !important;
 }
+
+/* Panel background/text and the logo invert-on-open filter are hardcoded
+   white/black in the vendored component's injected <style>; override to
+   the azure/zinc palette so the open mobile panel isn't off-brand. */
+.staggered-nav-compact .staggered-menu-panel {
+  background: var(--color-surface) !important;
+}
+.staggered-nav-compact .sm-panel-item {
+  color: var(--color-ink) !important;
+}
+.staggered-nav-compact .staggered-menu-wrapper[data-open] .sm-logo-img {
+  filter: none !important;
+}
