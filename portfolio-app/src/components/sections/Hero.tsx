@@ -33,8 +33,10 @@ export function Hero() {
 
         <div className="flex flex-wrap items-center gap-4 pt-2">
           {/* SpecularButton's API is a <button>, not a link; wrap it so the
-              CTA still behaves like a real mailto link (right-click, ctrl-click). */}
-          <a href={`mailto:${profile.email}`}>
+              CTA still behaves like a real mailto link (right-click, ctrl-click).
+              The inner button is aria-hidden + untabbable so the anchor (with its
+              own aria-label) is the single control in the a11y tree and tab order. */}
+          <a href={`mailto:${profile.email}`} aria-label="Get in touch">
             <SpecularButton
               size="lg"
               textColor="#fafafa"
@@ -42,6 +44,8 @@ export function Hero() {
               tintOpacity={0.1}
               lineColor="#38bdf8"
               autoAnimate
+              tabIndex={-1}
+              ariaHidden
             >
               Get in touch
             </SpecularButton>
