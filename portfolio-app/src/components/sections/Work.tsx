@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { AnimatePresence } from "motion/react";
 import { projects } from "@/data/content";
 import { WorkCell } from "./WorkCell";
+import { ProjectSheet } from "./ProjectSheet";
 
 export function Work() {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
@@ -13,7 +15,14 @@ export function Work() {
           <WorkCell key={p.slug} project={p} onOpen={setOpenSlug} />
         ))}
       </div>
-      {/* ProjectSheet mounts here in Task 7 */}
+      <AnimatePresence>
+        {openSlug && (
+          <ProjectSheet
+            project={projects.find(p => p.slug === openSlug)!}
+            onClose={() => setOpenSlug(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
