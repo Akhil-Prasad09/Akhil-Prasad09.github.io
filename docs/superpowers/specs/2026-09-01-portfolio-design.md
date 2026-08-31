@@ -25,7 +25,7 @@ This is a personal showcase, not a business product. The explicit goal is demons
 | GitHub | github.com/Akhil-Prasad09 |
 | LinkedIn | linkedin.com/in/akhil-prasad-972043289 |
 | Project detail | Drag-dismiss sheet overlay (no per-project routes) |
-| Projects | All six, tiered: 2 featured + 4 compact |
+| Projects | All seven, tiered: 2 featured + 5 compact |
 
 ## Project lineup
 
@@ -48,7 +48,7 @@ Compact (smaller cells):
 | 1 | Nav | Translucent pill bar, <=72px, one line | `PillNav`, `StaggeredMenu` (mobile) | Wayfinding |
 | 2 | Hero | Asymmetric split | `Silk` (bg, azure-tinted, low intensity), `SplitText` (headline), `TextType` (role line), `SpecularButton` (primary CTA) | Entrance hierarchy |
 | 3 | Metrics strip | Horizontal stat row, mono numerals | `CountUp` | Real numbers: 8.64 CGPA, 90%+ FER-2013, <50ms, 21 tasks, 39 stations |
-| 4 | Selected work | Bento, exactly 6 cells (2 featured + 4 compact) | `MagicBento` structure, `BorderGlow` on cells (glowIntensity ~0.4, azure), `HalftoneReveal` on featured images, `TiltedCard` on compact cells | Pointer-aware edge lighting = Apple's "light catching the material"; reveal on scroll-into-view |
+| 4 | Selected work | Bento, exactly 7 cells (2 featured + 5 compact) | `MagicBento` structure, `BorderGlow` on cells (glowIntensity ~0.4, azure), `HalftoneReveal` on featured images, `TiltedCard` on compact cells | Pointer-aware edge lighting = Apple's "light catching the material"; reveal on scroll-into-view |
 | 5 | Project sheet | Overlay (not a section) | `GlassSurface` + hand-rolled Motion springs | Direct manipulation: shared-element expand, 1:1 drag, rubber-band, velocity projection, flick-to-dismiss. Spring: damping 0.8, response 0.3 |
 | 6 | Media bridge | Full-bleed scroll expansion | `ScrollExpand` | Transition from Work to Experience; AI video/still slot |
 | 7 | Experience | Sticky scroll stack (3 cards: AMIK, Handshake, Oasis) | `ScrollStack` | Sequence matches chronology |
@@ -70,18 +70,25 @@ Global layers:
 - Second marquee. Light-mode sections. Multi-color glow. Em-dashes anywhere in visible copy. Scroll cues. Section-number eyebrows. Decorative status dots.
 - Eyebrow cap: 13 sections means max 4 uppercase-tracking micro-labels on the whole page.
 
-## AI media slots
+## Media slots (Claude-designed, code-generated)
 
-No image-gen tool exists in this environment, so: the build ships an `assets/BRIEF.md` with exact prompts, aspect ratios, and target filenames. User generates externally and drops files in `public/media/`. Components render real on-disk assets as fallbacks until slots are filled.
+No raster image-gen tool exists in this environment. Instead, Claude designs each asset as a generative code composition (canvas/shader/SVG, azure-on-zinc per the color lock), shipped live where motion helps or captured to `.webp` via headless Chrome for static slots. An optional `assets/BRIEF.md` documents prompts for a future photorealistic upgrade; nothing blocks on external generation.
 
-| Slot | File | Spec |
+| Slot | Delivery | Spec |
 |---|---|---|
-| Media bridge | `public/media/bridge.mp4` (or `.webp` still) | 16:9, ~8s loop, abstract neural/data-flow motif, azure on near-black |
-| Portrait | `public/media/portrait.webp` | 1:1, photo or AI avatar |
-| DentalBot still | `public/media/dentalbot.webp` | 4:3 mood still |
-| Gesture still | `public/media/gesture.webp` | 4:3 mood still |
-| Green Basket still | `public/media/greenbasket.webp` | 4:3 mood still |
-| Optional gallery set | `public/media/gallery-*.webp` | 6-8 stills; unlocks `CircularGallery` later, not a blocker |
+| Media bridge | Live animated canvas inside `ScrollExpand` | 16:9, abstract neural/data-flow motif, azure on near-black; static frame under reduced motion |
+| Portrait | `public/media/portrait.webp` - USER SUPPLIES a photo (ElasticMesh wants a face; generative art defeats the point). Fallback: monogram tile | 1:1 |
+| DentalBot still | Code-generated poster captured to `public/media/dentalbot.webp` | 4:3, voice-wave motif |
+| Gesture still | Code-generated poster captured to `public/media/gesture.webp` | 4:3, hand-landmark constellation motif |
+| Chat app still | Code-generated poster captured to `public/media/chatapp.webp` | 4:3, encrypted-stream motif |
+| Green Basket still | Code-generated poster captured to `public/media/greenbasket.webp` | 4:3, grid-of-goods motif |
+
+## LinkedIn additions (2026-09-01 pull)
+
+- Pronouns: He/Him.
+- Certifications section (new, in Education or its own quiet row): IBM Artificial Intelligence Fundamentals (Oct 2024), Deloitte Australia Data Analytics via Forage (Oct 2025).
+- Experience gains SkillCraft Technology (ML Intern, ~1 month, late 2025) as a compact fourth entry in the ScrollStack.
+- Project lineup becomes seven: Encrypted Chat Application (PyQt5, sockets, SQLite, AES E2E, multithreaded server) added as a compact cell. Bento becomes 2 featured + 5 compact = 7 cells exactly (cell count rule: N items, N cells).
 
 ## Data flow
 
@@ -100,7 +107,7 @@ Heavy backgrounds (`Silk`, `Beams`) lazy-loaded, hero one gets `priority`. Targe
 ## Testing
 
 - `npm run build` passes (static export).
-- One Playwright-free smoke: `next build` + a script asserting all six projects render in the HTML output and zero em-dash characters appear in rendered copy (mechanical taste-skill check).
+- One Playwright-free smoke: `next build` + a script asserting all seven projects render in the HTML output and zero em-dash characters appear in rendered copy (mechanical taste-skill check).
 - Lighthouse run before declaring done.
 - Manual: both `prefers-reduced-motion` states, mobile 375px, keyboard nav through sheet open/close.
 
