@@ -167,11 +167,6 @@ export const roles: Role[] = [
     ],
   },
   {
-    org: "SkillCraft Technology", title: "Machine Learning Intern",
-    period: "Late 2025", location: "Remote",
-    points: ["One-month internship deepening applied machine learning on real-time projects."],
-  },
-  {
     org: "Oasis Infobyte", title: "Software Development Intern, Python",
     period: "2024", location: "Remote",
     points: [
