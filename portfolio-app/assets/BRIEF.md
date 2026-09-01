@@ -15,7 +15,6 @@ gradients, no logos, no lettering, no watermarks.
 | Gesture Control | `public/media/gesture.webp` | 2400 x 1800 (4:3) | Hand landmark constellation, 21 tracked joints |
 | Chat App | `public/media/chatapp.webp` | 2400 x 1800 (4:3) | Two message columns around an encrypted channel |
 | GreenBasket | `public/media/greenbasket.webp` | 2400 x 1800 (4:3) | Grid of produce marks, one selected |
-| Media bridge | `public/media/bridge.webp` | 3840 x 2160 (16:9) | Full bleed neural flow field |
 | Portrait | `public/media/portrait.webp` | 1600 x 1600 (1:1) | Editorial headshot |
 
 Posters are 4:3 but the compact project cards crop to roughly 2:1 through the
@@ -79,7 +78,6 @@ generous margins, azure #38BDF8 on #09090b, cinematic, icon system aesthetic,
 no text, no letters, no logos, no purple.
 ```
 
-## bridge.webp
 
 ```
 Abstract wide cinematic field of flowing neural filaments and drifting particles
@@ -89,9 +87,7 @@ center, ultrawide 16:9 composition that stays calm at full bleed, azure #38BDF8 
 #09090b, cinematic, atmospheric, no text, no letters, no logos, no purple.
 ```
 
-Note: the media bridge currently renders the live `NeuralFlow` canvas, not an
 image. To use a still, swap the `<NeuralFlow />` element in
-`src/components/sections/MediaBridge.tsx` for an `<img src="/media/bridge.webp">`
 covering the container. The five posters and the portrait need no code change.
 
 ## portrait.webp
