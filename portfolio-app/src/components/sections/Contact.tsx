@@ -14,8 +14,8 @@ import { profile } from "@/data/content";
 const Beams = dynamic(() => import("@/components/bits/Beams"), { ssr: false });
 
 const LINKS = [
-  { icon: <GithubLogo weight="bold" />, color: "#3f3f46", label: "GitHub", href: profile.github },
-  { icon: <LinkedinLogo weight="bold" />, color: "#3f3f46", label: "LinkedIn", href: profile.linkedin },
+  { icon: <GithubLogo weight="bold" />, color: "#3f3f46", label: "GitHub", href: profile.github, newTab: true },
+  { icon: <LinkedinLogo weight="bold" />, color: "#3f3f46", label: "LinkedIn", href: profile.linkedin, newTab: true },
   { icon: <EnvelopeSimple weight="bold" />, color: "#38bdf8", label: "Email", href: `mailto:${profile.email}` },
   { icon: <FileArrowDown weight="bold" />, color: "#38bdf8", label: "Resume", href: profile.resumePath, download: true },
 ];

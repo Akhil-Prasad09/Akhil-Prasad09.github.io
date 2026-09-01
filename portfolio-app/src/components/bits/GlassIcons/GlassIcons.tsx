@@ -9,6 +9,8 @@ export interface GlassIconsItem {
   customClass?: string;
   /** When set, the tile renders as a real <a> instead of an inert <button>. */
   href?: string;
+  /** Open in a new tab (external profile links). */
+  newTab?: boolean;
   download?: boolean;
 }
 
@@ -39,7 +41,12 @@ const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
       {items.map((item, index) => {
         const Tag = item.href ? 'a' : 'button';
         const tagProps = item.href
-          ? { href: item.href, download: item.download }
+          ? {
+              href: item.href,
+              download: item.download,
+              target: item.newTab ? '_blank' : undefined,
+              rel: item.newTab ? 'noopener noreferrer' : undefined
+            }
           : { type: 'button' as const };
         return (
         <Tag
