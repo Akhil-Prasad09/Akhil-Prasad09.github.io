@@ -27,6 +27,7 @@ export function TechMarquee() {
             texts={[ROW]}
             velocity={40}
             numCopies={3}
+            // axe: color-contrast - decorative strip, sr-only equivalent below.
             className="text-accent/20"
             // Vendored component interpolates these straight into a template
             // string, so leaving them unset ships a literal "undefined" class.

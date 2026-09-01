@@ -1,5 +1,6 @@
-// Mechanical spec-lock gate over the static export. Runs after `next build` via
-// the `postbuild` script. Node >= 22.18 strips the .ts import natively, so this
+// Mechanical spec-lock gate over the static export, plus the section sources
+// where a source check is the honest one. Runs after `next build` via the
+// `postbuild` script. Node >= 22.18 strips the .ts import natively, so this
 // needs no loader and pulls nothing from the network on the build path.
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -24,23 +25,50 @@ const assert = (ok, msg) => {
 
 // Every data array reaches the page. A dropped or broken section fails here, and
 // appending to content.ts extends the check for free.
-for (const p of projects) assert(html.includes(p.title), `project missing: ${p.title}`);
-for (const c of certifications) assert(html.includes(c.name), `certification missing: ${c.name}`);
-for (const r of roles) assert(html.includes(r.org), `role missing: ${r.org}`);
-for (const e of education) assert(html.includes(e.school), `education missing: ${e.school}`);
+//
+// These MUST test `markup`, not `html`: the RSC flight payload in <script> carries
+// the content strings too (today every certification name, every school and one
+// role org appear there), so asserting against the raw html would keep passing
+// after the section that renders them was deleted.
+for (const p of projects) assert(markup.includes(p.title), `project missing: ${p.title}`);
+for (const c of certifications) assert(markup.includes(c.name), `certification missing: ${c.name}`);
+for (const r of roles) assert(markup.includes(r.org), `role missing: ${r.org}`);
+for (const e of education) assert(markup.includes(e.school), `education missing: ${e.school}`);
 
 assert(!/[—–]/.test(markup), "em/en-dash in rendered copy");
 
 // Spec lock: no section is viewport-height. Out-of-flow overlays (the mobile
 // menu panel, the noise canvas) legitimately fill the viewport, so only in-flow
-// uses fail.
+// uses fail. `absolute` has to stay in the exemption alongside `fixed`: the noise
+// canvas is `absolute h-screen` inside a `fixed inset-0` parent, and out-of-flow
+// is the property this lock actually cares about — an absolutely positioned
+// element cannot be the viewport-height section the rule is aimed at.
 const inFlowScreen = [...markup.matchAll(/class="([^"]*\bh-screen\b[^"]*)"/g)]
   .map((m) => m[1])
   .filter((cls) => !/\b(fixed|absolute)\b/.test(cls));
 assert(inFlowScreen.length === 0, `h-screen on in-flow element: ${inFlowScreen.join(" | ")}`);
 
-const eyebrows = (markup.match(/uppercase[^"]*tracking-\[/g) || []).length;
-assert(eyebrows <= 4, `too many eyebrows: ${eyebrows}`);
+// Spec lock: no eyebrows (an uppercase + letter-spaced kicker above a heading).
+//
+// Checked at source rather than in the output on purpose. The only uppercase +
+// tracking pairs the build emits belong to PillNav's vendored nav pills, so an
+// output scan counts those and never sees an eyebrow actually added to a section
+// — it passes no matter what. Scanning src/components/sections and src/app keeps
+// the vendored bits out of the count, and matching whole string literals (not
+// just class="" attributes) catches the class consts these files also use.
+const sectionSources = ["src/components/sections", "src/app"].flatMap((dir) =>
+  readdirSync(dir)
+    .filter((f) => f.endsWith(".tsx"))
+    .map((f) => join(dir, f)),
+);
+const STRING_LITERAL = /"([^"\n]*)"|'([^'\n]*)'|`([^`]*)`/g;
+const eyebrows = sectionSources.flatMap((file) =>
+  [...readFileSync(file, "utf8").matchAll(STRING_LITERAL)]
+    .map((m) => m[1] ?? m[2] ?? m[3])
+    .filter((s) => s.includes("uppercase") && s.includes("tracking-"))
+    .map((s) => `${file}: ${s.slice(0, 60)}`),
+);
+assert(eyebrows.length === 0, `eyebrow in section source: ${eyebrows.join(" | ")}`);
 
 assert(
   (markup.match(/aria-label="Technologies"/g) || []).length === 1,
