@@ -26,8 +26,6 @@ const Noise: React.FC<NoiseProps> = ({
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    let frame = 0;
-    let animationId: number;
 
     const canvasSize = 1024;
 
@@ -55,21 +53,19 @@ const Noise: React.FC<NoiseProps> = ({
       ctx.putImageData(imageData, 0, 0);
     };
 
-    const loop = () => {
-      if (frame % patternRefreshInterval === 0) {
-        drawGrain();
-      }
-      frame++;
-      animationId = window.requestAnimationFrame(loop);
+    // Static grain: one draw per (re)size instead of a 60fps loop regenerating
+    // random pixels on a fullscreen canvas. At patternAlpha 12 the flicker was
+    // imperceptible; the constant repaint was not free, it just looked free.
+    const drawOnce = () => {
+      resize();
+      drawGrain();
     };
 
-    window.addEventListener('resize', resize);
-    resize();
-    loop();
+    window.addEventListener('resize', drawOnce);
+    drawOnce();
 
     return () => {
-      window.removeEventListener('resize', resize);
-      window.cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', drawOnce);
     };
   }, [patternSize, patternScaleX, patternScaleY, patternRefreshInterval, patternAlpha]);
 

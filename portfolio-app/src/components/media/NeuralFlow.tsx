@@ -108,10 +108,43 @@ export function NeuralFlow({ paused }: { paused?: boolean }) {
     const ro = new ResizeObserver(resize);
     ro.observe(parent);
     resize();
-    if (!still) raf = requestAnimationFrame(frame);
+
+    // Run the loop only while the canvas is actually on screen. The bridge
+    // spends most of a visit scrolled away; 70 nodes x 2415 pair checks per
+    // frame is cheap once but not free forever.
+    let visible = false;
+    const start = () => {
+      if (!raf && !still && visible) {
+        last = 0;
+        raf = requestAnimationFrame(frame);
+      }
+    };
+    const stop = () => {
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    };
+    const io =
+      typeof IntersectionObserver === "undefined"
+        ? null
+        : new IntersectionObserver(
+            ([entry]) => {
+              visible = entry.isIntersecting;
+              if (visible) start();
+              else stop();
+            },
+            { rootMargin: "100px" },
+          );
+    if (io) io.observe(parent);
+    else {
+      visible = true;
+      start();
+    }
 
     return () => {
-      if (raf) cancelAnimationFrame(raf);
+      stop();
+      if (io) io.disconnect();
       ro.disconnect();
     };
   }, [still]);

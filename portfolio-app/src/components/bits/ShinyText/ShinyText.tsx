@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useAnimationFrame, useTransform } from 'motion/react';
+import { motion, useInView, useMotionValue, useAnimationFrame, useTransform } from 'motion/react';
 
 interface ShinyTextProps {
   text: string;
@@ -31,6 +31,10 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   delay = 0
 }) => {
   const [isPaused, setIsPaused] = useState(false);
+  // Sheen only animates while on screen; the footer spends most of a visit
+  // scrolled away and its rAF loop should not run for the whole session.
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const inView = useInView(spanRef, { margin: "100px 0px" });
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
   const lastTimeRef = useRef<number | null>(null);
@@ -40,7 +44,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   const delayDuration = delay * 1000;
 
   useAnimationFrame(time => {
-    if (disabled || isPaused) {
+    if (disabled || isPaused || !inView) {
       lastTimeRef.current = null;
       return;
     }
@@ -120,6 +124,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
 
   return (
     <motion.span
+      ref={spanRef}
       className={`inline-block ${className}`}
       style={{ ...gradientStyle, backgroundPosition }}
       onMouseEnter={handleMouseEnter}

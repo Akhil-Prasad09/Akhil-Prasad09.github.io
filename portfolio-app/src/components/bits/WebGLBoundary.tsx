@@ -41,37 +41,46 @@ export function WebGLBoundary({
   defer = false,
   placeholderClassName,
 }: Fallback & { defer?: boolean; placeholderClassName?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
   const [near, setNear] = useState(!defer);
 
+  // Two-way visibility: the canvas mounts when its host scrolls within 300px of
+  // the viewport and UNMOUNTS again when it leaves, releasing the GL context and
+  // its requestAnimationFrame loop. One full scroll used to leave every canvas
+  // on the page running at once; sustained GPU load is what heats laptops, not
+  // load-time cost. The zero-size anchor span stays mounted either way, and the
+  // observed element is its parent (the section or cell hosting the decoration),
+  // which always has real geometry regardless of mount state.
   useEffect(() => {
-    if (near || !ref.current) return;
+    const anchor = anchorRef.current;
     // No IntersectionObserver (or no layout yet) should never mean "no canvas".
-    if (typeof IntersectionObserver === "undefined") {
+    if (!anchor || typeof IntersectionObserver === "undefined") {
       setNear(true);
       return;
     }
+    const target = anchor.parentElement ?? anchor;
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setNear(true);
+        setNear(entry.isIntersecting);
       },
       { rootMargin: "300px" },
     );
-    io.observe(ref.current);
+    io.observe(target);
     return () => io.disconnect();
-  }, [near]);
+  }, []);
 
-  // Once mounted the placeholder is gone entirely, so the deferred tree ends up
-  // structurally identical to the eager one.
-  if (!near) {
-    return (
-      <div ref={ref} aria-hidden="true" className={placeholderClassName}>
-        {fallback}
-      </div>
-    );
-  }
-
-  return <Catch fallback={fallback}>{children}</Catch>;
+  return (
+    <>
+      <span ref={anchorRef} hidden aria-hidden="true" />
+      {near ? (
+        <Catch fallback={fallback}>{children}</Catch>
+      ) : (
+        <div aria-hidden="true" className={placeholderClassName}>
+          {fallback}
+        </div>
+      )}
+    </>
+  );
 }
 
 export default WebGLBoundary;

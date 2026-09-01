@@ -1,6 +1,7 @@
 "use client";
 
-import { useReducedMotion } from "motion/react";
+import { useRef } from "react";
+import { useInView, useReducedMotion } from "motion/react";
 import ScrollVelocity from "@/components/bits/ScrollVelocity";
 import { skills } from "@/data/content";
 
@@ -12,15 +13,20 @@ const TYPE =
  * The only marquee on the page. The strip is decorative, so it is hidden from
  * assistive tech and the same list is exposed as plain text below it. Under
  * reduced motion the ScrollVelocity subtree is not mounted at all, which stops
- * its requestAnimationFrame loop rather than just zeroing the speed.
+ * its requestAnimationFrame loop rather than just zeroing the speed. The same
+ * unmount trick drives the offscreen case: the strip only exists while the
+ * section is near the viewport, so its rAF loop is not billed for the whole
+ * visit.
  */
 export function TechMarquee() {
   const reduced = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { margin: "200px 0px" });
 
   return (
-    <section aria-label="Technologies" className="overflow-hidden py-12">
+    <section ref={ref} aria-label="Technologies" className="overflow-hidden py-12">
       <div aria-hidden="true">
-        {reduced ? (
+        {reduced || !inView ? (
           <p className={`${TYPE} whitespace-nowrap`}>{ROW}</p>
         ) : (
           <ScrollVelocity
