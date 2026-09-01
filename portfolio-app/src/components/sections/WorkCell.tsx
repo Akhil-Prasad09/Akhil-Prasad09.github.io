@@ -44,14 +44,18 @@ export function WorkCell({
                 className="absolute inset-0 h-full w-full object-cover"
               />
               {/* Decorative overlay on top of the real <Image> above it, so a
-                  dead WebGL context just leaves the plain photo showing. */}
-              <WebGLBoundary defer placeholderClassName="absolute inset-0">
-                <HalftoneReveal
-                  src={media.src}
-                  borderRadius="16px"
-                  className="absolute inset-0"
-                />
-              </WebGLBoundary>
+                  dead WebGL context just leaves the plain photo showing. Skipped
+                  for gifs: the overlay is opaque and halftones only the first
+                  frame, which would hide the animation (the better content). */}
+              {media.kind !== "gif" && (
+                <WebGLBoundary defer placeholderClassName="absolute inset-0">
+                  <HalftoneReveal
+                    src={media.src}
+                    borderRadius="16px"
+                    className="absolute inset-0"
+                  />
+                </WebGLBoundary>
+              )}
             </div>
           ) : (
             <TiltedCard

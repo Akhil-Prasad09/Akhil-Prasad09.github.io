@@ -12,8 +12,8 @@ import { NeuralFlow } from "@/components/media/NeuralFlow";
 
 /**
  * Scroll-scrubbed expansion of a 16:9 generative canvas from a rounded inset
- * window to full bleed. The vendored ScrollExpand only accepts an image or
- * video URL as its media (children render as a late-fading overlay, not the
+ * window to full bleed. Off-the-shelf scroll-expand components take an image or
+ * video URL as their media (children render as a late-fading overlay, not the
  * media itself), so the scrub is done here with useScroll + clip-path instead.
  * clip-path keeps the canvas at a constant pixel size, so scrubbing never
  * triggers layout or a canvas resize.

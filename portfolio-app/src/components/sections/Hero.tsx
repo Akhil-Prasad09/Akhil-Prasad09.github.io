@@ -37,7 +37,14 @@ export function Hero() {
               CTA still behaves like a real mailto link (right-click, ctrl-click).
               The inner button is aria-hidden + untabbable so the anchor (with its
               own aria-label) is the single control in the a11y tree and tab order. */}
-          <a href={`mailto:${profile.email}`} aria-label="Get in touch">
+          {/* inline-flex, not inherited blockification: as a flex item this
+              anchor happens to be blockified already, but the focus ring must
+              wrap the button regardless of what the parent's display is. */}
+          <a
+            href={`mailto:${profile.email}`}
+            aria-label="Get in touch"
+            className="inline-flex"
+          >
             {/* SpecularButton paints its face in WebGL, so its fallback has to
                 carry the visible label; the anchor around it is what actually
                 works either way. */}

@@ -73,7 +73,11 @@ export function ProjectSheet({ project, onClose }: { project: Project; onClose: 
         animate={reduce ? { opacity: 1 } : { y: 0 }}
         exit={reduce ? { opacity: 0 } : { y: vh }}
         transition={{ type: "spring", bounce: 0.2, duration: 0.45 }}
-        className="absolute inset-x-0 bottom-0 top-16 flex flex-col rounded-t-[20px] border-t border-white/10 bg-surface-2/90 backdrop-blur-2xl"
+        /* outline-none: this container is a programmatic focus target only
+           (tabIndex -1, not interactive), so its focus is deliberately
+           unstyled — the UA ring would otherwise draw around the whole sheet
+           on open. Every real control inside keeps its own focus-visible ring. */
+        className="absolute inset-x-0 bottom-0 top-16 flex flex-col rounded-t-[20px] border-t border-white/10 bg-surface-2/90 backdrop-blur-2xl outline-none"
       >
         {/* The handle strip is the ONLY drag surface. Motion sets touch-action and
             user-select on whatever listens for drag, and both inherit/intersect down the
@@ -82,7 +86,7 @@ export function ProjectSheet({ project, onClose }: { project: Project; onClose: 
         <div
           onPointerDown={e => dragControls.start(e)}
           style={{ touchAction: "none" }}
-          className="shrink-0 cursor-grab py-3 active:cursor-grabbing"
+          className="shrink-0 cursor-grab py-4 active:cursor-grabbing"
         >
           <div aria-hidden className="mx-auto h-1.5 w-12 rounded-full bg-white/20" />
         </div>

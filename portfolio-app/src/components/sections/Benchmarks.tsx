@@ -5,11 +5,11 @@ import { roles } from "@/data/content";
 // Terminal MOTIF, not a terminal: mono type, azure index markers, a rule.
 // No chrome dots, no fake prompt, no version footer.
 //
-// AnimatedList was rejected for the point list: it is a selectable list widget
-// (fixed w-[500px] scroller, cursor-pointer rows, pure-white text) and its
-// enableArrowNavigation effect preventDefaults window-level Tab, which would
-// break keyboard nav for the whole page. AnimatedContent gives the staggered
-// reveal without any of that.
+// The point list uses AnimatedContent, not an animated-list widget: those are
+// selectable list controls (fixed-width scroller, cursor-pointer rows) whose
+// arrow-navigation effect preventDefaults window-level Tab, which would break
+// keyboard nav for the whole page. AnimatedContent gives the staggered reveal
+// without any of that.
 const handshake = roles.find((r) => r.org === "Handshake AI");
 
 export function Benchmarks() {

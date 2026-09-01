@@ -44,7 +44,9 @@ export function Portrait() {
   return (
     <div
       role="img"
-      aria-label={`Portrait of ${profile.name}`}
+      // The fallback is a monogram, not a photo: announcing it as a portrait
+      // would claim content that is not there until portrait.webp ships.
+      aria-label={hasImage ? `Portrait of ${profile.name}` : "AP monogram"}
       className="aspect-square w-full max-w-sm overflow-hidden rounded-card border border-white/10 bg-surface-2"
     >
       {hasImage ? (

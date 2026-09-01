@@ -24,7 +24,10 @@ export function TechMarquee() {
           <p className={`${TYPE} whitespace-nowrap`}>{ROW}</p>
         ) : (
           <ScrollVelocity
-            texts={[ROW]}
+            // Trailing separator, so the copies join as "... Git · Python ..."
+            // instead of gluing the loop seam. The reduced-motion <p> keeps the
+            // bare ROW so it does not end on a dangling dot.
+            texts={[`${ROW} · `]}
             velocity={40}
             numCopies={3}
             // axe: color-contrast - decorative strip, sr-only equivalent below.

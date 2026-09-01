@@ -11,10 +11,11 @@ import {
 import { roles, type Role } from "@/data/content";
 
 /**
- * Sticky-stack, not the vendored ScrollStack. That component spins up its own
- * Lenis instance and either hijacks the window scroll or needs a fixed-height
- * internal scroller, both of which fight the page. CSS position:sticky does the
- * pinning for free; Motion only supplies the recede-and-dim on covered cards.
+ * Sticky-stack, hand-rolled. The off-the-shelf scroll-stack components spin up
+ * their own smooth-scroll instance and either hijack the window scroll or need a
+ * fixed-height internal scroller, both of which fight the page. CSS
+ * position:sticky does the pinning for free; Motion only supplies the
+ * recede-and-dim on covered cards.
  */
 
 const PIN_TOP = 88; // nav measures 58px, plus air so the pinned card clears it

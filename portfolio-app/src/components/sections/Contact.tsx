@@ -60,7 +60,11 @@ export function Contact() {
             {/* Same pattern as the Hero CTA: SpecularButton renders a <button>,
                 so the anchor carries the href and the label while the inner
                 button is aria-hidden and untabbable. */}
-            <a href={`mailto:${profile.email}`} aria-label="Get in touch">
+            <a
+              href={`mailto:${profile.email}`}
+              aria-label="Get in touch"
+              className="inline-flex"
+            >
               <WebGLBoundary
                 fallback={
                   <span className="inline-flex items-center rounded-full border border-accent px-6 py-3 text-ink">
