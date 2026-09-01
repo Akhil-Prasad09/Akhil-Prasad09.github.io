@@ -3,12 +3,16 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "motion/react";
 
-const NODES = 70;
-const LINK_DIST = 120;
+const NODES = 96;
+const LINK_DIST = 180;
 const LINK_DIST_SQ = LINK_DIST * LINK_DIST;
-const SPEED = 14; // px per second
+const SPEED = 18; // px per second
 const TAU = Math.PI * 2;
 const ACCENT = "#38bdf8";
+// Every 8th node is a "hub": larger, brighter, with a soft halo. They give the
+// field focal points so a full-viewport canvas reads as a composition instead
+// of faint dust on black (the pre-fix version was mistaken for a blank page).
+const HUB_EVERY = 8;
 
 /**
  * Drifting node/edge field on a transparent canvas. Fills its (positioned)
@@ -41,7 +45,7 @@ export function NeuralFlow({ paused }: { paused?: boolean }) {
       ctx.clearRect(0, 0, w, h);
 
       ctx.strokeStyle = ACCENT;
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.25;
       for (let i = 0; i < NODES; i++) {
         for (let j = i + 1; j < NODES; j++) {
           const dx = x[i] - x[j];
@@ -49,7 +53,7 @@ export function NeuralFlow({ paused }: { paused?: boolean }) {
           const d2 = dx * dx + dy * dy;
           if (d2 > LINK_DIST_SQ) continue;
           // globalAlpha rather than an rgba() string: no per-edge allocation.
-          ctx.globalAlpha = 0.25 * (1 - Math.sqrt(d2) / LINK_DIST);
+          ctx.globalAlpha = 0.5 * (1 - Math.sqrt(d2) / LINK_DIST);
           ctx.beginPath();
           ctx.moveTo(x[i], y[i]);
           ctx.lineTo(x[j], y[j]);
@@ -57,11 +61,19 @@ export function NeuralFlow({ paused }: { paused?: boolean }) {
         }
       }
 
-      ctx.globalAlpha = 0.8;
       ctx.fillStyle = ACCENT;
       for (let i = 0; i < NODES; i++) {
+        const hub = i % HUB_EVERY === 0;
+        if (hub) {
+          // Two-circle halo instead of shadowBlur: same read, none of the cost.
+          ctx.globalAlpha = 0.16;
+          ctx.beginPath();
+          ctx.arc(x[i], y[i], 9, 0, TAU);
+          ctx.fill();
+        }
+        ctx.globalAlpha = hub ? 1 : 0.85;
         ctx.beginPath();
-        ctx.arc(x[i], y[i], 1.6, 0, TAU);
+        ctx.arc(x[i], y[i], hub ? 3.2 : 2.2, 0, TAU);
         ctx.fill();
       }
       ctx.globalAlpha = 1;
