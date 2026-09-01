@@ -2,7 +2,6 @@
 
 import PillNav from "@/components/bits/PillNav";
 import { StaggeredMenu } from "@/components/bits/StaggeredMenu";
-import GradualBlur from "@/components/bits/GradualBlur";
 import { profile } from "@/data/content";
 import { Z } from "@/lib/z";
 
@@ -18,9 +17,10 @@ const STAGGERED_ITEMS = NAV_ITEMS.map((item) => ({
   link: item.href,
 }));
 
-// Header box caps at 64px (<=72px budget); GradualBlur sits just below it as a
-// scroll-edge fade so content softens as it slides under the fixed nav.
-const HEADER_HEIGHT = 64;
+// Header box caps at 64px (<=72px budget). No full-width scroll-edge blur:
+// the nav is a compact pill cluster, not a bar, so a viewport-wide blur band
+// mostly floated over open content and read as an artifact. The pills carry
+// their own backdrop blur, which handles content sliding under actual chrome.
 
 export function Nav() {
   return (
@@ -54,16 +54,6 @@ export function Nav() {
           />
         </div>
       </header>
-      <div className="pointer-events-none fixed inset-x-0" style={{ top: HEADER_HEIGHT, zIndex: Z.nav - 1 }}>
-        <GradualBlur
-          target="parent"
-          position="top"
-          height="1.5rem"
-          strength={1}
-          opacity={0.5}
-          divCount={4}
-        />
-      </div>
     </>
   );
 }
