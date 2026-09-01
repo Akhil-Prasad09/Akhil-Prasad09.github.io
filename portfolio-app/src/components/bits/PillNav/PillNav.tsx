@@ -18,6 +18,7 @@ export interface PillNavProps {
   className?: string;
   ease?: string;
   baseColor?: string;
+  navBgColor?: string;
   pillColor?: string;
   hoveredPillTextColor?: string;
   pillTextColor?: string;
@@ -33,6 +34,7 @@ const PillNav: React.FC<PillNavProps> = ({
   className = '',
   ease = 'power3.easeOut',
   baseColor = '#fafafa',
+  navBgColor,
   pillColor = '#09090b',
   hoveredPillTextColor = '#09090b',
   pillTextColor,
@@ -239,6 +241,7 @@ const PillNav: React.FC<PillNavProps> = ({
 
   const cssVars = {
     ['--base']: baseColor,
+    ['--nav-bg']: navBgColor ?? baseColor,
     ['--pill-bg']: pillColor,
     ['--hover-text']: hoveredPillTextColor,
     ['--pill-text']: resolvedPillTextColor,
@@ -297,7 +300,10 @@ const PillNav: React.FC<PillNavProps> = ({
           className="relative items-center rounded-full hidden md:flex ml-2"
           style={{
             height: 'var(--nav-h)',
-            background: 'var(--base, #09090b)'
+            background: 'var(--nav-bg, var(--base, #09090b))',
+            backdropFilter: 'blur(16px) saturate(160%)',
+            WebkitBackdropFilter: 'blur(16px) saturate(160%)',
+            border: '1px solid rgba(250, 250, 250, 0.1)'
           }}
         >
           <ul

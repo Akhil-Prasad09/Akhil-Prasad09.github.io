@@ -32,7 +32,8 @@ export function Nav() {
             logoAlt={profile.name}
             items={NAV_ITEMS}
             baseColor="#38bdf8"
-            pillColor="#131316"
+            navBgColor="rgba(19, 19, 22, 0.6)"
+            pillColor="transparent"
             pillTextColor="#fafafa"
             hoveredPillTextColor="#09090b"
           />
