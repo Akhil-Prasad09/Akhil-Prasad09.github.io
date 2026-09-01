@@ -3,7 +3,7 @@ import { Hero } from "@/components/sections/Hero";
 import { Metrics } from "@/components/sections/Metrics";
 import { Work } from "@/components/sections/Work";
 import { MediaBridge } from "@/components/sections/MediaBridge";
-import { Experience } from "@/components/sections/Experience";
+import { Journey } from "@/components/sections/Journey";
 import { TechMarquee } from "@/components/sections/TechMarquee";
 import { Capabilities } from "@/components/sections/Capabilities";
 import { Benchmarks } from "@/components/sections/Benchmarks";
@@ -20,7 +20,7 @@ export default function Home() {
         <Metrics />
         <Work />
         <MediaBridge />
-        <Experience />
+        <Journey />
         <TechMarquee />
         <Capabilities />
         <Benchmarks />
