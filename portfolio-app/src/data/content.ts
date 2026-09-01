@@ -32,7 +32,7 @@ export const profile = {
 export const stats: Stat[] = [
   { label: "FER-2013 accuracy", value: 90, suffix: "%+" },
   { label: "inference latency", value: 50, suffix: "ms", decimals: 0 },
-  { label: "benchmark tasks shipped", value: 21, suffix: "" },
+  { label: "benchmark tasks shipped", value: 40, suffix: "+" },
   { label: "stations analyzed", value: 39, suffix: "" },
   { label: "CGPA", value: 8.64, suffix: "", decimals: 2 },
 ];
@@ -162,7 +162,7 @@ export const roles: Role[] = [
     org: "Handshake AI", title: "Freelance AI Trainer",
     period: "Jul 2026 - Present", location: "Remote",
     points: [
-      "Authors terminal-based benchmark tasks used to evaluate frontier AI coding agents: 21 tasks across 7 domains.",
+      "Authors terminal-based benchmark tasks used to evaluate frontier AI coding agents: 40+ tasks across 7 domains.",
       "Ships each task as a reproducible package: spec, Dockerised environment, automated verifier, and reference solution.",
     ],
   },
