@@ -1,7 +1,7 @@
 # Six Stones Work Section - Design Spec
 
 Date: 2026-09-06
-Status: approved by user in conversation, awaiting written review
+Status: approved by user in conversation, assets in place, awaiting written review
 
 ## Summary
 
@@ -78,7 +78,7 @@ All under `portfolio-app/src/`.
 
 Model, in place: `public/models/gauntlet.glb`, `public/models/LICENSE-gauntlet.txt`.
 
-Videos, produced by the user in Google Flow with Veo, 8 s, 16:9, 1080p, saved as `public/media/stones/<stone>.mp4` plus a first-frame `<stone>.jpg` poster exported from the clip. Each clip must loop cleanly, so every prompt asks for a seamless loop and no camera move. Prompts:
+Videos, in place: `public/media/stones/<stone>.mp4` plus a first-frame `<stone>.jpg` poster. Generated in Google Flow with Veo 3.1 Fast as smooth oval cabochons (not faceted gems), 720p, 16:9, re-encoded to H.264 with audio stripped, about 20 MB total. Five clips are 8 s; `soul.mp4` is 16 s because the source had a camera move, so it is ping-ponged (forward then reversed) to loop seamlessly. The prompts below are the originals and are superseded by the cabochon versions kept in `data/stones.ts`. Original prompts:
 
 - `mind.mp4`: Photorealistic macro shot of a faceted golden yellow gemstone floating in black void, slow internal light pulsing like neural activity, fine dust motes drifting, shallow depth of field, no camera movement, seamless loop, cinematic lighting, 8 seconds.
 - `soul.mp4`: Photorealistic macro shot of a deep orange gemstone hovering over a dark still lake, faint amber mist rising, slow warm glow breathing, black background, no camera movement, seamless loop, cinematic, 8 seconds.
@@ -107,4 +107,4 @@ Clips are dimmed to about 35% opacity behind the gauntlet, so mild imperfections
 
 ## Out of scope
 
-Hero, Experience, Contact, and any other section. Sound. Per-stone routes. Replacing Journey's scroll engine. Generating the Veo clips (the user does this in Flow).
+Hero, Experience, Contact, and any other section. Sound. Per-stone routes. Replacing Journey's scroll engine. Regenerating the Veo clips.
