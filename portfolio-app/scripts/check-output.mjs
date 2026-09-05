@@ -5,6 +5,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { projects, certifications, roles, education } from "../src/data/content.ts";
+import { stones } from "../src/data/stones.ts";
 
 const html = readFileSync("out/index.html", "utf8");
 
@@ -30,7 +31,14 @@ const assert = (ok, msg) => {
 // the content strings too (today every certification name, every school and one
 // role org appear there), so asserting against the raw html would keep passing
 // after the section that renders them was deleted.
-for (const p of projects) assert(markup.includes(p.title), `project missing: ${p.title}`);
+// The Work section shows the six stone projects; Green Basket stays in
+// content.ts (and the reduced-motion grid) but is not in the static markup.
+const shown = new Set(stones.map((s) => s.slug));
+for (const p of projects.filter((p) => shown.has(p.slug))) {
+  assert(markup.includes(p.title), `project missing: ${p.title}`);
+}
+assert(markup.includes("Six stones. Six proofs of work."), "stones intro headline missing");
+assert(markup.includes("Xorrrupted"), "gauntlet CC-BY credit missing from footer");
 for (const c of certifications) assert(markup.includes(c.name), `certification missing: ${c.name}`);
 for (const r of roles) assert(markup.includes(r.org), `role missing: ${r.org}`);
 for (const e of education) assert(markup.includes(e.school), `education missing: ${e.school}`);
@@ -56,9 +64,11 @@ assert(inFlowScreen.length === 0, `h-screen on in-flow element: ${inFlowScreen.j
 // — it passes no matter what. Scanning src/components/sections and src/app keeps
 // the vendored bits out of the count, and matching whole string literals (not
 // just class="" attributes) catches the class consts these files also use.
+// Stones.tsx is the one approved exception (spec 2026-09-06): its mono stone
+// label and wide-tracked uppercase title reproduce the reference design.
 const sectionSources = ["src/components/sections", "src/app"].flatMap((dir) =>
   readdirSync(dir)
-    .filter((f) => f.endsWith(".tsx"))
+    .filter((f) => f.endsWith(".tsx") && f !== "Stones.tsx")
     .map((f) => join(dir, f)),
 );
 const STRING_LITERAL = /"([^"\n]*)"|'([^'\n]*)'|`([^`]*)`/g;

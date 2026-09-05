@@ -2,7 +2,7 @@
 
 import { Component, useEffect, useRef, useState, type ReactNode } from "react";
 
-type Fallback = { children: ReactNode; fallback?: ReactNode };
+type Fallback = { children: ReactNode; fallback?: ReactNode; onFail?: () => void };
 
 /**
  * WebGL context creation fails on machines with no GPU, a blocklisted driver, or
@@ -17,6 +17,10 @@ class Catch extends Component<Fallback, { failed: boolean }> {
 
   static getDerivedStateFromError() {
     return { failed: true };
+  }
+
+  componentDidCatch() {
+    this.props.onFail?.();
   }
 
   render() {
@@ -38,6 +42,7 @@ class Catch extends Component<Fallback, { failed: boolean }> {
 export function WebGLBoundary({
   children,
   fallback = null,
+  onFail,
   defer = false,
   placeholderClassName,
 }: Fallback & { defer?: boolean; placeholderClassName?: string }) {
@@ -73,7 +78,7 @@ export function WebGLBoundary({
     <>
       <span ref={anchorRef} hidden aria-hidden="true" />
       {near ? (
-        <Catch fallback={fallback}>{children}</Catch>
+        <Catch fallback={fallback} onFail={onFail}>{children}</Catch>
       ) : (
         <div aria-hidden="true" className={placeholderClassName}>
           {fallback}

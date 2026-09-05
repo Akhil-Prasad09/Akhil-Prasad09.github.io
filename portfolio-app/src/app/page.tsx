@@ -1,7 +1,7 @@
 import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { Metrics } from "@/components/sections/Metrics";
-import { Work } from "@/components/sections/Work";
+import { Stones } from "@/components/sections/Stones";
 import { Journey } from "@/components/sections/Journey";
 import { TechMarquee } from "@/components/sections/TechMarquee";
 import { Capabilities } from "@/components/sections/Capabilities";
@@ -17,7 +17,7 @@ export default function Home() {
       <main>
         <Hero />
         <Metrics />
-        <Work />
+        <Stones />
         <Journey />
         <TechMarquee />
         <Capabilities />
