@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useTransform, type MotionValue } from "motion/react";
 import { stones, STOPS, type Stone } from "@/data/stones";
+import { span01 } from "@/lib/motion";
 
 /**
  * One dimmed backdrop per stone, crossfading with scroll. Every layer always
@@ -66,7 +67,15 @@ function Layer({
   const start = (index + 1) / STOPS;
   const end = (index + 2) / STOPS;
   const fade = 0.4 / STOPS;
-  const opacity = useTransform(progress, [start - fade, start, end, end + fade], [0, 1, 1, 0]);
+  // The last stone holds to the end; WAAPI rejects offsets above 1.
+  const last = end + fade > 1;
+  const opacity = useTransform(
+    progress,
+    ...span01(
+      last ? [start - fade, start, 1] : [start - fade, start, end, end + fade],
+      last ? [0, 1, 1] : [0, 1, 1, 0],
+    ),
+  );
 
   useEffect(() => {
     const v = videoRef.current;

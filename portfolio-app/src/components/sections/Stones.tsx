@@ -17,6 +17,7 @@ import { Gauntlet } from "./Gauntlet";
 import { StoneVideo } from "./StoneVideo";
 import { ProjectSheet } from "./ProjectSheet";
 import { Work } from "./Work";
+import { span01 } from "@/lib/motion";
 
 /**
  * Six stones, six projects. The section pins for VH_PER_STOP viewports per stop
@@ -84,8 +85,8 @@ export function Stones() {
 }
 
 function Intro({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0, STOP * 0.75, STOP], [1, 1, 0]);
-  const y = useTransform(progress, [0, STOP], [0, -40]);
+  const opacity = useTransform(progress, ...span01([0, STOP * 0.75, STOP], [1, 1, 0]));
+  const y = useTransform(progress, ...span01([0, STOP], [0, -40]));
   return (
     <motion.h2
       style={{ opacity, y }}
@@ -119,8 +120,8 @@ function StoneCard({
   const rise = start + STOP * 0.25;
   const leave = start + STOP * 0.75;
 
-  const opacity = useTransform(progress, [start, rise, leave, end], [0, 1, 1, 0]);
-  const y = useTransform(progress, [start, rise, leave, end], [48, 0, 0, -32]);
+  const opacity = useTransform(progress, ...span01([start, rise, leave, end], [0, 1, 1, 0]));
+  const y = useTransform(progress, ...span01([start, rise, leave, end], [48, 0, 0, -32]));
   const visibility = useTransform(opacity, (o) => (o > 0.02 ? "visible" : "hidden"));
   const numeral = `0${index + 1}`;
 
