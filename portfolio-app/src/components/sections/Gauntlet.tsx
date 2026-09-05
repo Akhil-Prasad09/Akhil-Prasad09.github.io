@@ -71,8 +71,9 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
       const m = o as Mesh;
       if (m.isMesh && !m.userData.stone) m.material = GOLD;
     });
-    return stones.map((s) => {
-      const mesh = scene.getObjectByName(s.mesh) as Mesh;
+    return stones.flatMap<StoneRig>((s) => {
+      const mesh = scene.getObjectByName(s.mesh) as Mesh | undefined;
+      if (!mesh) return []; // name mismatch: drop that stone rather than kill the canvas
       if (!mesh.userData.stone) {
         const geo = mesh.geometry;
         geo.computeBoundingBox();
@@ -87,13 +88,18 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
           metalness: 0,
         });
         mesh.userData.stone = s.id;
+        // Stash the rest position beside the marker: mesh.position holds the last
+        // frame's lifted value on a remount, so it cannot be the source of truth.
+        mesh.userData.stoneRest = centre.clone();
       }
-      return {
-        mesh,
-        rest: mesh.position.clone(),
-        color: new Color(s.hex),
-        material: mesh.material as MeshStandardMaterial,
-      };
+      return [
+        {
+          mesh,
+          rest: (mesh.userData.stoneRest as Vector3).clone(),
+          color: new Color(s.hex),
+          material: mesh.material as MeshStandardMaterial,
+        },
+      ];
     });
   }, [scene]);
 
