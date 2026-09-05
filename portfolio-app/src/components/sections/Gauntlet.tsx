@@ -3,7 +3,7 @@
 import { Suspense, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
-import { Color, Group, Mesh, MeshStandardMaterial, SpotLight, Vector3 } from "three";
+import { Color, Group, Mesh, MeshStandardMaterial, Quaternion, SpotLight, Vector3 } from "three";
 import type { MotionValue } from "motion/react";
 import { stones, STOPS } from "@/data/stones";
 
@@ -13,16 +13,21 @@ const MODEL = "/models/gauntlet.glb";
 const GROUP_POS = new Vector3(0.7, -0.15, 0); // fist sits centre-right of the viewport
 const ENTER_FROM_Y = -2.6; // intro: gauntlet rises from below
 const ROT_X_START = -0.9; // knuckles tilted toward the viewer, fist low
-const ROT_Y_SWEEP = 0.6; // slow turn across the whole section
+const ROT_Y_SWEEP = 0.4; // slow turn across the whole section
 const TUMBLE = 0.03; // idle wobble amplitude, radians
-// Stone offset at full lift, in the GLB's local Z-up frame (see file comment).
-const LIFT = new Vector3(-0.35, -0.6, 0.12);
+// Stone offset at full lift, in world space (the camera looks down -z from +z):
+// -x toward the text, +z toward the viewer. Converted into the model frame per
+// frame so the pose of the fist never changes where a stone floats.
+const LIFT = new Vector3(-0.9, -0.05, 0.6);
 const LIFT_SCALE = 3;
 const BOB = 0.02;
 const EMISSIVE_DIM = 0.2;
 const EMISSIVE_CLAIMED = 0.8;
-const EMISSIVE_LIFT = 2.5;
+const EMISSIVE_LIFT = 0.45;
 const RIM_IDLE = new Color("#ffffff");
+
+const scratchQ = new Quaternion();
+const liftLocal = new Vector3();
 
 const GOLD = new MeshStandardMaterial({ color: "#c9a24a", metalness: 1, roughness: 0.35 });
 
@@ -119,6 +124,12 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
     g.rotation.x = ROT_X_START * (1 - smooth(p / 0.5)) + Math.sin(time * 0.4) * TUMBLE;
     g.rotation.y = ROT_Y_SWEEP * p + Math.cos(time * 0.3) * TUMBLE;
 
+    // World-space LIFT expressed in the stones' parent frame (the rotated GLB root).
+    if (rigs.length) {
+      rigs[0].mesh.parent!.getWorldQuaternion(scratchQ).invert();
+      liftLocal.copy(LIFT).applyQuaternion(scratchQ);
+    }
+
     let active = -1;
     let activeLift = 0;
     rigs.forEach(({ mesh, rest, material }, i) => {
@@ -127,7 +138,7 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
       const lift = inStop ? liftOf((p - start) / stop) : 0;
       const claimed = p >= start + stop;
 
-      mesh.position.copy(rest).addScaledVector(LIFT, lift);
+      mesh.position.copy(rest).addScaledVector(liftLocal, lift);
       mesh.position.z += Math.sin(time * 2 + i) * BOB * lift; // hold bob, local z is world up
       mesh.scale.setScalar(1 + (LIFT_SCALE - 1) * lift);
       const base = claimed ? EMISSIVE_CLAIMED : EMISSIVE_DIM;
