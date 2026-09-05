@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -37,12 +37,16 @@ export function Stones() {
   const reduced = useReducedMotion();
   const [glFailed, setGlFailed] = useState(false);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
   });
+  // useReducedMotion reads null on the server, so the static export always
+  // contains the track. Swap to the Work grid only after hydration.
+  useEffect(() => setMounted(true), []);
 
-  if (reduced || glFailed) return <Work />;
+  if ((mounted && reduced) || glFailed) return <Work />;
 
   const open = projects.find((p) => p.slug === openSlug);
 
@@ -185,12 +189,17 @@ function StoneRail({ progress, onJump }: { progress: MotionValue<number>; onJump
               type="button"
               aria-label={`Go to ${stone.name} Stone`}
               onClick={() => onJump(i)}
-              className="block size-2.5 rotate-45 transition-[background-color,box-shadow] duration-300"
-              style={{
-                background: lit ? stone.hex : "rgba(255, 255, 255, 0.2)",
-                boxShadow: lit ? `0 0 12px ${stone.hex}` : "none",
-              }}
-            />
+              className="block p-2"
+            >
+              <span
+                aria-hidden="true"
+                className="block size-2.5 rotate-45 transition-[background-color,box-shadow] duration-300"
+                style={{
+                  background: lit ? stone.hex : "rgba(255, 255, 255, 0.2)",
+                  boxShadow: lit ? `0 0 12px ${stone.hex}` : "none",
+                }}
+              />
+            </button>
           </li>
         );
       })}
