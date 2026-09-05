@@ -23,18 +23,18 @@ Replace the `Work` bento grid with a pinned, scroll-scrubbed "six stones" sequen
 
 ## Stone mapping
 
-Canonical order from the reference. Mesh names are node names in `gauntlet.glb`.
+Canonical order from the reference. Mesh names are node names in `gauntlet.glb`. The GLB's materials are named after the stones (`mind`, `power`, `reality.001`, `soul`, `space`, `time`), so the mesh for each stone is the one whose material carries its name; no centroid guessing. `check-content.mjs` asserts this.
 
-| # | Stone | Colour | Socket | Mesh | Project slug |
+| # | Stone | Colour | Mesh | Material in GLB | Project slug |
 |---|---|---|---|---|---|
-| 01 | Mind | `#FFD700` | back of hand | `Object_8` | `cag-emotion-tracker` |
-| 02 | Soul | `#FF7A1A` | thumb | `Object_10` | `dentalbot` |
-| 03 | Reality | `#FF2D2D` | knuckle, ring | `Object_11` | `knee-mri-detect` |
-| 04 | Space | `#2D7CFF` | knuckle, middle | `Object_9` | `gesture-controller` |
-| 05 | Power | `#A234FF` | knuckle, index | `Object_7` | `ev-apm-agent` |
-| 06 | Time | `#22E07A` | knuckle, pinky | `Object_12` | `encrypted-chat` |
+| 01 | Mind | `#FFD700` | `Object_7` | `mind` | `cag-emotion-tracker` |
+| 02 | Soul | `#FF7A1A` | `Object_10` | `soul` | `dentalbot` |
+| 03 | Reality | `#FF2D2D` | `Object_9` | `reality.001` | `knee-mri-detect` |
+| 04 | Space | `#2D7CFF` | `Object_11` | `space` | `gesture-controller` |
+| 05 | Power | `#A234FF` | `Object_8` | `power` | `ev-apm-agent` |
+| 06 | Time | `#22E07A` | `Object_12` | `time` | `encrypted-chat` |
 
-Knuckle order follows the film (index Power, middle Space, ring Reality, pinky Time). World-space centroids from the source file, x from +0.20 to -0.30 along the knuckle row: `Object_7` +0.197, `Object_9` +0.052, `Object_11` -0.119, `Object_12` -0.298. Whether +x is the index side is confirmed in the browser during the build; if wrong, the four knuckle mesh names are swapped end-for-end in `stones.ts`. Nothing else changes.
+Geometry is baked in world space under a root node rotated -90 degrees about X (the file is Z-up). Stone meshes have no transform of their own, so `Gauntlet.tsx` recentres each stone geometry on its bounding-box centre once at load and moves the mesh instead.
 
 Body meshes `Object_2` through `Object_6` all share the source material `gauntlet` and receive one gold PBR material at load.
 
