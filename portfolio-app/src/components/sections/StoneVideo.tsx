@@ -13,7 +13,8 @@ import { span01 } from "@/lib/motion";
  * the active clip and its successor play; the rest are paused.
  */
 export function StoneVideo({ progress }: { progress: MotionValue<number> }) {
-  const [active, setActive] = useState(-1);
+  // -2 means the section is off-screen (p at 0 or 1): nothing plays or preloads.
+  const [active, setActive] = useState(-2);
   const [wide, setWide] = useState(false);
 
   useEffect(() => {
@@ -24,9 +25,10 @@ export function StoneVideo({ progress }: { progress: MotionValue<number> }) {
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  // Stone i owns stop i + 1, so the intro (stop 0) maps to -1: nothing active.
+  // Stone i owns stop i + 1, so the intro (stop 0) maps to -1: only the first
+  // clip warms up. scrollYProgress clamps to exactly 0 and 1 outside the track.
   useMotionValueEvent(progress, "change", (p) => {
-    const i = Math.min(stones.length - 1, Math.floor(p * STOPS) - 1);
+    const i = p <= 0 || p >= 1 ? -2 : Math.min(stones.length - 1, Math.floor(p * STOPS) - 1);
     setActive((a) => (a === i ? a : i));
   });
 

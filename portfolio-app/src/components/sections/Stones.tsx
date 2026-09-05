@@ -190,7 +190,7 @@ function StoneRail({ progress, onJump }: { progress: MotionValue<number>; onJump
               type="button"
               aria-label={`Go to ${stone.name} Stone`}
               onClick={() => onJump(i)}
-              className="block p-2"
+              className="block p-2 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             >
               <span
                 aria-hidden="true"
