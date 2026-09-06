@@ -8,6 +8,7 @@ import { ToneMappingMode } from "postprocessing";
 import {
   CanvasTexture,
   Color,
+  DoubleSide,
   Group,
   Mesh,
   MeshPhysicalMaterial,
@@ -47,6 +48,11 @@ const MODEL_CENTRE_Y = -0.88;
 // hair above the painted surface so the dark cap underneath stays hidden at rest.
 const GEM_FLATTEN = 0.55;
 const GEM_SEAT = 0.03;
+// Bezel cup around each socket: lip radius and depth as fractions of the gem radius.
+const CUP_RADIUS = 1.15;
+const CUP_DEPTH = 0.3;
+// Lift the cup floor off the painted surface so it covers the paint instead of z-fighting it.
+const CUP_FLOOR = 0.05;
 const MODEL_SCALE = 1.3;
 const UP = new Vector3(0, 1, 0);
 
@@ -249,14 +255,26 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
           <group ref={gemRoot} rotation={[Math.PI / 2, 0, 0]}>
             {stones.map((s, i) => (
               <group key={s.id}>
-                <mesh
-                  position={s.socket}
-                  quaternion={placements[i].orient}
-                  scale={[s.radius * 1.2, s.radius * 0.3, s.radius * 1.2]}
-                >
-                  <sphereGeometry args={[1, 24, 16]} />
-                  <meshStandardMaterial color="#120c05" roughness={0.6} metalness={0.4} />
-                </mesh>
+                {/* Bezel cup: a shallow metal dish above the paint with a lip, so the socket
+                    has shading and depth once the gem leaves, plus a faint residual glow. */}
+                <group position={s.socket} quaternion={placements[i].orient}>
+                  <mesh position={[0, s.radius * (CUP_DEPTH + CUP_FLOOR), 0]} scale={[s.radius * CUP_RADIUS, -s.radius * CUP_DEPTH, s.radius * CUP_RADIUS]}>
+                    <sphereGeometry args={[1, 32, 12, 0, Math.PI * 2, 0, Math.PI / 2]} />
+                    <meshStandardMaterial
+                      color="#1a1006"
+                      metalness={0.5}
+                      roughness={0.6}
+                      emissive={s.hex}
+                      emissiveIntensity={0.18}
+                      envMapIntensity={0.6}
+                      side={DoubleSide}
+                    />
+                  </mesh>
+                  <mesh position={[0, s.radius * (CUP_DEPTH + CUP_FLOOR), 0]} rotation={[Math.PI / 2, 0, 0]} scale={s.radius * CUP_RADIUS}>
+                    <torusGeometry args={[1, 0.07, 12, 48]} />
+                    <meshStandardMaterial color="#6b4a1c" metalness={1} roughness={0.35} envMapIntensity={1.4} />
+                  </mesh>
+                </group>
                 <mesh
                   ref={(el) => {
                     gems.current[i] = el;
