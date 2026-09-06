@@ -6,13 +6,16 @@ import { Environment, Lightformer, useGLTF } from "@react-three/drei";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
 import {
+  CanvasTexture,
   Color,
   Group,
   Mesh,
   MeshPhysicalMaterial,
   MeshStandardMaterial,
   Quaternion,
+  RepeatWrapping,
   SpotLight,
+  SRGBColorSpace,
   Vector3,
 } from "three";
 import type { MotionValue } from "motion/react";
@@ -34,9 +37,9 @@ const LIFT_SCALE = 2.1;
 const BOB = 0.02;
 // Emissive is HDR: bloom only catches values above the threshold of 1, so the
 // gold body never glows while a lifted stone does.
-const EMISSIVE_DIM = 0.35;
-const EMISSIVE_CLAIMED = 1.2;
-const EMISSIVE_LIFT = 2.2;
+const EMISSIVE_DIM = 0.6;
+const EMISSIVE_CLAIMED = 1.5;
+const EMISSIVE_LIFT = 2.6;
 const RIM_IDLE = new Color("#ffffff");
 // The model is 1.77 units long along its up axis with the cuff at 0.
 const MODEL_CENTRE_Y = -0.88;
@@ -102,6 +105,51 @@ function Studio() {
 
 type Placement = { rest: Vector3; orient: Quaternion; color: Color };
 
+/**
+ * Grayscale stone interior shared by all six gems: a core that glows toward the
+ * dome's pole (uv.y = 1, the canvas top) and darkens at the rim, with cloudy
+ * inclusions and hairline veins. Multiplies both the colour and the emissive,
+ * so a lifted stone reads as lit from within rather than as a flat disc.
+ */
+function makeGemTexture(): CanvasTexture {
+  const size = 512;
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const ctx = c.getContext("2d")!;
+  const core = ctx.createLinearGradient(0, 0, 0, size);
+  core.addColorStop(0, "#ffffff");
+  core.addColorStop(0.45, "#b4b4b4");
+  core.addColorStop(0.8, "#4a4a4a");
+  core.addColorStop(1, "#141414");
+  ctx.fillStyle = core;
+  ctx.fillRect(0, 0, size, size);
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < 90; i++) {
+    const x = rnd() * size;
+    const y = rnd() * size;
+    const r = 10 + rnd() * 80;
+    const blob = ctx.createRadialGradient(x, y, 0, x, y, r);
+    blob.addColorStop(0, rnd() < 0.5 ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.6)");
+    blob.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = blob;
+    ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
+  }
+  ctx.lineWidth = 1.5;
+  for (let i = 0; i < 24; i++) {
+    ctx.strokeStyle = rnd() < 0.5 ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.4)";
+    ctx.beginPath();
+    ctx.moveTo(rnd() * size, rnd() * size);
+    ctx.bezierCurveTo(rnd() * size, rnd() * size, rnd() * size, rnd() * size, rnd() * size, rnd() * size);
+    ctx.stroke();
+  }
+  const tex = new CanvasTexture(c);
+  tex.colorSpace = SRGBColorSpace;
+  tex.wrapS = RepeatWrapping;
+  tex.anisotropy = 4;
+  return tex;
+}
+
 function Rig({ progress }: { progress: MotionValue<number> }) {
   const { scene } = useGLTF(MODEL);
   const group = useRef<Group>(null);
@@ -109,6 +157,7 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
   const rim = useRef<SpotLight>(null);
   const gems = useRef<(Mesh | null)[]>([]);
   const rimColor = useMemo(() => new Color(), []);
+  const gemMap = useMemo(makeGemTexture, []);
 
   // The model ships a baked colour map and no roughness data; give the paint a
   // metal response so the environment reads on it. Idempotent across remounts.
@@ -218,15 +267,18 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
                 >
                   <sphereGeometry args={[s.radius, 48, 32]} />
                   <meshPhysicalMaterial
+                    map={gemMap}
+                    emissiveMap={gemMap}
                     color={s.hex}
                     emissive={s.hex}
                     emissiveIntensity={EMISSIVE_DIM}
-                    roughness={0.12}
+                    roughness={0.08}
                     metalness={0}
                     clearcoat={1}
-                    clearcoatRoughness={0.08}
-                    ior={1.8}
-                    envMapIntensity={1.4}
+                    clearcoatRoughness={0.04}
+                    ior={2.0}
+                    specularIntensity={1}
+                    envMapIntensity={1.8}
                   />
                 </mesh>
               </group>
