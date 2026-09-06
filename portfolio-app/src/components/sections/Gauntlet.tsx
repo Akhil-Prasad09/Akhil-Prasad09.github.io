@@ -39,7 +39,7 @@ const BOB = 0.02;
 // gold body never glows while a lifted stone does.
 const EMISSIVE_DIM = 0.6;
 const EMISSIVE_CLAIMED = 1.5;
-const EMISSIVE_LIFT = 2.6;
+const EMISSIVE_LIFT = 2.0;
 const RIM_IDLE = new Color("#ffffff");
 // The model is 1.77 units long along its up axis with the cuff at 0.
 const MODEL_CENTRE_Y = -0.88;
@@ -117,10 +117,10 @@ function makeGemTexture(): CanvasTexture {
   c.width = c.height = size;
   const ctx = c.getContext("2d")!;
   const core = ctx.createLinearGradient(0, 0, 0, size);
-  core.addColorStop(0, "#ffffff");
-  core.addColorStop(0.45, "#b4b4b4");
-  core.addColorStop(0.8, "#4a4a4a");
-  core.addColorStop(1, "#141414");
+  core.addColorStop(0, "#f2f2f2");
+  core.addColorStop(0.4, "#9c9c9c");
+  core.addColorStop(0.8, "#383838");
+  core.addColorStop(1, "#101010");
   ctx.fillStyle = core;
   ctx.fillRect(0, 0, size, size);
   let seed = 7;
@@ -130,13 +130,13 @@ function makeGemTexture(): CanvasTexture {
     const y = rnd() * size;
     const r = 10 + rnd() * 80;
     const blob = ctx.createRadialGradient(x, y, 0, x, y, r);
-    blob.addColorStop(0, rnd() < 0.5 ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.6)");
+    blob.addColorStop(0, rnd() < 0.55 ? "rgba(0,0,0,0.65)" : "rgba(255,255,255,0.7)");
     blob.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = blob;
     ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
   }
   ctx.lineWidth = 1.5;
-  for (let i = 0; i < 24; i++) {
+  for (let i = 0; i < 36; i++) {
     ctx.strokeStyle = rnd() < 0.5 ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.4)";
     ctx.beginPath();
     ctx.moveTo(rnd() * size, rnd() * size);
