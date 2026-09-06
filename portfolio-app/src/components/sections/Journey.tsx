@@ -11,6 +11,8 @@ import {
   type MotionValue,
 } from "motion/react";
 import { roles, type Role } from "@/data/content";
+import { HANDOVER_VH, StackViewport, useHandover } from "@/components/bits/StackViewport";
+import { Z } from "@/lib/z";
 
 /**
  * The warp-tunnel journey. The section pins for VH_PER_STOP viewports per role;
@@ -31,11 +33,13 @@ const stops = [...roles].sort((a, b) => yearOf(a) - yearOf(b));
 
 export function Journey() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
   });
+  const { progress, handover } = useHandover(scrollYProgress, stops.length * VH_PER_STOP);
 
   if (reduced) {
     return (
@@ -64,22 +68,22 @@ export function Journey() {
   }
 
   return (
-    <section id="experience" aria-label="Experience">
+    <section ref={sectionRef} id="experience" aria-label="Experience" className="relative -mb-[100dvh]" style={{ zIndex: Z.experience }}>
       <div
         ref={trackRef}
         className="relative"
-        style={{ height: `${stops.length * VH_PER_STOP}vh` }}
+        style={{ height: `${stops.length * VH_PER_STOP + HANDOVER_VH}vh` }}
       >
-        <div className="sticky top-0 flex h-[100dvh] items-center justify-center overflow-hidden bg-surface">
-          <WarpTunnel progress={scrollYProgress} />
-          <YearReadout progress={scrollYProgress} />
+        <StackViewport sectionRef={sectionRef} handover={handover} className="flex items-center justify-center">
+          <WarpTunnel progress={progress} />
+          <YearReadout progress={progress} />
           {stops.map((role, i) => (
-            <StopCard key={role.org} role={role} index={i} total={stops.length} progress={scrollYProgress} />
+            <StopCard key={role.org} role={role} index={i} total={stops.length} progress={progress} />
           ))}
           <h2 className="pointer-events-none absolute left-4 top-24 text-4xl tracking-tighter md:left-8">
             Experience
           </h2>
-        </div>
+        </StackViewport>
       </div>
     </section>
   );

@@ -9,6 +9,7 @@ import { Benchmarks } from "@/components/sections/Benchmarks";
 import { Education } from "@/components/sections/Education";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
+import { Z } from "@/lib/z";
 
 export default function Home() {
   return (
@@ -19,11 +20,14 @@ export default function Home() {
         <Metrics />
         <Stones />
         <Journey />
-        <TechMarquee />
-        <Capabilities />
-        <Benchmarks />
-        <Education />
-        <Contact />
+        {/* The tail rides over the Experience handover as one rounded page. */}
+        <div className="relative rounded-t-[28px] bg-surface shadow-[0_-30px_80px_rgba(0,0,0,0.55)]" style={{ zIndex: Z.tail }}>
+          <TechMarquee />
+          <Capabilities />
+          <Benchmarks />
+          <Education />
+          <Contact />
+        </div>
       </main>
       <Footer />
     </>

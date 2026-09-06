@@ -13,6 +13,8 @@ import {
 import { projects } from "@/data/content";
 import { stones, STOPS, type Stone } from "@/data/stones";
 import WebGLBoundary from "@/components/bits/WebGLBoundary";
+import { HANDOVER_VH, StackViewport, useHandover } from "@/components/bits/StackViewport";
+import { Z } from "@/lib/z";
 import { Gauntlet } from "./Gauntlet";
 import { StoneVideo } from "./StoneVideo";
 import { ProjectSheet } from "./ProjectSheet";
@@ -39,10 +41,13 @@ export function Stones() {
   const [glFailed, setGlFailed] = useState(false);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
   });
+  // The track carries a handover zone after the last stone; progress covers only the stones.
+  const { progress, handover } = useHandover(scrollYProgress, STOPS * VH_PER_STOP);
   // useReducedMotion reads null on the server, so the static export always
   // contains the track. Swap to the Work grid only after hydration.
   useEffect(() => setMounted(true), []);
@@ -56,26 +61,27 @@ export function Stones() {
     const el = trackRef.current;
     if (!el) return;
     const trackTop = el.getBoundingClientRect().top + window.scrollY;
-    const scrollable = el.offsetHeight - window.innerHeight;
+    const base = STOPS * VH_PER_STOP;
+    const scrollable = (el.offsetHeight * base) / (base + HANDOVER_VH) - window.innerHeight;
     window.scrollTo({ top: trackTop + scrollable * ((i + 1) * STOP + STOP * 0.4), behavior: "smooth" });
   };
 
   return (
-    <section id="work" aria-label="Selected work">
-      <div ref={trackRef} className="relative" style={{ height: `${STOPS * VH_PER_STOP}vh` }}>
-        <div className="sticky top-0 h-[100dvh] overflow-hidden bg-surface">
-          <StoneVideo progress={scrollYProgress} />
+    <section ref={sectionRef} id="work" aria-label="Selected work" className="relative -mb-[100dvh]" style={{ zIndex: Z.work }}>
+      <div ref={trackRef} className="relative" style={{ height: `${STOPS * VH_PER_STOP + HANDOVER_VH}vh` }}>
+        <StackViewport sectionRef={sectionRef} handover={handover}>
+          <StoneVideo progress={progress} />
           <div className="absolute inset-0">
             <WebGLBoundary defer margin="150%" onFail={() => setGlFailed(true)} placeholderClassName="h-full w-full">
-              <Gauntlet progress={scrollYProgress} />
+              <Gauntlet progress={progress} />
             </WebGLBoundary>
           </div>
-          <Intro progress={scrollYProgress} />
+          <Intro progress={progress} />
           {stones.map((stone, i) => (
-            <StoneCard key={stone.id} stone={stone} index={i} progress={scrollYProgress} onOpen={setOpenSlug} />
+            <StoneCard key={stone.id} stone={stone} index={i} progress={progress} onOpen={setOpenSlug} />
           ))}
-          <StoneRail progress={scrollYProgress} onJump={scrollToStop} />
-        </div>
+          <StoneRail progress={progress} onJump={scrollToStop} />
+        </StackViewport>
       </div>
       <AnimatePresence>
         {open && <ProjectSheet project={open} onClose={() => setOpenSlug(null)} />}
