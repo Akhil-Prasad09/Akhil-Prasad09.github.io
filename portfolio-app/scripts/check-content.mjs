@@ -18,25 +18,25 @@ for (const p of projects) {
 }
 
 // Six stones, six stops plus the intro. Each stone names a real project and a
-// real mesh in the gauntlet GLB, and that mesh's material is named after the
-// stone (the modeler's naming is the source of truth for which socket is which).
-// The GLB is read as raw bytes: a .glb is a 12-byte header, then a JSON chunk
-// (4-byte length, 4-byte type, payload). No three.js needed at check time.
+// socket that lies inside the gauntlet mesh, whose bounds are read from the
+// POSITION accessor's min/max (present even with Draco compression). The GLB
+// is read as raw bytes: a .glb is a 12-byte header, then a JSON chunk whose
+// length sits at byte 12 and whose payload starts at byte 20.
 assert(stones.length === 6, "6 stones");
 assert(STOPS === stones.length + 1, "STOPS is stones + intro");
-assert(new Set(stones.map(s => s.mesh)).size === stones.length, "unique stone meshes");
+assert(new Set(stones.map(s => s.socket.join(","))).size === stones.length, "unique stone sockets");
 const glb = readFileSync("public/models/gauntlet.glb");
 const gltf = JSON.parse(glb.subarray(20, 20 + glb.readUInt32LE(12)).toString("utf8"));
-const materialOf = new Map(
-  gltf.nodes
-    .filter(n => n.mesh !== undefined)
-    .map(n => [n.name, gltf.materials[gltf.meshes[n.mesh].primitives[0].material].name]),
-);
+const posAccessor = gltf.accessors[gltf.meshes[0].primitives[0].attributes.POSITION];
+assert(posAccessor?.min && posAccessor?.max, "gauntlet.glb POSITION accessor has bounds");
 for (const s of stones) {
-  assert(projects.some(p => p.slug === s.slug), `stone ${s.id}: no project with slug ${s.slug}`);
-  assert(materialOf.has(s.mesh), `stone ${s.id}: no mesh ${s.mesh} in gauntlet.glb`);
-  assert(materialOf.get(s.mesh).startsWith(s.id), `stone ${s.id}: mesh ${s.mesh} has material ${materialOf.get(s.mesh)}`);
-  assert(/^#[0-9A-Fa-f]{6}$/.test(s.hex), `stone ${s.id}: hex ${s.hex}`);
+  assert(projects.some(p => p.slug === s.slug), `stone ${s.id}: no project ${s.slug}`);
+  s.socket.forEach((v, k) => {
+    assert(v >= posAccessor.min[k] - 0.05 && v <= posAccessor.max[k] + 0.05, `stone ${s.id}: socket ${k} outside the mesh`);
+  });
+  assert(Math.abs(Math.hypot(...s.normal) - 1) < 0.02, `stone ${s.id}: normal is not unit length`);
+  assert(s.radius > 0.02 && s.radius < 0.2, `stone ${s.id}: implausible radius`);
+  assert(/^#[0-9A-Fa-f]{6}$/.test(s.hex), `stone ${s.id}: bad hex`);
 }
 
 const banned = /[—–]/;

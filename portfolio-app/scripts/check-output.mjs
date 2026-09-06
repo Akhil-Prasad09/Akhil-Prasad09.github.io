@@ -38,7 +38,7 @@ for (const p of projects.filter((p) => shown.has(p.slug))) {
   assert(markup.includes(p.title), `project missing: ${p.title}`);
 }
 assert(markup.includes("Six stones. Six proofs of work."), "stones intro headline missing");
-assert(markup.includes("Xorrrupted"), "gauntlet CC-BY credit missing from footer");
+assert(markup.includes("gothic404"), "gauntlet CC-BY credit missing from footer");
 for (const c of certifications) assert(markup.includes(c.name), `certification missing: ${c.name}`);
 for (const r of roles) assert(markup.includes(r.org), `role missing: ${r.org}`);
 for (const e of education) assert(markup.includes(e.school), `education missing: ${e.school}`);

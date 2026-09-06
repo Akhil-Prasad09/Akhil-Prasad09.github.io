@@ -13,9 +13,9 @@ Replace the `Work` bento grid with a pinned, scroll-scrubbed "six stones" sequen
 |---|---|
 | Scope | Projects section only. `Work` grid becomes the reduced-motion / no-WebGL fallback and is otherwise unmounted |
 | Scroll engine | `motion/react` `useScroll` on a sticky pinned track, same pattern as `Journey.tsx`. No GSAP on this section |
-| 3D | One R3F canvas inside the existing `WebGLBoundary` with `defer`. Never more than one GL context for this section |
-| Model | `public/models/gauntlet.glb` (580 KB, Draco, ~120k tris). Source: "Infinity Gauntlet" by Xorrrupted on Sketchfab, CC-BY-4.0. Credit line in Footer, full text in `public/models/LICENSE-gauntlet.txt` |
-| Stones | The GLB's six stone meshes, moved individually. No procedural gem geometry needed |
+| 3D | One R3F canvas inside the existing `WebGLBoundary` with `defer`. Never more than one GL context for this section. Desktop adds an `EffectComposer` with `Bloom` (threshold 1, so only the HDR-emissive gems glow) and ACES tone mapping; phones render plain. Lighting is an owned `Environment` of `Lightformer` panels plus a key light and the stone-coloured rim spot, no CDN HDR |
+| Model | `public/models/gauntlet.glb` (324 KB, Draco + WebP, 33k tris, one baked 2K colour map). Source: "Manopla Infinito 3D Model" by gothic404 on Sketchfab, CC-BY-4.0, re-encoded with gltf-transform and with the mirrored phantom thumb cut out of the mesh. Credit line in Footer, full text in `public/models/LICENSE-gauntlet.txt`. Replaced the untextured Xorrrupted sculpt on 2026-09-06 after the user judged it too crude |
+| Stones | Six procedural cabochon gems (flattened spheres, `MeshPhysicalMaterial` with clearcoat and HDR emissive) placed over the model's painted sockets, plus a dark cap under each so the socket reads empty once the gem lifts. The model is a single mesh, so its own stones cannot move |
 | Background | One Veo clip per stone, dimmed, crossfading with scroll. Dark radial gradient in the stone colour until the clip exists |
 | Projects | Six of the seven in `content.ts`. Green Basket stays in the data file and is not shown |
 | Interaction | Clicking a stone's title opens the existing `ProjectSheet`. No new routes |
@@ -23,20 +23,18 @@ Replace the `Work` bento grid with a pinned, scroll-scrubbed "six stones" sequen
 
 ## Stone mapping
 
-Canonical order from the reference. Mesh names are node names in `gauntlet.glb`. The GLB's materials are named after the stones (`mind`, `power`, `reality.001`, `soul`, `space`, `time`), so the mesh for each stone is the one whose material carries its name; no centroid guessing. `check-content.mjs` asserts this.
+Canonical order from the reference. Socket coordinates are in the gauntlet mesh's local frame (the root node rotates it +90 degrees about X, so local -z is up and local +y faces the camera). They were sampled from the vertices whose texture colour matches each painted stone, and the normal is the mean vertex normal within 5 cm of the socket. `check-content.mjs` asserts each socket lies inside the mesh bounds read from the POSITION accessor.
 
-| # | Stone | Colour | Mesh | Material in GLB | Project slug |
+| # | Stone | Colour | Socket (x, y, z) | Radius | Project slug |
 |---|---|---|---|---|---|
-| 01 | Mind | `#FFD700` | `Object_7` | `mind` | `cag-emotion-tracker` |
-| 02 | Soul | `#FF7A1A` | `Object_10` | `soul` | `dentalbot` |
-| 03 | Reality | `#FF2D2D` | `Object_9` | `reality.001` | `knee-mri-detect` |
-| 04 | Space | `#2D7CFF` | `Object_11` | `space` | `gesture-controller` |
-| 05 | Power | `#A234FF` | `Object_8` | `power` | `ev-apm-agent` |
-| 06 | Time | `#22E07A` | `Object_12` | `time` | `encrypted-chat` |
+| 01 | Mind | `#FFD700` | -0.023, 0.276, -1.082 | 0.085 | `cag-emotion-tracker` |
+| 02 | Soul | `#FF7A1A` | -0.230, 0.160, -1.344 | 0.046 | `dentalbot` |
+| 03 | Reality | `#FF2D2D` | -0.122, 0.223, -1.356 | 0.048 | `knee-mri-detect` |
+| 04 | Space | `#2D7CFF` | 0.060, 0.231, -1.321 | 0.048 | `gesture-controller` |
+| 05 | Power | `#A234FF` | 0.179, 0.202, -1.318 | 0.046 | `ev-apm-agent` |
+| 06 | Time | `#22E07A` | 0.277, -0.115, -0.904 | 0.050 | `encrypted-chat` |
 
-Geometry is baked in world space under a root node rotated -90 degrees about X (the file is Z-up). Stone meshes have no transform of their own, so `Gauntlet.tsx` recentres each stone geometry on its bounding-box centre once at load and moves the mesh instead.
-
-Body meshes `Object_2` through `Object_6` all share the source material `gauntlet` and receive one gold PBR material at load.
+The layout follows the film: Mind on the back of the hand, Soul to Power across the knuckles from the little finger, Time on the thumb.
 
 ## Scroll choreography
 
@@ -76,7 +74,7 @@ All under `portfolio-app/src/`.
 
 ## Assets
 
-Model, in place: `public/models/gauntlet.glb`, `public/models/LICENSE-gauntlet.txt`.
+Model, in place: `public/models/gauntlet.glb`, `public/models/LICENSE-gauntlet.txt`. Source zip was `manopla-infinito-3d-model.zip` from Sketchfab; the phantom left thumb (mesh-local x < -0.31, y < 0.1, -1.46 < z < -0.84) was removed by dropping 1,331 triangles before re-encoding.
 
 Videos, in place: `public/media/stones/<stone>.mp4` plus a first-frame `<stone>.jpg` poster. Generated in Google Flow with Veo 3.1 Fast as smooth oval cabochons (not faceted gems), 720p, 16:9, re-encoded to H.264 with audio stripped, about 20 MB total. Five clips are 8 s; `soul.mp4` is 16 s because the source had a camera move, so it is ping-ponged (forward then reversed) to loop seamlessly. The prompts below are the originals and are superseded by the cabochon versions kept in `data/stones.ts`. Original prompts:
 
