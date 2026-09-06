@@ -13,10 +13,13 @@ import {
   Mesh,
   MeshPhysicalMaterial,
   MeshStandardMaterial,
+  NoColorSpace,
+  PointLight,
   Quaternion,
   RepeatWrapping,
   SpotLight,
   SRGBColorSpace,
+  type Texture,
   Vector3,
 } from "three";
 import { useMotionValueEvent, type MotionValue } from "motion/react";
@@ -61,6 +64,11 @@ const IDLE_FPS = 24;
 
 const scratchQ = new Quaternion();
 const liftLocal = new Vector3();
+const gemWorld = new Vector3();
+// A lifted stone lights the gold around it; emissive alone never does.
+const GLOW_INTENSITY = 10;
+// Bump relief for the engraving, in world units.
+const BUMP_SCALE = 0.004;
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const smooth = (v: number) => {
@@ -78,6 +86,7 @@ export function Gauntlet({ progress }: { progress: MotionValue<number> }) {
   return (
     <Canvas
       frameloop="demand"
+      shadows="percentage"
       dpr={wide ? [1, 1.25] : 1}
       camera={{ position: [0, 0.1, 3.4], fov: 35 }}
       gl={{ antialias: !wide, alpha: true, powerPreference: "low-power" }}
@@ -108,12 +117,70 @@ function Studio() {
         <Lightformer intensity={2} color="#ffffff" position={[1, 2, -4]} scale={[3, 3, 1]} target={[0, 0, 0]} />
       </Environment>
       <ambientLight intensity={0.15} />
-      <directionalLight position={[-3, 4, 4]} intensity={2.2} color="#ffe9c9" />
+      {/* Warm key, soft-shadowed so fingers and knuckles shade each other. */}
+      <directionalLight
+        position={[-3, 4, 4]}
+        intensity={2.2}
+        color="#ffe9c9"
+        castShadow
+        shadow-mapSize={[1024, 1024]}
+        shadow-camera-left={-2.2}
+        shadow-camera-right={2.2}
+        shadow-camera-top={2.6}
+        shadow-camera-bottom={-2.6}
+        shadow-camera-near={0.5}
+        shadow-camera-far={12}
+        shadow-normalBias={0.02}
+        shadow-radius={4}
+      />
     </>
   );
 }
 
 type Placement = { rest: Vector3; orient: Quaternion; color: Color };
+
+/**
+ * The model ships one baked colour map and no roughness or relief. Derive both
+ * from it once: worn high spots (bright) polish smooth, grooves and grime (dark)
+ * stay matte, with grain so the response never reads as a copy of the albedo;
+ * the same luminance drives a small bump so the engraving catches grazing light.
+ */
+function deriveMetalMaps(map: Texture): { roughnessMap: CanvasTexture; bumpMap: CanvasTexture } | null {
+  const img = map.image as ImageBitmap | HTMLImageElement | undefined;
+  if (!img || !img.width) return null;
+  const size = 1024;
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const ctx = c.getContext("2d")!;
+  ctx.drawImage(img, 0, 0, size, size);
+  const src = ctx.getImageData(0, 0, size, size).data;
+  const rough = ctx.createImageData(size, size);
+  const bump = ctx.createImageData(size, size);
+  let seed = 3;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < src.length; i += 4) {
+    const lum = (0.299 * src[i] + 0.587 * src[i + 1] + 0.114 * src[i + 2]) / 255;
+    const r = Math.min(1, Math.max(0, 0.75 - lum * 0.55 + (rnd() - 0.5) * 0.12)) * 255;
+    rough.data[i] = rough.data[i + 1] = rough.data[i + 2] = r;
+    rough.data[i + 3] = 255;
+    const b = lum * 255;
+    bump.data[i] = bump.data[i + 1] = bump.data[i + 2] = b;
+    bump.data[i + 3] = 255;
+  }
+  const make = (data: ImageData) => {
+    const cc = document.createElement("canvas");
+    cc.width = cc.height = size;
+    cc.getContext("2d")!.putImageData(data, 0, 0);
+    const t = new CanvasTexture(cc);
+    t.colorSpace = NoColorSpace;
+    t.flipY = map.flipY; // glTF textures are not flipped; match the colour map's UV convention
+    t.wrapS = map.wrapS;
+    t.wrapT = map.wrapT;
+    t.anisotropy = map.anisotropy;
+    return t;
+  };
+  return { roughnessMap: make(rough), bumpMap: make(bump) };
+}
 
 /**
  * Grayscale stone interior shared by all six gems: a core that glows toward the
@@ -165,6 +232,7 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
   const group = useRef<Group>(null);
   const gemRoot = useRef<Group>(null);
   const rim = useRef<SpotLight>(null);
+  const glow = useRef<PointLight>(null);
   const gems = useRef<(Mesh | null)[]>([]);
   const rimColor = useMemo(() => new Color(), []);
   const gemMap = useMemo(makeGemTexture, []);
@@ -190,16 +258,29 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
     };
   }, [canvas, invalidate]);
 
-  // The model ships a baked colour map and no roughness data; give the paint a
-  // metal response so the environment reads on it. Idempotent across remounts.
+  // Give the baked paint a real metal response: derived roughness and bump maps
+  // (once; the cached scene keeps them across remounts), and shadows both ways.
   useMemo(() => {
     scene.traverse((o) => {
       const m = o as Mesh;
       if (!m.isMesh) return;
+      m.castShadow = true;
+      m.receiveShadow = true;
       const mat = m.material as MeshStandardMaterial;
-      mat.metalness = 0.85;
-      mat.roughness = 0.5;
+      mat.metalness = 0.9;
       mat.envMapIntensity = 1;
+      if (!mat.roughnessMap && mat.map) {
+        const maps = deriveMetalMaps(mat.map);
+        if (maps) {
+          mat.roughnessMap = maps.roughnessMap;
+          mat.roughness = 1; // the map carries the value
+          mat.bumpMap = maps.bumpMap;
+          mat.bumpScale = BUMP_SCALE;
+          mat.needsUpdate = true;
+        } else {
+          mat.roughness = 0.5;
+        }
+      }
     });
   }, [scene]);
 
@@ -268,11 +349,23 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
       if (active >= 0) rimColor.lerp(placements[active].color, activeLift);
       rim.current.color.copy(rimColor);
     }
+    if (glow.current) {
+      const gem = active >= 0 ? gems.current[active] : null;
+      if (gem) {
+        gem.getWorldPosition(gemWorld);
+        glow.current.position.copy(gemWorld);
+        glow.current.color.copy(placements[active].color);
+        glow.current.intensity = GLOW_INTENSITY * activeLift;
+      } else {
+        glow.current.intensity = 0;
+      }
+    }
   });
 
   return (
     <>
       <spotLight ref={rim} position={[-2.5, 2, 2.5]} intensity={60} angle={0.6} penumbra={0.8} decay={1.5} />
+      <pointLight ref={glow} intensity={0} distance={2.5} decay={2} />
       <group ref={group} scale={MODEL_SCALE}>
         <group position={[0, MODEL_CENTRE_Y, 0]}>
           <primitive object={scene} />
@@ -283,15 +376,19 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
                 {/* Bezel cup: a shallow metal dish above the paint with a lip, so the socket
                     has shading and depth once the gem leaves, plus a faint residual glow. */}
                 <group position={s.socket} quaternion={placements[i].orient}>
-                  <mesh position={[0, s.radius * (CUP_DEPTH + CUP_FLOOR), 0]} scale={[s.radius * CUP_RADIUS, -s.radius * CUP_DEPTH, s.radius * CUP_RADIUS]}>
+                  <mesh
+                    receiveShadow
+                    position={[0, s.radius * (CUP_DEPTH + CUP_FLOOR), 0]}
+                    scale={[s.radius * CUP_RADIUS, -s.radius * CUP_DEPTH, s.radius * CUP_RADIUS]}
+                  >
                     <sphereGeometry args={[1, 32, 12, 0, Math.PI * 2, 0, Math.PI / 2]} />
                     <meshStandardMaterial
                       color="#1a1006"
-                      metalness={0.5}
-                      roughness={0.6}
+                      metalness={0.2}
+                      roughness={0.85}
                       emissive={s.hex}
                       emissiveIntensity={0.18}
-                      envMapIntensity={0.6}
+                      envMapIntensity={0.4}
                       side={DoubleSide}
                     />
                   </mesh>
@@ -304,6 +401,7 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
                   ref={(el) => {
                     gems.current[i] = el;
                   }}
+                  castShadow
                   position={placements[i].rest}
                   quaternion={placements[i].orient}
                   scale={[1, GEM_FLATTEN, 1]}
@@ -317,11 +415,11 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
                     emissiveIntensity={EMISSIVE_DIM}
                     roughness={0.08}
                     metalness={0}
-                    clearcoat={1}
-                    clearcoatRoughness={0.04}
+                    clearcoat={0.8}
+                    clearcoatRoughness={0.06}
                     ior={2.0}
-                    specularIntensity={1}
-                    envMapIntensity={1.8}
+                    specularIntensity={0.8}
+                    envMapIntensity={1.0}
                   />
                 </mesh>
               </group>
