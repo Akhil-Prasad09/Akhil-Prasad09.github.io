@@ -66,7 +66,7 @@ export function Stones() {
         <div className="sticky top-0 h-[100dvh] overflow-hidden bg-surface">
           <StoneVideo progress={scrollYProgress} />
           <div className="absolute inset-0">
-            <WebGLBoundary defer onFail={() => setGlFailed(true)} placeholderClassName="h-full w-full">
+            <WebGLBoundary defer margin="150%" onFail={() => setGlFailed(true)} placeholderClassName="h-full w-full">
               <Gauntlet progress={scrollYProgress} />
             </WebGLBoundary>
           </div>

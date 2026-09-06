@@ -37,7 +37,9 @@ class Catch extends Component<Fallback, { failed: boolean }> {
  * from first paint, which is pure blocking time when it is three screens down
  * and nobody can see it. While deferred the wrapper renders the same fallback
  * inside a placeholder box, so `placeholderClassName` has to reproduce the
- * canvas's own footprint or the observer gets a zero-area target.
+ * canvas's own footprint or the observer gets a zero-area target. `margin` is
+ * the IntersectionObserver rootMargin: raise it for a canvas whose remount is
+ * expensive enough to show as blank frames when the visitor scrolls back.
  */
 export function WebGLBoundary({
   children,
@@ -45,7 +47,8 @@ export function WebGLBoundary({
   onFail,
   defer = false,
   placeholderClassName,
-}: Fallback & { defer?: boolean; placeholderClassName?: string }) {
+  margin = "300px",
+}: Fallback & { defer?: boolean; placeholderClassName?: string; margin?: string }) {
   const anchorRef = useRef<HTMLSpanElement>(null);
   const [near, setNear] = useState(!defer);
 
@@ -68,11 +71,11 @@ export function WebGLBoundary({
       ([entry]) => {
         setNear(entry.isIntersecting);
       },
-      { rootMargin: "300px" },
+      { rootMargin: margin },
     );
     io.observe(target);
     return () => io.disconnect();
-  }, []);
+  }, [margin]);
 
   return (
     <>

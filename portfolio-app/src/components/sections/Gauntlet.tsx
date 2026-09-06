@@ -169,13 +169,26 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
   const rimColor = useMemo(() => new Color(), []);
   const gemMap = useMemo(makeGemTexture, []);
 
-  // Demand rendering: a scroll change redraws at once, the idle sway ticks at IDLE_FPS.
+  // Demand rendering: a scroll change redraws at once, the idle sway ticks at
+  // IDLE_FPS, and only while the canvas is actually on screen. The boundary keeps
+  // the canvas mounted well past the section so scrolling back never rebuilds it.
   const invalidate = useThree((state) => state.invalidate);
+  const canvas = useThree((state) => state.gl.domElement);
   useMotionValueEvent(progress, "change", () => invalidate());
   useEffect(() => {
-    const id = window.setInterval(invalidate, 1000 / IDLE_FPS);
-    return () => window.clearInterval(id);
-  }, [invalidate]);
+    let visible = true;
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    io.observe(canvas);
+    const id = window.setInterval(() => {
+      if (visible) invalidate();
+    }, 1000 / IDLE_FPS);
+    return () => {
+      window.clearInterval(id);
+      io.disconnect();
+    };
+  }, [canvas, invalidate]);
 
   // The model ships a baked colour map and no roughness data; give the paint a
   // metal response so the environment reads on it. Idempotent across remounts.
