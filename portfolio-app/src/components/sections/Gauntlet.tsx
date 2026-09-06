@@ -6,6 +6,7 @@ import { Environment, Lightformer, useGLTF } from "@react-three/drei";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
 import {
+  BufferAttribute,
   CanvasTexture,
   Color,
   DoubleSide,
@@ -17,6 +18,7 @@ import {
   PointLight,
   Quaternion,
   RepeatWrapping,
+  SphereGeometry,
   SpotLight,
   SRGBColorSpace,
   type Texture,
@@ -52,8 +54,10 @@ const MODEL_CENTRE_Y = -0.88;
 const GEM_FLATTEN = 0.55;
 const GEM_SEAT = 0.03;
 // Bezel cup around each socket: lip radius and depth as fractions of the gem radius.
-const CUP_RADIUS = 1.15;
+const CUP_RADIUS = 1.22;
 const CUP_DEPTH = 0.3;
+// Irregular cabochon: fraction of the radius the seeded displacement may push.
+const STONE_WOBBLE = 0.12;
 // Lift the cup floor off the painted surface so it covers the paint instead of z-fighting it.
 const CUP_FLOOR = 0.05;
 const MODEL_SCALE = 1.3;
@@ -138,6 +142,34 @@ function Studio() {
 }
 
 type Placement = { rest: Vector3; orient: Quaternion; color: Color };
+
+/**
+ * A stone is never a perfect ellipsoid. Push each sphere vertex along its own
+ * direction by a few seeded low-frequency waves so every gem has its own pebble
+ * silhouette; duplicated seam and pole vertices share a direction, so they move
+ * together and the surface stays closed.
+ */
+function makeStoneGeometry(radius: number, seed: number): SphereGeometry {
+  const geo = new SphereGeometry(radius, 48, 32);
+  const pos = geo.attributes.position as BufferAttribute;
+  const v = new Vector3();
+  const n = new Vector3();
+  const f = [1.7, 2.9, 4.3].map((k, i) => k + ((seed * 7 + i) % 5) * 0.13);
+  const ph = [0, 1, 2].map((i) => (((seed * 31 + i * 17) % 97) / 97) * Math.PI * 2);
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i);
+    n.copy(v).normalize();
+    const w =
+      0.55 * Math.sin(f[0] * n.x + ph[0]) * Math.cos(f[1] * n.y + ph[1]) +
+      0.35 * Math.sin(f[2] * n.z + f[0] * n.y + ph[2]) +
+      0.25 * Math.cos(f[1] * n.x * n.z * 3 + ph[0]);
+    v.multiplyScalar(1 + STONE_WOBBLE * w);
+    pos.setXYZ(i, v.x, v.y, v.z);
+  }
+  pos.needsUpdate = true;
+  geo.computeVertexNormals();
+  return geo;
+}
 
 /**
  * The model ships one baked colour map and no roughness or relief. Derive both
@@ -236,6 +268,8 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
   const gems = useRef<(Mesh | null)[]>([]);
   const rimColor = useMemo(() => new Color(), []);
   const gemMap = useMemo(makeGemTexture, []);
+  const stoneGeometries = useMemo(() => stones.map((s, i) => makeStoneGeometry(s.radius, i + 1)), []);
+  useEffect(() => () => stoneGeometries.forEach((g) => g.dispose()), [stoneGeometries]);
 
   // Demand rendering: a scroll change redraws at once, the idle sway ticks at
   // IDLE_FPS, and only while the canvas is actually on screen. The boundary keeps
@@ -392,9 +426,15 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
                       side={DoubleSide}
                     />
                   </mesh>
-                  <mesh position={[0, s.radius * (CUP_DEPTH + CUP_FLOOR), 0]} rotation={[Math.PI / 2, 0, 0]} scale={s.radius * CUP_RADIUS}>
-                    <torusGeometry args={[1, 0.07, 12, 48]} />
-                    <meshStandardMaterial color="#6b4a1c" metalness={1} roughness={0.35} envMapIntensity={1.4} />
+                  {/* Seated collar: a flattened ring resting on the paint, not at rim height. */}
+                  <mesh
+                    receiveShadow
+                    position={[0, s.radius * 0.08, 0]}
+                    rotation={[Math.PI / 2, 0, 0]}
+                    scale={[s.radius * CUP_RADIUS, s.radius * CUP_RADIUS, s.radius * CUP_RADIUS * 0.45]}
+                  >
+                    <torusGeometry args={[1, 0.14, 12, 48]} />
+                    <meshStandardMaterial color="#6b4a1c" metalness={1} roughness={0.38} envMapIntensity={1.2} />
                   </mesh>
                 </group>
                 <mesh
@@ -405,8 +445,8 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
                   position={placements[i].rest}
                   quaternion={placements[i].orient}
                   scale={[1, GEM_FLATTEN, 1]}
+                  geometry={stoneGeometries[i]}
                 >
-                  <sphereGeometry args={[s.radius, 48, 32]} />
                   <meshPhysicalMaterial
                     map={gemMap}
                     emissiveMap={gemMap}
