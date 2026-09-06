@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, useGLTF } from "@react-three/drei";
 import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
@@ -19,7 +19,7 @@ import {
   SRGBColorSpace,
   Vector3,
 } from "three";
-import type { MotionValue } from "motion/react";
+import { useMotionValueEvent, type MotionValue } from "motion/react";
 import { stones, STOPS } from "@/data/stones";
 
 const MODEL = "/models/gauntlet.glb";
@@ -55,6 +55,9 @@ const CUP_DEPTH = 0.3;
 const CUP_FLOOR = 0.05;
 const MODEL_SCALE = 1.3;
 const UP = new Vector3(0, 1, 0);
+// Idle redraw rate. Scrolling invalidates immediately; between scrolls only the slow
+// tumble and bob move, and 24 fps is plenty for them while costing a fraction of 60.
+const IDLE_FPS = 24;
 
 const scratchQ = new Quaternion();
 const liftLocal = new Vector3();
@@ -74,9 +77,10 @@ export function Gauntlet({ progress }: { progress: MotionValue<number> }) {
   const [wide] = useState(() => window.matchMedia("(min-width: 768px)").matches);
   return (
     <Canvas
-      dpr={wide ? [1, 1.5] : 1}
+      frameloop="demand"
+      dpr={wide ? [1, 1.25] : 1}
       camera={{ position: [0, 0.1, 3.4], fov: 35 }}
-      gl={{ antialias: !wide, alpha: true }}
+      gl={{ antialias: !wide, alpha: true, powerPreference: "low-power" }}
       className="h-full w-full"
     >
       <Suspense fallback={null}>
@@ -84,7 +88,7 @@ export function Gauntlet({ progress }: { progress: MotionValue<number> }) {
         <Rig progress={progress} />
       </Suspense>
       {wide && (
-        <EffectComposer multisampling={4}>
+        <EffectComposer multisampling={2}>
           <Bloom luminanceThreshold={1} luminanceSmoothing={0.25} intensity={0.7} radius={0.5} mipmapBlur />
           <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
         </EffectComposer>
@@ -97,7 +101,7 @@ export function Gauntlet({ progress }: { progress: MotionValue<number> }) {
 function Studio() {
   return (
     <>
-      <Environment resolution={256} frames={1}>
+      <Environment resolution={128} frames={1}>
         <Lightformer intensity={4} color="#ffe2b8" position={[-3, 3, 3]} scale={[4, 3, 1]} target={[0, 0, 0]} />
         <Lightformer intensity={1.2} color="#a9c8ff" position={[4, 0.5, 2]} scale={[2, 4, 1]} target={[0, 0, 0]} />
         <Lightformer intensity={0.5} color="#ffd1a0" position={[0, -3, 2]} scale={[6, 2, 1]} target={[0, 0, 0]} />
@@ -164,6 +168,14 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
   const gems = useRef<(Mesh | null)[]>([]);
   const rimColor = useMemo(() => new Color(), []);
   const gemMap = useMemo(makeGemTexture, []);
+
+  // Demand rendering: a scroll change redraws at once, the idle sway ticks at IDLE_FPS.
+  const invalidate = useThree((state) => state.invalidate);
+  useMotionValueEvent(progress, "change", () => invalidate());
+  useEffect(() => {
+    const id = window.setInterval(invalidate, 1000 / IDLE_FPS);
+    return () => window.clearInterval(id);
+  }, [invalidate]);
 
   // The model ships a baked colour map and no roughness data; give the paint a
   // metal response so the environment reads on it. Idempotent across remounts.
