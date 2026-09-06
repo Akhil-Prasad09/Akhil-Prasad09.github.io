@@ -24,7 +24,7 @@ const MODEL = "/models/gauntlet.glb";
 const GROUP_POS = new Vector3(0.7, -0.15, 0); // fist sits centre-right of the viewport
 const ENTER_FROM_Y = -2.6; // intro: gauntlet rises from below
 const ROT_X_START = -0.9; // knuckles tilted toward the viewer, fist low
-const ROT_Y_SWEEP = 0.4; // slow turn across the whole section
+const ROT_Y_SWEEP = 1.3; // turn across the whole section, ending with the thumb toward the viewer
 const TUMBLE = 0.03; // idle wobble amplitude, radians
 // Stone offset at full lift, in world space (the camera looks down -z from +z):
 // -x toward the text, +z toward the viewer. Converted into the gem frame per
