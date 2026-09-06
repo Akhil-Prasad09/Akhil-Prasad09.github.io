@@ -58,6 +58,12 @@ const CUP_RADIUS = 1.22;
 const CUP_DEPTH = 0.3;
 // Irregular cabochon: fraction of the radius the seeded displacement may push.
 const STONE_WOBBLE = 0.12;
+// Prong setting: count, lean toward the stone (radians), and residual energy in an emptied cup.
+const PRONGS = 6;
+const PRONG_TILT = 0.95;
+const CUP_GLOW_REST = 0.15;
+const CUP_GLOW_EMPTY = 1.1;
+const PRONG_AXIS = new Vector3();
 // Lift the cup floor off the painted surface so it covers the paint instead of z-fighting it.
 const CUP_FLOOR = 0.05;
 const MODEL_SCALE = 1.3;
@@ -269,6 +275,17 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
   const rimColor = useMemo(() => new Color(), []);
   const gemMap = useMemo(makeGemTexture, []);
   const stoneGeometries = useMemo(() => stones.map((s, i) => makeStoneGeometry(s.radius, i + 1)), []);
+  const cupMaterials = useRef<(MeshStandardMaterial | null)[]>([]);
+  // Prong placement around the collar, leaning inward over the stone.
+  const prongs = useMemo(
+    () =>
+      Array.from({ length: PRONGS }, (_, k) => {
+        const a = (k / PRONGS) * Math.PI * 2 + 0.35;
+        const q = new Quaternion().setFromAxisAngle(PRONG_AXIS.set(-Math.sin(a), 0, Math.cos(a)).normalize(), -PRONG_TILT);
+        return { x: Math.cos(a), z: Math.sin(a), q };
+      }),
+    [],
+  );
   useEffect(() => () => stoneGeometries.forEach((g) => g.dispose()), [stoneGeometries]);
 
   // Demand rendering: a scroll change redraws at once, the idle sway ticks at
@@ -371,6 +388,8 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
       mesh.scale.set(k, k * GEM_FLATTEN, k);
       const base = claimed ? EMISSIVE_CLAIMED : EMISSIVE_DIM;
       (mesh.material as MeshPhysicalMaterial).emissiveIntensity = base + (EMISSIVE_LIFT - base) * lift;
+      const cup = cupMaterials.current[i];
+      if (cup) cup.emissiveIntensity = CUP_GLOW_REST + (CUP_GLOW_EMPTY - CUP_GLOW_REST) * lift;
 
       if (lift > activeLift) {
         activeLift = lift;
@@ -417,11 +436,14 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
                   >
                     <sphereGeometry args={[1, 32, 12, 0, Math.PI * 2, 0, Math.PI / 2]} />
                     <meshStandardMaterial
+                      ref={(m) => {
+                        cupMaterials.current[i] = m;
+                      }}
                       color="#1a1006"
                       metalness={0.2}
                       roughness={0.85}
                       emissive={s.hex}
-                      emissiveIntensity={0.18}
+                      emissiveIntensity={CUP_GLOW_REST}
                       envMapIntensity={0.4}
                       side={DoubleSide}
                     />
@@ -436,6 +458,27 @@ function Rig({ progress }: { progress: MotionValue<number> }) {
                     <torusGeometry args={[1, 0.14, 12, 48]} />
                     <meshStandardMaterial color="#6b4a1c" metalness={1} roughness={0.38} envMapIntensity={1.2} />
                   </mesh>
+                  {/* Inner rim at the cup mouth, brighter and thinner than the collar. */}
+                  <mesh
+                    position={[0, s.radius * (CUP_DEPTH + CUP_FLOOR), 0]}
+                    rotation={[Math.PI / 2, 0, 0]}
+                    scale={[s.radius * CUP_RADIUS * 0.98, s.radius * CUP_RADIUS * 0.98, s.radius * CUP_RADIUS * 0.5]}
+                  >
+                    <torusGeometry args={[1, 0.06, 10, 48]} />
+                    <meshStandardMaterial color="#c9a04a" metalness={1} roughness={0.25} envMapIntensity={1.4} />
+                  </mesh>
+                  {/* Six tapered prongs leaning over the stone, the setting that holds it. */}
+                  {prongs.map((pr, k) => (
+                    <mesh
+                      key={k}
+                      castShadow
+                      position={[pr.x * s.radius * CUP_RADIUS * 0.8, s.radius * 0.36, pr.z * s.radius * CUP_RADIUS * 0.8]}
+                      quaternion={pr.q}
+                    >
+                      <coneGeometry args={[s.radius * 0.2, s.radius * 0.55, 8]} />
+                      <meshStandardMaterial color="#b8903e" metalness={1} roughness={0.3} envMapIntensity={1.3} />
+                    </mesh>
+                  ))}
                 </group>
                 <mesh
                   ref={(el) => {
