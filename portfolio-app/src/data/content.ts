@@ -30,9 +30,9 @@ export const profile = {
 };
 
 export const stats: Stat[] = [
-  { label: "FER-2013 accuracy", value: 66.5, suffix: "%", decimals: 1 },
-  { label: "inference latency", value: 5, suffix: "ms", decimals: 0 },
-  { label: "benchmark tasks shipped", value: 40, suffix: "+" },
+  { label: "FER-2013 accuracy", value: 70.6, suffix: "%", decimals: 1 },
+  { label: "inference latency", value: 8, suffix: "ms", decimals: 0 },
+  { label: "benchmark tasks shipped", value: 100, suffix: "+" },
   { label: "stations analyzed", value: 39, suffix: "" },
   { label: "CGPA", value: 8.64, suffix: "", decimals: 2 },
 ];
@@ -84,12 +84,12 @@ export const projects: Project[] = [
     tagline: "Attention-guided emotion recognition at webcam speed",
     tags: ["PyTorch", "OpenCV", "Streamlit"],
     metrics: [
-      { label: "Accuracy", value: "66.5% on FER-2013" },
-      { label: "Latency", value: "about 5ms per frame" },
+      { label: "Accuracy", value: "70.6% on FER-2013" },
+      { label: "Latency", value: "about 8ms per frame" },
     ],
     body: [
-      "A 1.3M-parameter CNN with squeeze-and-excitation attention, trained on FER-2013 to 66.5% test accuracy across seven emotion classes, close to human agreement on the dataset and well ahead of the 38% hand-crafted-feature baseline.",
-      "Classification is a cache-augmented lookup: one matrix multiply against in-memory per-class prototype embeddings, holding the full webcam pipeline at about 5ms per frame on CPU. Led a 3-person team through delivery.",
+      "A 5M-parameter CNN with squeeze-and-excitation attention, trained on FER-2013 to 70.6% test accuracy across seven emotion classes, above human agreement on the dataset (about 65%) and well ahead of the 38% hand-crafted-feature baseline.",
+      "Classification is a cache-augmented lookup: one matrix multiply against in-memory per-class prototype embeddings, holding the full webcam pipeline at about 8ms per frame on CPU. Led a 3-person team through delivery.",
     ],
     media: [{ kind: "poster", src: "/media/emotion.webp", alt: "Emotion class activation poster" }],
     links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/cag-emotion-tracker" }],
@@ -162,7 +162,7 @@ export const roles: Role[] = [
     org: "Handshake AI", title: "Freelance AI Trainer",
     period: "Jul 2026 - Present", location: "Remote",
     points: [
-      "Authors terminal-based benchmark tasks used to evaluate frontier AI coding agents: 40+ tasks across 7 domains.",
+      "Authors terminal-based benchmark tasks used to evaluate frontier AI coding agents: 100+ tasks across 10 domains.",
       "Ships each task as a reproducible package: spec, Dockerised environment, automated verifier, and reference solution.",
     ],
   },
