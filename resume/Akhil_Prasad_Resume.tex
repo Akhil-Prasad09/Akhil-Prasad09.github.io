@@ -1,0 +1,173 @@
+% Build: tectonic Akhil_Prasad_Resume.tex   (then copy the PDF to portfolio-app/public/)
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage[T1]{fontenc}
+
+\pagestyle{empty}
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{\vspace{-4pt}\scshape\raggedright\large}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\newcommand{\resumeItem}[1]{\item\small{#1 \vspace{-2pt}}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[label=--]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge Akhil Prasad Chinthala} \\ \vspace{1pt}
+    \small AI / ML Engineer $|$ LLM \& Computer Vision Systems \\ \vspace{1pt}
+    \small +91 94125 79999 $|$ \href{mailto:prasadakhil0909@gmail.com}{prasadakhil0909@gmail.com} $|$
+    \href{https://github.com/Akhil-Prasad09}{github.com/Akhil-Prasad09} $|$
+    \href{https://akhil-prasad09.github.io}{Portfolio} $|$
+    \href{https://www.linkedin.com/in/akhil-prasad-972043289/}{LinkedIn} $|$ Hyderabad, India
+\end{center}
+
+\section{Summary}
+\small{Final-year IT student (CGPA 8.64) shipping LLM-powered features as an AI Engineering Intern at AMIK Technologies and
+authoring agentic coding benchmarks for frontier-model evaluation as a freelance AI trainer at Handshake AI. Hands-on
+across Python backend and applied AI: FastAPI model-serving endpoints, retrieval-augmented generation and LLM
+evaluation, and real-time computer vision (CNN emotion recognition at 66.5\% on FER-2013, about 5 ms per frame on CPU). Seeking AI/ML or Python backend engineering roles building production LLM and vision systems.}
+
+\section{Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {AI Engineering Intern}{Apr 2026 -- Present}
+      {AMIK Technologies}{Hyderabad, India}
+      \resumeItemListStart
+        \resumeItem{Build production retrieval-augmented generation (RAG) pipelines over internal documents --- chunking, embedding
+generation, and vector similarity search --- replacing manual lookup with grounded, citation-backed answers.}
+        \resumeItem{Design and version prompt templates with structured outputs and function calling, standardising LLM responses
+into schema-validated JSON consumed directly by downstream services.}
+        \resumeItem{Ship an automated evaluation harness scoring retrieval relevance, answer faithfulness, and latency across model and
+prompt versions --- turning subjective review into regression-tested releases.}
+        \resumeItem{Serve models behind FastAPI endpoints with token streaming, per-request cost logging, and provider fallback for
+resilience under rate limits.}
+        \resumeItem{Reduce inference cost and latency through chunk-size tuning, semantic caching, and context compression; integrate
+features into the live product with the backend team.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Freelance AI Trainer --- Agentic Benchmark Authoring}{Jul 2026 -- Present}
+      {Handshake AI}{Remote}
+      \resumeItemListStart
+        \resumeItem{Author terminal-based benchmark tasks used to evaluate frontier AI coding agents --- 102 tasks delivered across 10
+domains, including systems infrastructure, model-training and ML pipelines, data processing/ETL, databases, and
+interactive simulation.}
+        \resumeItem{Ship each task as a reproducible package --- natural-language specification, Dockerised environment, automated
+test-based verifier, and a working reference solution --- built to clear automated QA gates and human review.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Development Intern --- Python}{Oct 2025 -- Nov 2025}
+      {Oasis Infobyte}{Remote}
+      \resumeItemListStart
+        \resumeItem{Delivered five Python applications on a structured internship track, each specified, built, and demoed
+independently.}
+        \resumeItem{Highlights: a speech-recognition voice assistant that parses spoken intent into system commands, a
+REST-integrated weather CLI, and a multi-client TCP chat server handling concurrent sessions.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+\section{Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/Akhil-Prasad09/cag-emotion-tracker}{CAG Real-Time Emotion Tracker}} $|$ \emph{PyTorch, OpenCV, scikit-learn, Streamlit, Python}}{2024 -- 2026}
+          \resumeItemListStart
+            \resumeItem{Trained a 1.3M-parameter CNN with squeeze-and-excitation attention on FER-2013 to \textbf{66.5\% test accuracy across 7 emotion
+classes} (human agreement $\approx$ 65\%), up from 38\% for the team's hand-crafted-feature baseline.}
+            \resumeItem{Replaced the classifier head with a cache-augmented lookup --- one matrix multiply against in-memory per-class
+prototype embeddings --- holding the full webcam pipeline at \textbf{about 5 ms per frame on CPU}.}
+            \resumeItem{Led a 3-person team from architecture through delivery; shipped a Streamlit dashboard and presented results to a
+faculty review panel.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Full-Stack Booking Platform with Voice AI Assistant} $|$ \emph{React, Vite, Node.js, Express, Web Speech API}}{2025}
+          \resumeItemListStart
+            \resumeItem{Built an end-to-end web application --- React/Vite frontend backed by an Express REST API --- deployed live in
+production for a real business client (example: a dental clinic), handling genuine customer bookings.}
+            \resumeItem{Integrated a voice-enabled AI assistant (\emph{DentalBot}) that answers the client's service FAQs and converts visitors
+into bookings.}
+            \resumeItem{Automated the full booking workflow: appointment data through the REST API, Google Sheets sync for the
+client's staff, and automated email confirmations.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Hand-Gesture Media Controller} $|$ \emph{MediaPipe, OpenCV, Python, AppleScript}}{2024}
+          \resumeItemListStart
+            \resumeItem{Mapped MediaPipe hand-landmark detection to macOS volume and playback controls for fully touchless media
+operation.}
+            \resumeItem{Sustained \textbf{30 FPS with sub-20 ms gesture-response latency} by optimising the landmark-to-action inference
+loop.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Developer Portfolio} --- \href{https://akhil-prasad09.github.io}{akhil-prasad09.github.io} $|$ \emph{Next.js, React, TypeScript}}{2026}
+          \resumeItemListStart
+            \resumeItem{Built a single-page developer portfolio with animated project, benchmark, and experience showcases, exported
+as a static Next.js site and deployed to GitHub Pages.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/Akhil-Prasad09/Projects}{Green Basket --- E-Commerce Web App}} $|$ \emph{React, JavaScript, CSS3}}{2024}
+          \resumeItemListStart
+            \resumeItem{Responsive grocery storefront built as a React app, with dynamic product filtering, cart state management, and a full
+checkout flow.}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, SQL, JavaScript, Java, C, C++} \\
+     \textbf{LLM \& Generative AI}{: Retrieval-Augmented Generation (RAG), prompt engineering, embeddings \& vector search,
+function calling / structured outputs, LLM evaluation, semantic caching} \\
+     \textbf{Machine Learning \& CV}{: PyTorch, TensorFlow, Scikit-learn, Hugging Face Transformers, OpenCV, MediaPipe,
+NumPy, Pandas, fine-tuning} \\
+     \textbf{Deployment \& Tooling}{: FastAPI, REST APIs, Git \& GitHub, Linux (Ubuntu), model serving, latency \& cost profiling} \\
+     \textbf{Web \& Data}{: React, Vite, Node.js, Express, MySQL, MongoDB, vector databases} \\
+     \textbf{Foundations}{: Deep Learning, Computer Vision, NLP, Data Structures \& Algorithms, Operating Systems, Networks} \\
+     \textbf{Spoken languages}{: Telugu (Native), English (Fluent), Hindi (Conversational)}
+    }}
+ \end{itemize}
+
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading{\textbf{Matrusri Engineering College} --- B.Tech, Information Technology --- CGPA 8.64}{2023 -- 2027}
+    \resumeProjectHeading{\textbf{Sri Chaitanya Junior Kalasala} --- Higher Secondary, Science \& Mathematics --- 93\%}{2023}
+    \resumeProjectHeading{\textbf{The Hyderabad Public School} --- Secondary School --- 89\%}{2021}
+  \resumeSubHeadingListEnd
+
+\end{document}

@@ -30,8 +30,8 @@ export const profile = {
 };
 
 export const stats: Stat[] = [
-  { label: "FER-2013 accuracy", value: 90, suffix: "%+" },
-  { label: "inference latency", value: 50, suffix: "ms", decimals: 0 },
+  { label: "FER-2013 accuracy", value: 66.5, suffix: "%", decimals: 1 },
+  { label: "inference latency", value: 5, suffix: "ms", decimals: 0 },
   { label: "benchmark tasks shipped", value: 40, suffix: "+" },
   { label: "stations analyzed", value: 39, suffix: "" },
   { label: "CGPA", value: 8.64, suffix: "", decimals: 2 },
@@ -82,17 +82,17 @@ export const projects: Project[] = [
     slug: "cag-emotion-tracker", tier: "compact", year: "2025",
     title: "CAG Emotion Tracker",
     tagline: "Attention-guided emotion recognition at webcam speed",
-    tags: ["PyTorch", "InceptionV3", "OpenCV"],
+    tags: ["PyTorch", "OpenCV", "Streamlit"],
     metrics: [
-      { label: "Accuracy", value: "90%+ on FER-2013" },
-      { label: "Latency", value: "under 50ms" },
+      { label: "Accuracy", value: "66.5% on FER-2013" },
+      { label: "Latency", value: "about 5ms per frame" },
     ],
     body: [
-      "Fine-tuned an attention-guided InceptionV3 on FER-2013 to 90%+ across seven emotion classes, well ahead of the baseline CNN.",
-      "A cache-augmented pipeline batches inference and LRU-caches repeated frames, holding end-to-end latency under 50ms on live webcam input. Led a 3-person team through delivery.",
+      "A 1.3M-parameter CNN with squeeze-and-excitation attention, trained on FER-2013 to 66.5% test accuracy across seven emotion classes, close to human agreement on the dataset and well ahead of the 38% hand-crafted-feature baseline.",
+      "Classification is a cache-augmented lookup: one matrix multiply against in-memory per-class prototype embeddings, holding the full webcam pipeline at about 5ms per frame on CPU. Led a 3-person team through delivery.",
     ],
     media: [{ kind: "poster", src: "/media/emotion.webp", alt: "Emotion class activation poster" }],
-    links: [],
+    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/cag-emotion-tracker" }],
   },
   {
     slug: "dentalbot", tier: "compact", year: "2025",
@@ -137,11 +137,11 @@ export const projects: Project[] = [
   {
     slug: "green-basket", tier: "compact", year: "2024",
     title: "Green Basket",
-    tagline: "Vanilla JavaScript storefront with a full checkout flow",
-    tags: ["JavaScript", "HTML5", "CSS3"],
+    tagline: "React grocery storefront with a full checkout flow",
+    tags: ["React", "JavaScript", "CSS3"],
     metrics: [],
     body: [
-      "Responsive grocery storefront in vanilla JavaScript: dynamic filtering, cart state management, and a complete checkout flow, no framework.",
+      "Responsive grocery storefront built as a React app: dynamic product filtering, cart state management, and a complete checkout flow.",
     ],
     media: [{ kind: "poster", src: "/media/greenbasket.webp", alt: "Produce grid poster" }],
     links: [],
