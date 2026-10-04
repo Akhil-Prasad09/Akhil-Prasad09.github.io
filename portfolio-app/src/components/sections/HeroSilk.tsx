@@ -14,7 +14,7 @@ export function HeroSilk() {
       className="pointer-events-none absolute inset-0 z-0 opacity-40"
     >
       <WebGLBoundary>
-        <Silk color="#38bdf8" speed={1.2} scale={1} noiseIntensity={1} rotation={0} />
+        <Silk color="#38bdf8" speed={1.2} scale={1} noiseIntensity={0.06}  /* dither only: stops gradient banding without visible grain */ rotation={0} />
       </WebGLBoundary>
     </div>
   );

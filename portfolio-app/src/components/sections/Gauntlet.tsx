@@ -89,7 +89,8 @@ const smooth = (v: number) => {
 const liftOf = (t: number) => (t < 0.25 ? smooth(t / 0.25) : t < 0.75 ? 1 : smooth((1 - t) / 0.25));
 
 export function Gauntlet({ progress }: { progress: MotionValue<number> }) {
-  // Desktop gets dpr up to 1.5, MSAA through the composer and bloom; phones get
+  // Desktop gets full retina dpr (frameloop is "demand", so it only redraws on scroll),
+  // MSAA through the composer and bloom; phones get
   // dpr 1 and the plain renderer. Safe to read window here: WebGLBoundary
   // defers this component to the client, so it never renders on the server.
   const [wide] = useState(() => window.matchMedia("(min-width: 768px)").matches);
@@ -97,7 +98,7 @@ export function Gauntlet({ progress }: { progress: MotionValue<number> }) {
     <Canvas
       frameloop="demand"
       shadows="percentage"
-      dpr={wide ? [1, 1.25] : 1}
+      dpr={wide ? [1, 2] : 1}
       camera={{ position: [0, 0.1, 3.4], fov: 35 }}
       gl={{ antialias: !wide, alpha: true, powerPreference: "low-power" }}
       className="h-full w-full"

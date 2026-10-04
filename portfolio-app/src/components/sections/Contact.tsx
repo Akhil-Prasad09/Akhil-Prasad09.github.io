@@ -31,7 +31,7 @@ export function Contact() {
             beamHeight={18}
             lightColor="#38bdf8"
             speed={0.9}
-            noiseIntensity={0.9}
+            noiseIntensity={0.06}
             scale={0.18}
             rotation={28}
           />

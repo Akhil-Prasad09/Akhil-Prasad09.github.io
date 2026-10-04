@@ -129,7 +129,7 @@ function WarpTunnel({ progress }: { progress: MotionValue<number> }) {
     const resize = () => {
       w = parent.clientWidth;
       h = parent.clientHeight;
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
