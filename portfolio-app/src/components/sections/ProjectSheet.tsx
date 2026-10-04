@@ -94,6 +94,16 @@ export function ProjectSheet({ project, onClose }: { project: Project; onClose: 
           <div className="mx-auto max-w-3xl px-6 py-10">
             <h3 className="text-3xl tracking-tighter">{project.title}</h3>
             <p className="mt-2 text-ink-dim">{project.tagline}</p>
+            {project.links.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-3">
+                {project.links.map(l => (
+                  <a key={l.href} href={l.href} target="_blank" rel="noreferrer"
+                    className="rounded-full border border-white/15 px-4 py-1.5 text-sm transition-colors hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2">
+                    {l.label} ↗
+                  </a>
+                ))}
+              </div>
+            )}
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {project.metrics.map(m => (
                 <div key={m.label} className="rounded-card border border-white/10 p-4">

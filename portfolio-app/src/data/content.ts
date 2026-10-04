@@ -56,7 +56,7 @@ export const projects: Project[] = [
       { kind: "image", src: "/media/knee-gradcam-acl.png", alt: "Grad-CAM heatmap over a knee MRI slice highlighting the ACL region" },
       { kind: "image", src: "/media/knee-gradcam-meniscus.png", alt: "Grad-CAM heatmap over a knee MRI slice highlighting the meniscus" },
     ],
-    links: [],
+    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/knee-mri-detect" }],
   },
   {
     slug: "ev-apm-agent", tier: "featured", year: "2026",
@@ -92,7 +92,10 @@ export const projects: Project[] = [
       "Classification is a cache-augmented lookup: one matrix multiply against in-memory per-class prototype embeddings, holding the full webcam pipeline at about 8ms per frame on CPU. Led a 3-person team through delivery.",
     ],
     media: [{ kind: "poster", src: "/media/emotion.webp", alt: "Emotion class activation poster" }],
-    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/cag-emotion-tracker" }],
+    links: [
+      { label: "Live demo", href: "https://akhil-prasad09.github.io/cag-emotion-tracker/" },
+      { label: "GitHub", href: "https://github.com/Akhil-Prasad09/cag-emotion-tracker" },
+    ],
   },
   {
     slug: "dentalbot", tier: "compact", year: "2025",
@@ -144,7 +147,7 @@ export const projects: Project[] = [
       "Responsive grocery storefront built as a React app: dynamic product filtering, cart state management, and a complete checkout flow.",
     ],
     media: [{ kind: "poster", src: "/media/greenbasket.webp", alt: "Produce grid poster" }],
-    links: [],
+    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/Projects/tree/main/Green%20Basket" }],
   },
 ];
 
