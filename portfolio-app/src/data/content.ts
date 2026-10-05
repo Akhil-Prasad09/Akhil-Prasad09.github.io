@@ -56,7 +56,7 @@ export const projects: Project[] = [
       { kind: "image", src: "/media/knee-gradcam-acl.png", alt: "Grad-CAM heatmap over a knee MRI slice highlighting the ACL region" },
       { kind: "image", src: "/media/knee-gradcam-meniscus.png", alt: "Grad-CAM heatmap over a knee MRI slice highlighting the meniscus" },
     ],
-    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/knee-mri-detect" }],
+    links: [{ label: "Live demo", href: "https://akhil-prasad09.github.io/knee-mri-detect/" }, { label: "GitHub", href: "https://github.com/Akhil-Prasad09/knee-mri-detect" }],
   },
   {
     slug: "ev-apm-agent", tier: "featured", year: "2026",
@@ -76,7 +76,7 @@ export const projects: Project[] = [
       { kind: "image", src: "/media/ev-architecture.svg", alt: "EV APM Agent two-layer architecture diagram" },
       { kind: "image", src: "/media/ev-fpr-chart.png", alt: "False positive rate chart across detection categories" },
     ],
-    links: [],
+    links: [{ label: "Live demo (synthetic data)", href: "https://akhil-prasad09.github.io/ev-apm-agent-demo/" }, { label: "Team repo", href: "https://github.com/vabhishekprakash/ev-apm-agent" }],
   },
   {
     slug: "rbi-rag-eval", tier: "compact", year: "2026",
@@ -122,25 +122,23 @@ export const projects: Project[] = [
     metrics: [{ label: "Data", value: "Synthetic, for demo" }],
     body: [
       "A full-stack booking web app built for a dental-clinic use case, with a React/Vite frontend on an Express REST API. It runs on synthetic data.",
-      "A voice assistant answers service FAQs and walks visitors through booking an appointment. Each booking syncs to Google Sheets and triggers an email confirmation.",
+      "DentalBot, a rule-based voice assistant, answers service FAQs and can fill in a booking from a sentence like \"book a cleaning tomorrow at 10\". Double bookings and past slots are blocked, and an admin view exports bookings as CSV.",
     ],
     media: [{ kind: "poster", src: "/media/dentalbot.webp", alt: "Voice waveform poster" }],
-    links: [],
+    links: [{ label: "Live demo", href: "https://akhil-prasad09.github.io/clinic-booking-voice/" }, { label: "GitHub", href: "https://github.com/Akhil-Prasad09/clinic-booking-voice" }],
   },
   {
     slug: "gesture-controller", tier: "compact", year: "2024",
     title: "Hand-Gesture Media Controller",
-    tagline: "Touchless macOS media control from hand landmarks",
-    tags: ["MediaPipe", "OpenCV", "AppleScript"],
-    metrics: [
-      { label: "Frame rate", value: "30 FPS" },
-      { label: "Response", value: "under 20ms" },
-    ],
+    tagline: "Control music with hand gestures, right in the browser",
+    tags: ["MediaPipe", "JavaScript", "Web Audio"],
+    metrics: [{ label: "Gestures", value: "Play/pause, volume, skip, mute" }],
     body: [
-      "Maps MediaPipe hand landmarks to macOS volume and playback controls, so you can control media without touching anything. Runs at 30 FPS with gesture response under 20ms.",
+      "Webcam hand tracking with MediaPipe controls a music player: hold an open palm to play or pause, pinch to set the volume, swipe to change tracks, make a fist to mute. Everything runs locally and the page shows its own live frame rate and latency.",
+      "A browser rebuild of my original macOS controller, which drove system volume through AppleScript. The gesture logic is unit-tested on synthetic hand landmarks.",
     ],
     media: [{ kind: "poster", src: "/media/gesture.webp", alt: "Hand landmark constellation poster" }],
-    links: [],
+    links: [{ label: "Live demo", href: "https://akhil-prasad09.github.io/gesture-media-controller/" }, { label: "GitHub", href: "https://github.com/Akhil-Prasad09/gesture-media-controller" }],
   },
   {
     slug: "encrypted-chat", tier: "compact", year: "2026",
@@ -156,22 +154,19 @@ export const projects: Project[] = [
       "Clients pin every contact's key on first use and show Signal-style safety numbers, so a server that swaps in its own key is caught: tests show the client stops encrypting to it and rejects messages it signs. The README states the limits plainly, including no forward secrecy for long-term keys.",
     ],
     media: [{ kind: "poster", src: "/media/chatapp.webp", alt: "Encrypted stream poster" }],
-    links: [
-      { label: "GitHub", href: "https://github.com/Akhil-Prasad09/e2ee-chat" },
-      { label: "Original internship version", href: "https://github.com/Akhil-Prasad09/OIBSP/tree/main/Chat%20Application" },
-    ],
+    links: [{ label: "Live demo", href: "https://akhil-prasad09.github.io/e2ee-chat/" }, { label: "GitHub", href: "https://github.com/Akhil-Prasad09/e2ee-chat" }, { label: "Original internship version", href: "https://github.com/Akhil-Prasad09/OIBSP/tree/main/Chat%20Application" }],
   },
   {
     slug: "green-basket", tier: "compact", year: "2024",
     title: "Green Basket",
-    tagline: "React grocery storefront with a full checkout flow",
+    tagline: "React marketplace demo for handmade products by rural women artisans",
     tags: ["React", "JavaScript", "CSS3"],
     metrics: [],
     body: [
-      "Responsive grocery storefront in React with product filtering, cart state and a complete checkout flow.",
+      "A React marketplace demo with artisan and product listings, a seller dashboard for adding products, an admin panel for approving products and orders, and a mock UPI payment flow. All data is mock data.",
     ],
     media: [{ kind: "poster", src: "/media/greenbasket.webp", alt: "Produce grid poster" }],
-    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/Projects/tree/main/Green%20Basket" }],
+    links: [{ label: "Live demo", href: "https://akhil-prasad09.github.io/Projects/" }, { label: "GitHub", href: "https://github.com/Akhil-Prasad09/Projects/tree/main/Green%20Basket" }],
   },
 ];
 
