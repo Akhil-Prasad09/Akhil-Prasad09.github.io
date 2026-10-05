@@ -117,12 +117,12 @@ export const projects: Project[] = [
   {
     slug: "dentalbot", tier: "compact", year: "2025",
     title: "Booking Platform with Voice AI",
-    tagline: "Live booking product with a voice assistant that converts visitors",
+    tagline: "Clinic booking app with a voice assistant for FAQs and bookings",
     tags: ["React", "Vite", "Express", "Web Speech API"],
-    metrics: [{ label: "Status", value: "Live for a real client" }],
+    metrics: [{ label: "Data", value: "Synthetic, for demo" }],
     body: [
-      "A booking web app that runs in production for a real business client and takes real customer bookings. React/Vite frontend on an Express REST API.",
-      "A voice assistant answers service FAQs and turns visitors into bookings. Each booking syncs to Google Sheets and triggers an email confirmation.",
+      "A full-stack booking web app built for a dental-clinic use case, with a React/Vite frontend on an Express REST API. It runs on synthetic data.",
+      "A voice assistant answers service FAQs and walks visitors through booking an appointment. Each booking syncs to Google Sheets and triggers an email confirmation.",
     ],
     media: [{ kind: "poster", src: "/media/dentalbot.webp", alt: "Voice waveform poster" }],
     links: [],
