@@ -145,14 +145,14 @@ export const projects: Project[] = [
   {
     slug: "encrypted-chat", tier: "compact", year: "2025",
     title: "Encrypted Chat Application",
-    tagline: "End-to-end encrypted desktop chat with a multithreaded server",
-    tags: ["Python", "PyQt5", "Sockets", "SQLite", "AES"],
-    metrics: [{ label: "Encryption", value: "AES end-to-end" }],
+    tagline: "Multi-client desktop chat with encrypted message storage",
+    tags: ["Python", "PyQt5", "Sockets", "SQLite", "Fernet"],
+    metrics: [{ label: "Encryption", value: "Fernet (AES-128) at rest" }],
     body: [
-      "Real-time desktop messaging with end-to-end AES encryption, a multithreaded socket server for concurrent users, persistent SQLite history, and online status tracking behind an animated PyQt5 UI.",
+      "Real-time group chat over a multithreaded socket server, with a PyQt5 client, SQLite history, emoji and desktop notifications. The server encrypts every message with Fernet (AES-128 + HMAC) before storing and broadcasting it, and passwords are salted scrypt hashes. Covered by tests that run a real two-client session.",
     ],
     media: [{ kind: "poster", src: "/media/chatapp.webp", alt: "Encrypted stream poster" }],
-    links: [],
+    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/OIBSP/tree/main/Chat%20Application" }],
   },
   {
     slug: "green-basket", tier: "compact", year: "2024",
