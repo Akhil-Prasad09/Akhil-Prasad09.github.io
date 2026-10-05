@@ -12,7 +12,7 @@ const dir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(dir, "..");
 const page = path.join(root, "src/components/media/posters/index.html");
 const outDir = path.join(root, "public/media");
-const ALL = ["emotion", "dentalbot", "gesture", "chatapp", "greenbasket"];
+const ALL = ["emotion", "dentalbot", "gesture", "chatapp", "greenbasket", "rag"];
 const slugs = process.argv.slice(2).length ? process.argv.slice(2) : ALL;
 
 const CHROME =

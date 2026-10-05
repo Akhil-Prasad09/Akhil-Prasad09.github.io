@@ -25,7 +25,7 @@ export const stones: Stone[] = [
   { id: "reality", name: "Reality", hex: "#FF2D2D", socket: [-0.101, 0.234, -1.338], normal: [-0.168, 0.951, -0.258], radius: 0.052, slug: "knee-mri-detect" },
   { id: "space", name: "Space", hex: "#2D7CFF", socket: [0.062, 0.231, -1.312], normal: [0.301, 0.952, -0.05], radius: 0.052, slug: "gesture-controller" },
   { id: "power", name: "Power", hex: "#A234FF", socket: [0.191, 0.194, -1.314], normal: [0.5, 0.859, -0.11], radius: 0.052, slug: "ev-apm-agent" },
-  { id: "time", name: "Time", hex: "#22E07A", socket: [0.286, -0.112, -0.917], normal: [0.501, -0.351, 0.791], radius: 0.052, slug: "encrypted-chat" },
+  { id: "time", name: "Time", hex: "#22E07A", socket: [0.286, -0.112, -0.917], normal: [0.501, -0.351, 0.791], radius: 0.052, slug: "rbi-rag-eval" },
 ];
 
 /** One intro stop plus one stop per stone. */

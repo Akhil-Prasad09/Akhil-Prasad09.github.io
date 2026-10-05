@@ -79,6 +79,23 @@ export const projects: Project[] = [
     links: [],
   },
   {
+    slug: "rbi-rag-eval", tier: "compact", year: "2026",
+    title: "RBI FEMA RAG",
+    tagline: "Evaluated question answering over RBI's foreign exchange rules",
+    tags: ["RAG", "Hybrid search", "LLM evaluation", "Ollama"],
+    metrics: [
+      { label: "Retrieval", value: "83% hit@5 vs 59% BM25" },
+      { label: "Correct refusals", value: "33% → 75%" },
+    ],
+    body: [
+      "Answers questions from RBI's foreign exchange Master Directions with a local LLM, citing the paragraphs it used. Graded against RBI's own published FAQs, not questions I wrote.",
+      "Relevance labels come from pooled judging with a calibrated judge: a local 8B LLM proved unusable as a judge, so an embedding judge with 95% agreement on checked labels replaced it. Every result carries a bootstrap confidence interval.",
+      "Only 69 of 186 official FAQ questions are answerable from the directions, and the ungated LLM answered most of the rest anyway. A cross-validated reranker-score gate raised correct refusals from 33% to 75%.",
+    ],
+    media: [{ kind: "poster", src: "/media/rag.webp", alt: "Passage strips with three retrieved passages feeding an answer node, and a dashed refusal path" }],
+    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/rbi-rag-eval" }],
+  },
+  {
     slug: "cag-emotion-tracker", tier: "compact", year: "2025",
     title: "CAG Emotion Tracker",
     tagline: "Attention-guided emotion recognition at webcam speed",

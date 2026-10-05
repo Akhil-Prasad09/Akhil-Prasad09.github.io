@@ -40,6 +40,7 @@
 <section class="poster" id="gesture"></section><p class="cap">gesture</p>
 <section class="poster" id="chatapp"></section><p class="cap">chatapp</p>
 <section class="poster" id="greenbasket"></section><p class="cap">greenbasket</p>
+<section class="poster" id="rag"></section><p class="cap">rag</p>
 
 <script>
 // All art is generated synchronously so a headless screenshot on load is stable.
@@ -333,7 +334,46 @@ function greenbasket() {
   return svg(s);
 }
 
-const POSTERS = { emotion, dentalbot, gesture, chatapp, greenbasket };
+/* --------------------------------------------------------------- rag
+   A column of passage strips; three retrieved ones light up and their citation
+   curves converge on the answer node. A faint dashed branch ends in an empty
+   node: the system's "not in the documents" refusal path. */
+function rag() {
+  const rand = rng(11);
+  const X0 = 170, W = 380, Y0 = 158, H = 34, GAP = 14, N = 12;
+  const HI = [2, 5, 6];
+  const ax = 900, ay = 400;            // answer node
+  const rx = 900, ry = 640;            // refusal node
+  let s = `<circle cx="${ax}" cy="${ay}" r="190" fill="url(#glow)"/>`;
+  for (let i = 0; i < N; i++) {
+    const y = Y0 + i * (H + GAP), on = HI.includes(i);
+    s += `<rect x="${X0}" y="${y}" width="${W}" height="${H}" rx="10" fill="${on ? SURFACE : "none"}" stroke="${az(on ? 0.85 : 0.16)}" stroke-width="${on ? 2 : 1.5}"/>`;
+    // text-line ticks inside each strip
+    let x = X0 + 18;
+    while (x < X0 + W - 40) {
+      const w = 18 + rand() * 46;
+      if (x + w > X0 + W - 18) break;
+      s += `<line x1="${x.toFixed(1)}" y1="${y + H / 2}" x2="${(x + w).toFixed(1)}" y2="${y + H / 2}" stroke="${az(on ? 0.7 : 0.14)}" stroke-width="3" stroke-linecap="round"/>`;
+      x += w + 10;
+    }
+    if (on) {
+      const sx = X0 + W, sy = y + H / 2, mx = (sx + ax) / 2;
+      s += `<path d="M${sx} ${sy} C ${mx} ${sy}, ${mx} ${ay}, ${ax - 46} ${ay}" fill="none" stroke="${az(0.55)}" stroke-width="2"/>`;
+      s += dot(sx, sy, 4, 0.95);
+    }
+  }
+  // refusal branch
+  const fy = Y0 + 9 * (H + GAP) + H / 2, fx = X0 + W, mx = (fx + rx) / 2;
+  s += `<path d="M${fx} ${fy} C ${mx} ${fy}, ${mx} ${ry}, ${rx - 34} ${ry}" fill="none" stroke="${az(0.22)}" stroke-width="1.5" stroke-dasharray="6 8"/>`;
+  s += `<circle cx="${rx}" cy="${ry}" r="34" fill="none" stroke="${az(0.3)}" stroke-width="1.5" stroke-dasharray="4 6"/>`;
+  // answer node: concentric rings + solid core
+  s += `<circle cx="${ax}" cy="${ay}" r="46" fill="${SURFACE}" stroke="${az(0.95)}" stroke-width="2"/>`;
+  s += `<circle cx="${ax}" cy="${ay}" r="74" fill="none" stroke="${az(0.25)}" stroke-width="1.5"/>`;
+  s += dot(ax, ay, 14, 0.95);
+  return svg(s);
+}
+
+const POSTERS = { emotion, dentalbot, gesture, chatapp, greenbasket, rag };
 for (const [id, fn] of Object.entries(POSTERS)) document.getElementById(id).innerHTML = fn();
 
 // ?slug=x or #x isolates one poster in a 1200x900 viewport for capture
