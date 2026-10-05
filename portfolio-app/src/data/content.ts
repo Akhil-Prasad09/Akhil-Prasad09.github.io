@@ -49,7 +49,7 @@ export const projects: Project[] = [
     ],
     body: [
       "Trains per-plane EfficientNet-B3 classifiers on Stanford's MRNet dataset to flag abnormalities, ACL tears, and meniscus tears, with Grad-CAM heatmaps showing the model's evidence on each slice.",
-      "Ships as a full product: FastAPI inference API, React viewer, PDF reporting via ReportLab, and a Docker compose stack with Postgres.",
+      "It ships as a full product: a FastAPI inference API, a React viewer, PDF reports via ReportLab and a Docker Compose stack with Postgres.",
       "Research and decision-support use only, not a medical device.",
     ],
     media: [
@@ -89,7 +89,7 @@ export const projects: Project[] = [
     ],
     body: [
       "Answers questions from RBI's foreign exchange Master Directions with a local LLM, citing the paragraphs it used. Graded against RBI's own published FAQs, not questions I wrote.",
-      "Relevance labels come from pooled judging with a calibrated judge: a local 8B LLM proved unusable as a judge, so an embedding judge with 95% agreement on checked labels replaced it. Every result carries a bootstrap confidence interval.",
+      "Relevance labels come from pooled judging. A local 8B LLM turned out to be unusable as the judge, so an embedding judge with 95% agreement on checked labels replaced it. Every result has a bootstrap confidence interval.",
       "Only 69 of 186 official FAQ questions are answerable from the directions, and the ungated LLM answered most of the rest anyway. A cross-validated reranker-score gate raised correct refusals from 33% to 75%.",
     ],
     media: [{ kind: "poster", src: "/media/rag.webp", alt: "Passage strips with three retrieved passages feeding an answer node, and a dashed refusal path" }],
@@ -121,8 +121,8 @@ export const projects: Project[] = [
     tags: ["React", "Vite", "Express", "Web Speech API"],
     metrics: [{ label: "Status", value: "Live for a real client" }],
     body: [
-      "End-to-end booking web app for a real business client, handling genuine customer bookings: React/Vite frontend on an Express REST API.",
-      "A voice-enabled assistant answers service FAQs and converts visitors into bookings. The workflow automates through to Google Sheets sync and email confirmations.",
+      "A booking web app that runs in production for a real business client and takes real customer bookings. React/Vite frontend on an Express REST API.",
+      "A voice assistant answers service FAQs and turns visitors into bookings. Each booking syncs to Google Sheets and triggers an email confirmation.",
     ],
     media: [{ kind: "poster", src: "/media/dentalbot.webp", alt: "Voice waveform poster" }],
     links: [],
@@ -137,7 +137,7 @@ export const projects: Project[] = [
       { label: "Response", value: "under 20ms" },
     ],
     body: [
-      "Maps MediaPipe hand-landmark detection to macOS volume and playback controls for fully touchless media operation, sustaining 30 FPS with sub-20ms gesture response.",
+      "Maps MediaPipe hand landmarks to macOS volume and playback controls, so you can control media without touching anything. Runs at 30 FPS with gesture response under 20ms.",
     ],
     media: [{ kind: "poster", src: "/media/gesture.webp", alt: "Hand landmark constellation poster" }],
     links: [],
@@ -168,7 +168,7 @@ export const projects: Project[] = [
     tags: ["React", "JavaScript", "CSS3"],
     metrics: [],
     body: [
-      "Responsive grocery storefront built as a React app: dynamic product filtering, cart state management, and a complete checkout flow.",
+      "Responsive grocery storefront in React with product filtering, cart state and a complete checkout flow.",
     ],
     media: [{ kind: "poster", src: "/media/greenbasket.webp", alt: "Produce grid poster" }],
     links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/Projects/tree/main/Green%20Basket" }],
@@ -180,9 +180,9 @@ export const roles: Role[] = [
     org: "AMIK Technologies", title: "AI Engineering Intern",
     period: "Apr 2026 - Present", location: "Hyderabad, hybrid",
     points: [
-      "Builds production RAG pipelines over internal documents, replacing manual lookup with grounded, citation-backed answers.",
-      "Ships an automated evaluation harness scoring retrieval relevance, faithfulness, and latency across model and prompt versions.",
-      "Serves models behind FastAPI endpoints with token streaming, cost logging, and provider fallback.",
+      "Builds production RAG pipelines over internal documents, replacing manual lookup with grounded answers that cite their sources.",
+      "Ships an evaluation harness that scores retrieval relevance, faithfulness and latency across model and prompt versions.",
+      "Serves models behind FastAPI with token streaming, cost logging and provider fallback.",
     ],
   },
   {
@@ -190,15 +190,15 @@ export const roles: Role[] = [
     period: "Jul 2026 - Present", location: "Remote",
     points: [
       "Authors terminal-based benchmark tasks used to evaluate frontier AI coding agents: 100+ tasks across 10 domains.",
-      "Ships each task as a reproducible package: spec, Dockerised environment, automated verifier, and reference solution.",
+      "Each task ships as a reproducible package with a spec, a Dockerised environment, an automated verifier and a reference solution.",
     ],
   },
   {
     org: "Oasis Infobyte", title: "Software Development Intern, Python",
-    period: "2024", location: "Remote",
+    period: "Oct 2025 - Nov 2025", location: "Remote",
     points: [
-      "Delivered five Python applications, each specified, built, and demoed independently.",
-      "Highlights: a speech-recognition voice assistant, a REST-integrated weather CLI, and a multi-client TCP chat server.",
+      "Built five Python applications, each specified, built and demoed on its own.",
+      "They included a speech-recognition voice assistant, a REST-integrated weather CLI and a multi-client TCP chat server.",
     ],
   },
 ];

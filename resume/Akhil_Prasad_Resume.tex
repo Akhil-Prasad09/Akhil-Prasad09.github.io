@@ -41,7 +41,7 @@
 \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
-\newcommand{\resumeItemListStart}{\begin{itemize}[label=--]}
+\newcommand{\resumeItemListStart}{\begin{itemize}[label={\scriptsize\textbullet}]}
 \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
 
 \begin{document}
@@ -56,117 +56,117 @@
 \end{center}
 
 \section{Summary}
-\small{Final-year IT student (CGPA 8.64) shipping LLM-powered features as an AI Engineering Intern at AMIK Technologies and
-authoring agentic coding benchmarks for frontier-model evaluation as a freelance AI trainer at Handshake AI. Hands-on
-across Python backend and applied AI: FastAPI model-serving endpoints, retrieval-augmented generation and LLM
-evaluation, and real-time computer vision (CNN emotion recognition at 70.6\% on FER-2013, about 8 ms per frame on CPU). Seeking AI/ML or Python backend engineering roles building production LLM and vision systems.}
+\small{Final-year IT student (CGPA 8.64) building LLM features as an AI Engineering Intern at AMIK Technologies and writing
+agentic coding benchmarks for frontier-model evaluation as a freelance AI trainer at Handshake AI. Works across Python backends
+and applied AI: FastAPI model serving, retrieval-augmented generation, LLM evaluation and real-time computer vision (CNN emotion
+recognition at 70.6\% on FER-2013, about 8 ms per frame on CPU). Looking for AI/ML or Python backend roles on production LLM and
+vision systems.}
 
 \section{Experience}
   \resumeSubHeadingListStart
     \resumeSubheading
-      {AI Engineering Intern}{Apr 2026 -- Present}
+      {AI Engineering Intern}{Apr 2026 - Present}
       {AMIK Technologies}{Hyderabad, India}
       \resumeItemListStart
-        \resumeItem{Build production retrieval-augmented generation (RAG) pipelines over internal documents --- chunking, embedding
-generation, and vector similarity search --- replacing manual lookup with grounded, citation-backed answers.}
-        \resumeItem{Design and version prompt templates with structured outputs and function calling, standardising LLM responses
-into schema-validated JSON consumed directly by downstream services.}
-        \resumeItem{Ship an automated evaluation harness scoring retrieval relevance, answer faithfulness, and latency across model and
-prompt versions --- turning subjective review into regression-tested releases.}
-        \resumeItem{Serve models behind FastAPI endpoints with token streaming, per-request cost logging, and provider fallback for
-resilience under rate limits.}
-        \resumeItem{Reduce inference cost and latency through chunk-size tuning, semantic caching, and context compression; integrate
-features into the live product with the backend team.}
+        \resumeItem{Build production retrieval-augmented generation (RAG) pipelines over internal documents (chunking, embedding generation
+and vector similarity search), replacing manual lookup with grounded answers that cite their sources.}
+        \resumeItem{Design and version prompt templates with structured outputs and function calling, so LLM responses come back as
+schema-validated JSON that downstream services consume directly.}
+        \resumeItem{Ship an automated evaluation harness that scores retrieval relevance, answer faithfulness and latency across model and
+prompt versions, so releases are regression-tested instead of reviewed by eye.}
+        \resumeItem{Serve models behind FastAPI endpoints with token streaming, per-request cost logging and provider fallback for when
+rate limits hit.}
+        \resumeItem{Cut inference cost and latency with chunk-size tuning, semantic caching and context compression, and work with the
+backend team to ship features into the live product.}
       \resumeItemListEnd
 
     \resumeSubheading
-      {Freelance AI Trainer --- Agentic Benchmark Authoring}{Jul 2026 -- Present}
+      {Freelance AI Trainer, Agentic Benchmark Authoring}{Jul 2026 - Present}
       {Handshake AI}{Remote}
       \resumeItemListStart
-        \resumeItem{Author terminal-based benchmark tasks used to evaluate frontier AI coding agents --- 102 tasks delivered across 10
-domains, including systems infrastructure, model-training and ML pipelines, data processing/ETL, databases, and
-interactive simulation.}
-        \resumeItem{Ship each task as a reproducible package --- natural-language specification, Dockerised environment, automated
-test-based verifier, and a working reference solution --- built to clear automated QA gates and human review.}
+        \resumeItem{Write terminal-based benchmark tasks that evaluate frontier AI coding agents: 102 tasks across 10 domains, including
+systems infrastructure, model training and ML pipelines, data processing/ETL, databases and interactive simulation.}
+        \resumeItem{Each task ships as a reproducible package (a natural-language spec, a Dockerised environment, an automated test-based
+verifier and a working reference solution) and has to pass automated QA gates and human review.}
       \resumeItemListEnd
 
     \resumeSubheading
-      {Software Development Intern --- Python}{Oct 2025 -- Nov 2025}
+      {Software Development Intern (Python)}{Oct 2025 - Nov 2025}
       {Oasis Infobyte}{Remote}
       \resumeItemListStart
-        \resumeItem{Delivered five Python applications on a structured internship track, each specified, built, and demoed
-independently.}
-        \resumeItem{Highlights: a speech-recognition voice assistant that parses spoken intent into system commands, a
-REST-integrated weather CLI, and a multi-client TCP chat server handling concurrent sessions.}
+        \resumeItem{Built five Python applications on a structured internship track, each specified, built and demoed on its own.}
+        \resumeItem{They included a speech-recognition voice assistant that turns spoken intent into system commands, a REST-integrated
+weather CLI and a multi-client TCP chat server that handles concurrent sessions.}
       \resumeItemListEnd
   \resumeSubHeadingListEnd
 
 \section{Projects}
     \resumeSubHeadingListStart
       \resumeProjectHeading
-          {\textbf{\href{https://github.com/Akhil-Prasad09/rbi-rag-eval}{RBI FEMA RAG --- Evaluated Regulatory Q\&A}} $|$ \emph{Python, sentence-transformers, Ollama}}{2026}
+          {\textbf{\href{https://github.com/Akhil-Prasad09/rbi-rag-eval}{RBI FEMA RAG: Evaluated Regulatory Q\&A}} $|$ \emph{Python, sentence-transformers, Ollama}}{2026}
           \resumeItemListStart
-            \resumeItem{Built a fully local RAG system over RBI's foreign exchange Master Directions (\textasciitilde570 pages): hybrid BM25 + dense retrieval,
-cross-encoder reranking and cited answers, evaluated against 186 of RBI's own published FAQ question--answer pairs.}
-            \resumeItem{Replaced an unreliable LLM relevance judge (precision 0.12--0.15) with a calibrated embedding judge (95\% agreement on checked labels)
-to build pooled relevance labels; reported bootstrap confidence intervals and paired significance tests. Best retrieval: \textbf{83\% hit@5 vs 59\% for BM25}.}
-            \resumeItem{Found the LLM answered 67\% of questions the documents could not answer; added a cross-validated retrieval-confidence gate that
+            \resumeItem{Built a fully local RAG system over RBI's foreign exchange Master Directions (\textasciitilde570 pages) with hybrid BM25 + dense
+retrieval, cross-encoder reranking and cited answers, evaluated against 186 question-answer pairs from RBI's own published FAQs.}
+            \resumeItem{Replaced an unreliable LLM relevance judge (precision 0.12 to 0.15) with a calibrated embedding judge (95\% agreement on
+checked labels) to build pooled relevance labels, with bootstrap confidence intervals and paired significance tests throughout.
+Best retrieval: \textbf{83\% hit@5 vs 59\% for BM25}.}
+            \resumeItem{Found that the LLM answered 67\% of questions the documents could not answer; a cross-validated retrieval-confidence gate
 raised \textbf{correct refusals from 33\% to 75\%}.}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{\href{https://github.com/Akhil-Prasad09/cag-emotion-tracker}{CAG Real-Time Emotion Tracker}} $|$ \emph{PyTorch, OpenCV, scikit-learn, Streamlit, Python}}{2024 -- 2026}
+          {\textbf{\href{https://github.com/Akhil-Prasad09/cag-emotion-tracker}{CAG Real-Time Emotion Tracker}} $|$ \emph{PyTorch, OpenCV, scikit-learn, Streamlit, Python}}{2024 - 2026}
           \resumeItemListStart
             \resumeItem{Trained a 5M-parameter CNN with squeeze-and-excitation attention on FER-2013 to \textbf{70.6\% test accuracy across 7 emotion
 classes} (human agreement $\approx$ 65\%), up from 38\% for the team's hand-crafted-feature baseline.}
-            \resumeItem{Replaced the classifier head with a cache-augmented lookup --- one matrix multiply against in-memory per-class
-prototype embeddings --- holding the full webcam pipeline at \textbf{about 8 ms per frame on CPU}.}
-            \resumeItem{Led a 3-person team from architecture through delivery; shipped a Streamlit dashboard and presented results to a
-faculty review panel.}
+            \resumeItem{Replaced the classifier head with a cache-augmented lookup (one matrix multiply against in-memory per-class prototype
+embeddings), keeping the full webcam pipeline at \textbf{about 8 ms per frame on CPU}.}
+            \resumeItem{Led a 3-person team from architecture through delivery, shipped a Streamlit dashboard and presented the results to a faculty
+review panel.}
           \resumeItemListEnd
 
       \needspace{5\baselineskip}
       \resumeProjectHeading
-          {\textbf{\href{https://github.com/Akhil-Prasad09/e2ee-chat}{E2EE Chat --- End-to-End Encrypted Group Chat}} $|$ \emph{Python, cryptography, PyQt5, Sockets}}{2026}
+          {\textbf{\href{https://github.com/Akhil-Prasad09/e2ee-chat}{E2EE Chat: End-to-End Encrypted Group Chat}} $|$ \emph{Python, cryptography, PyQt5, Sockets}}{2026}
           \resumeItemListStart
-            \resumeItem{Rebuilt my internship chat app with end-to-end encryption: on-device X25519/Ed25519 identities, AES-256-GCM messages with
-per-recipient key wrapping under ephemeral X25519 keys, and Ed25519-signed envelopes; the relay server only stores ciphertext it cannot read.}
-            \resumeItem{Defended against a malicious server with key pinning and Signal-style safety numbers; \textbf{14 tests} show tampering, forged
-senders and a \textbf{server key-swap attack} are rejected; also fixed an HTML-injection bug in the original GUI.}
+            \resumeItem{Rebuilt the internship chat app with end-to-end encryption: X25519/Ed25519 identities generated on each device, AES-256-GCM
+messages with per-recipient key wrapping under ephemeral X25519 keys, and Ed25519-signed envelopes. The relay server only stores
+ciphertext it cannot read.}
+            \resumeItem{Key pinning and Signal-style safety numbers guard against a malicious server; \textbf{14 tests} show that tampering, forged
+senders and a \textbf{server key-swap attack} are rejected. Also fixed an HTML-injection bug in the original GUI.}
           \resumeItemListEnd
 
       \resumeProjectHeading
           {\textbf{Full-Stack Booking Platform with Voice AI Assistant} $|$ \emph{React, Vite, Node.js, Express, Web Speech API}}{2025}
           \resumeItemListStart
-            \resumeItem{Built an end-to-end web application --- React/Vite frontend backed by an Express REST API --- deployed live in
-production for a real business client (example: a dental clinic), handling genuine customer bookings.}
-            \resumeItem{Integrated a voice-enabled AI assistant (\emph{DentalBot}) that answers the client's service FAQs and converts visitors
-into bookings.}
-            \resumeItem{Automated the full booking workflow: appointment data through the REST API, Google Sheets sync for the
-client's staff, and automated email confirmations.}
+            \resumeItem{Built an end-to-end web app (React/Vite frontend on an Express REST API) that runs in production for a real business client,
+a dental clinic, and handles real customer bookings.}
+            \resumeItem{Integrated a voice-enabled AI assistant (\emph{DentalBot}) that answers the client's service FAQs and turns visitors into
+bookings.}
+            \resumeItem{Automated the booking workflow: appointments go through the REST API, sync to Google Sheets for the client's staff and
+trigger email confirmations.}
           \resumeItemListEnd
 
       \resumeProjectHeading
           {\textbf{Hand-Gesture Media Controller} $|$ \emph{MediaPipe, OpenCV, Python, AppleScript}}{2024}
           \resumeItemListStart
-            \resumeItem{Mapped MediaPipe hand-landmark detection to macOS volume and playback controls for fully touchless media
-operation.}
-            \resumeItem{Sustained \textbf{30 FPS with sub-20 ms gesture-response latency} by optimising the landmark-to-action inference
-loop.}
+            \resumeItem{Mapped MediaPipe hand-landmark detection to macOS volume and playback controls, so media can be controlled without
+touching anything.}
+            \resumeItem{Sustained \textbf{30 FPS with sub-20 ms gesture-response latency} by optimising the landmark-to-action inference loop.}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{Developer Portfolio} --- \href{https://akhil-prasad09.github.io}{akhil-prasad09.github.io} $|$ \emph{Next.js, React, TypeScript}}{2026}
+          {\textbf{Developer Portfolio} (\href{https://akhil-prasad09.github.io}{akhil-prasad09.github.io}) $|$ \emph{Next.js, React, TypeScript}}{2026}
           \resumeItemListStart
-            \resumeItem{Built a single-page developer portfolio with animated project, benchmark, and experience showcases, exported
-as a static Next.js site and deployed to GitHub Pages.}
+            \resumeItem{Single-page developer portfolio with animated sections for projects, benchmarks and experience, exported as a static
+Next.js site and deployed to GitHub Pages.}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{\href{https://github.com/Akhil-Prasad09/Projects}{Green Basket --- E-Commerce Web App}} $|$ \emph{React, JavaScript, CSS3}}{2024}
+          {\textbf{\href{https://github.com/Akhil-Prasad09/Projects}{Green Basket: E-Commerce Web App}} $|$ \emph{React, JavaScript, CSS3}}{2024}
           \resumeItemListStart
-            \resumeItem{Responsive grocery storefront built as a React app, with dynamic product filtering, cart state management, and a full
-checkout flow.}
+            \resumeItem{Responsive grocery storefront built in React, with dynamic product filtering, cart state management and a full checkout
+flow.}
           \resumeItemListEnd
     \resumeSubHeadingListEnd
 
@@ -187,9 +187,9 @@ NumPy, Pandas, fine-tuning} \\
 
 \section{Education}
   \resumeSubHeadingListStart
-    \resumeProjectHeading{\textbf{Matrusri Engineering College} --- B.Tech, Information Technology --- CGPA 8.64}{2023 -- 2027}
-    \resumeProjectHeading{\textbf{Sri Chaitanya Junior Kalasala} --- Higher Secondary, Science \& Mathematics --- 93\%}{2023}
-    \resumeProjectHeading{\textbf{The Hyderabad Public School} --- Secondary School --- 89\%}{2021}
+    \resumeProjectHeading{\textbf{Matrusri Engineering College}, B.Tech in Information Technology, CGPA 8.64}{2023 - 2027}
+    \resumeProjectHeading{\textbf{Sri Chaitanya Junior Kalasala}, Higher Secondary in Science \& Mathematics, 93\%}{2023}
+    \resumeProjectHeading{\textbf{The Hyderabad Public School}, Secondary School, 89\%}{2021}
   \resumeSubHeadingListEnd
 
 \end{document}
