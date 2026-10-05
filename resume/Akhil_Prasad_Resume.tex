@@ -103,6 +103,17 @@ REST-integrated weather CLI, and a multi-client TCP chat server handling concurr
 \section{Projects}
     \resumeSubHeadingListStart
       \resumeProjectHeading
+          {\textbf{\href{https://github.com/Akhil-Prasad09/rbi-rag-eval}{RBI FEMA RAG --- Evaluated Regulatory Q\&A}} $|$ \emph{Python, sentence-transformers, Ollama}}{2026}
+          \resumeItemListStart
+            \resumeItem{Built a fully local RAG system over RBI's foreign exchange Master Directions (\textasciitilde570 pages): hybrid BM25 + dense retrieval,
+cross-encoder reranking and cited answers, evaluated against 186 of RBI's own published FAQ question--answer pairs.}
+            \resumeItem{Replaced an unreliable LLM relevance judge (precision 0.12--0.15) with a calibrated embedding judge (95\% agreement on checked labels)
+to build pooled relevance labels; reported bootstrap confidence intervals and paired significance tests. Best retrieval: \textbf{83\% hit@5 vs 59\% for BM25}.}
+            \resumeItem{Found the LLM answered 67\% of questions the documents could not answer; added a cross-validated retrieval-confidence gate that
+raised \textbf{correct refusals from 33\% to 75\%}.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
           {\textbf{\href{https://github.com/Akhil-Prasad09/cag-emotion-tracker}{CAG Real-Time Emotion Tracker}} $|$ \emph{PyTorch, OpenCV, scikit-learn, Streamlit, Python}}{2024 -- 2026}
           \resumeItemListStart
             \resumeItem{Trained a 5M-parameter CNN with squeeze-and-excitation attention on FER-2013 to \textbf{70.6\% test accuracy across 7 emotion
