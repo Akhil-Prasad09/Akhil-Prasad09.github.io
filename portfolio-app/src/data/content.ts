@@ -143,16 +143,23 @@ export const projects: Project[] = [
     links: [],
   },
   {
-    slug: "encrypted-chat", tier: "compact", year: "2025",
-    title: "Encrypted Chat Application",
-    tagline: "Multi-client desktop chat with encrypted message storage",
-    tags: ["Python", "PyQt5", "Sockets", "SQLite", "Fernet"],
-    metrics: [{ label: "Encryption", value: "Fernet (AES-128) at rest" }],
+    slug: "encrypted-chat", tier: "compact", year: "2026",
+    title: "E2EE Chat",
+    tagline: "End-to-end encrypted group chat that holds up against its own server",
+    tags: ["Python", "Cryptography", "PyQt5", "Sockets"],
+    metrics: [
+      { label: "Crypto", value: "X25519 · Ed25519 · AES-256-GCM" },
+      { label: "Tests", value: "14, incl. a key-swap attack" },
+    ],
     body: [
-      "Real-time group chat over a multithreaded socket server, with a PyQt5 client, SQLite history, emoji and desktop notifications. The server encrypts every message with Fernet (AES-128 + HMAC) before storing and broadcasting it, and passwords are salted scrypt hashes. Covered by tests that run a real two-client session.",
+      "Desktop group chat where keys are generated on each user's device and the relay server only stores and forwards envelopes it cannot read. Each message is AES-256-GCM encrypted, its key wrapped per recipient under an ephemeral X25519 key, and the whole envelope signed with Ed25519.",
+      "Clients pin every contact's key on first use and show Signal-style safety numbers, so a server that swaps in its own key is caught: tests show the client stops encrypting to it and rejects messages it signs. The README states the limits plainly, including no forward secrecy for long-term keys.",
     ],
     media: [{ kind: "poster", src: "/media/chatapp.webp", alt: "Encrypted stream poster" }],
-    links: [{ label: "GitHub", href: "https://github.com/Akhil-Prasad09/OIBSP/tree/main/Chat%20Application" }],
+    links: [
+      { label: "GitHub", href: "https://github.com/Akhil-Prasad09/e2ee-chat" },
+      { label: "Original internship version", href: "https://github.com/Akhil-Prasad09/OIBSP/tree/main/Chat%20Application" },
+    ],
   },
   {
     slug: "green-basket", tier: "compact", year: "2024",
