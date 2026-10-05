@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { label: "Work", href: "#work" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
+  { label: "Resume", href: "/Akhil_Prasad_Resume.pdf" },
 ];
 
 const STAGGERED_ITEMS = NAV_ITEMS.map((item) => ({

@@ -52,7 +52,7 @@ export function Stones() {
   // contains the track. Swap to the Work grid only after hydration.
   useEffect(() => setMounted(true), []);
 
-  if ((mounted && reduced) || glFailed) return <Work />;
+  if ((mounted && reduced) || glFailed) return <Work slugs={stones.map((s) => s.slug)} />;
 
   const open = projects.find((p) => p.slug === openSlug);
 
@@ -130,12 +130,13 @@ function StoneCard({
   const y = useTransform(progress, ...span01([start, rise, leave, end], [48, 0, 0, -32]));
   const visibility = useTransform(opacity, (o) => (o > 0.02 ? "visible" : "hidden"));
   const numeral = `0${index + 1}`;
+  const demo = project.links.find((l) => l.label.startsWith("Live demo"));
 
   return (
     <>
       <motion.div
         style={{ opacity, y, visibility }}
-        className="absolute inset-y-0 left-4 flex w-[min(90vw,34rem)] flex-col justify-center md:left-12"
+        className="absolute inset-x-0 bottom-0 flex flex-col justify-end bg-gradient-to-t from-surface via-surface/90 to-transparent px-4 pb-10 pt-24 md:inset-y-0 md:left-12 md:right-auto md:w-[min(90vw,34rem)] md:justify-center md:bg-none md:p-0"
       >
         <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em]" style={{ color: stone.hex }}>
           <span aria-hidden="true" className="inline-block size-2" style={{ background: stone.hex }} />
@@ -152,7 +153,34 @@ function StoneCard({
           </button>
         </h3>
         <p className="mt-4 max-w-md text-lg leading-relaxed text-ink-dim">{project.tagline}</p>
-        <ul className="mt-5 flex flex-wrap gap-2">
+        {project.metrics[0] && (
+          <p className="mt-4 text-sm text-ink-dim">
+            {project.metrics[0].label}: <span className="font-mono text-ink">{project.metrics[0].value}</span>
+          </p>
+        )}
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          {demo && (
+            <a
+              href={demo.href}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium transition-[filter] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2"
+              // Power's purple is too dark for zinc text (about 4:1); every other stone clears 4.5:1 with it.
+              style={{ background: stone.hex, outlineColor: stone.hex, color: stone.id === "power" ? "#fafafa" : "#09090b" }}
+            >
+              {demo.label} ↗
+            </a>
+          )}
+          <button
+            type="button"
+            onClick={() => onOpen(project.slug)}
+            aria-haspopup="dialog"
+            className="inline-flex items-center rounded-full border border-white/25 px-5 py-2.5 text-sm text-ink transition-colors hover:border-white/60 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+          >
+            Details
+          </button>
+        </div>
+        <ul className="mt-5 hidden flex-wrap gap-2 md:flex">
           {project.tags.map((tag) => (
             <li key={tag} className="rounded-full border border-white/15 px-3 py-1 font-mono text-xs text-ink-dim">
               {tag}

@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-05T00:00:00Z",
+  "title": "Design System: Akhil Prasad Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "accent-azure": {
+        "role": "primary",
+        "displayName": "Azure Signal",
+        "canonical": "#38bdf8",
+        "tonalRamp": [
+          "#0c4a6e",
+          "#075985",
+          "#0369a1",
+          "#0284c7",
+          "#0ea5e9",
+          "#38bdf8",
+          "#7dd3fc",
+          "#bae6fd"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Vault Black",
+        "canonical": "#09090b",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#a1a1aa",
+          "#e4e4e7",
+          "#fafafa"
+        ]
+      },
+      "surface-raised": {
+        "role": "neutral",
+        "displayName": "Raised Zinc",
+        "canonical": "#131316",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#a1a1aa",
+          "#e4e4e7",
+          "#fafafa"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Bright Ink",
+        "canonical": "#fafafa",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#a1a1aa",
+          "#e4e4e7",
+          "#fafafa"
+        ]
+      },
+      "ink-dim": {
+        "role": "neutral",
+        "displayName": "Dim Ink",
+        "canonical": "#a1a1aa",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#a1a1aa",
+          "#e4e4e7",
+          "#fafafa"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgba(255, 255, 255, 0.1)"
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "rgba(255, 255, 255, 0.15)"
+      },
+      "hairline-faint": {
+        "role": "neutral",
+        "displayName": "Hairline Faint",
+        "canonical": "rgba(255, 255, 255, 0.2)"
+      },
+      "scrim": {
+        "role": "neutral",
+        "displayName": "Scrim",
+        "canonical": "rgba(0, 0, 0, 0.6)"
+      },
+      "stone-mind": {
+        "role": "tertiary",
+        "displayName": "Mind Gold",
+        "canonical": "#FFD700",
+        "scope": "Six Stones section only"
+      },
+      "stone-soul": {
+        "role": "tertiary",
+        "displayName": "Soul Orange",
+        "canonical": "#FF7A1A",
+        "scope": "Six Stones section only"
+      },
+      "stone-reality": {
+        "role": "tertiary",
+        "displayName": "Reality Red",
+        "canonical": "#FF2D2D",
+        "scope": "Six Stones section only"
+      },
+      "stone-space": {
+        "role": "tertiary",
+        "displayName": "Space Blue",
+        "canonical": "#2D7CFF",
+        "scope": "Six Stones section only"
+      },
+      "stone-power": {
+        "role": "tertiary",
+        "displayName": "Power Violet",
+        "canonical": "#A234FF",
+        "scope": "Six Stones section only"
+      },
+      "stone-time": {
+        "role": "tertiary",
+        "displayName": "Time Green",
+        "canonical": "#22E07A",
+        "scope": "Six Stones section only"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section h2s."
+      },
+      "stone-title": {
+        "displayName": "Stone Title",
+        "purpose": "Uppercase project name per stone in the gauntlet section."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and list item h3s."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Paragraphs in ink-dim."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Taglines, labels, footer, link pills."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Metric values."
+      },
+      "label-mono": {
+        "displayName": "Label Mono",
+        "purpose": "Dates, roles, identity card, benchmark rows."
+      },
+      "eyebrow-mono": {
+        "displayName": "Eyebrow Mono",
+        "purpose": "Stone counter label; tag chips without tracking."
+      }
+    },
+    "shadows": [
+      {
+        "name": "page-lift",
+        "value": "0 -30px 80px rgba(0,0,0,0.55)",
+        "purpose": "Leading edge of a stacked page riding over the one beneath."
+      },
+      {
+        "name": "stone-glow",
+        "value": "0 0 12px <stone hex>",
+        "purpose": "Lit stone rail diamond only."
+      }
+    ],
+    "glass": [
+      {
+        "name": "sheet",
+        "value": "background: rgba(19,19,22,0.9); backdrop-filter: blur(40px)",
+        "purpose": "Project sheet."
+      },
+      {
+        "name": "nav",
+        "value": "background: rgba(19,19,22,0.6); backdrop-filter: blur",
+        "purpose": "PillNav bar."
+      }
+    ],
+    "motion": [
+      {
+        "name": "spring-default",
+        "value": "spring, bounce 0, duration 0.4s",
+        "purpose": "Default physical transition (SPRING_DEFAULT)."
+      },
+      {
+        "name": "spring-momentum",
+        "value": "spring, bounce 0.2, duration 0.35s",
+        "purpose": "Release after drag (SPRING_MOMENTUM)."
+      },
+      {
+        "name": "sheet-enter",
+        "value": "spring, bounce 0.2, duration 0.45s",
+        "purpose": "Project sheet rise."
+      },
+      {
+        "name": "sheet-dismiss",
+        "value": "spring, bounce 0, duration 0.3s; dismiss when projected offset > 160px",
+        "purpose": "Flick-to-close."
+      },
+      {
+        "name": "momentum-deceleration",
+        "value": "0.998",
+        "purpose": "Velocity projection for flicks."
+      },
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1) 150ms",
+        "purpose": "CSS color/opacity state transitions."
+      },
+      {
+        "name": "press",
+        "value": "scale(0.98)",
+        "purpose": "Active state of clickable cards."
+      },
+      {
+        "name": "stack-recede",
+        "value": "scale 1 to 0.94, dim 0 to 0.6, edge radius 28px",
+        "purpose": "Page being covered by the next."
+      },
+      {
+        "name": "stone-text",
+        "value": "rise 48px over first 25% of stop, hold, exit -32px over last 25%",
+        "purpose": "Per-stone text in the gauntlet section."
+      }
+    ],
+    "zIndex": [
+      {
+        "name": "work",
+        "value": 10
+      },
+      {
+        "name": "experience",
+        "value": 20
+      },
+      {
+        "name": "tail",
+        "value": 30
+      },
+      {
+        "name": "nav",
+        "value": 40
+      },
+      {
+        "name": "sheet",
+        "value": 50
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary CTA (fallback)",
+      "kind": "button",
+      "refersTo": "button-ghost-pill",
+      "description": "Static face of the SpecularButton CTA; the WebGL version adds a specular azure sweep.",
+      "html": "<a class=\"ds-btn-cta\" href=\"#\">Get in touch</a>",
+      "css": ".ds-btn-cta{display:inline-flex;align-items:center;border:1px solid var(--color-accent,#38bdf8);border-radius:9999px;padding:12px 24px;color:var(--color-ink,#fafafa);background:rgba(56,189,248,.1);font-family:Geist,ui-sans-serif,system-ui,sans-serif;text-decoration:none;transition:background-color 150ms cubic-bezier(.4,0,.2,1)}.ds-btn-cta:hover{background:rgba(56,189,248,.18)}.ds-btn-cta:focus-visible{outline:2px solid var(--color-accent,#38bdf8);outline-offset:2px}.ds-btn-cta:active{transform:scale(.98)}"
+    },
+    {
+      "name": "Ghost Pill",
+      "kind": "button",
+      "refersTo": "button-ghost-pill",
+      "description": "Secondary action beside the CTA.",
+      "html": "<a class=\"ds-btn-ghost\" href=\"#\">View work</a>",
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;border:1px solid var(--color-ink-dim,#a1a1aa);border-radius:9999px;padding:12px 24px;color:var(--color-ink,#fafafa);font-family:Geist,ui-sans-serif,system-ui,sans-serif;text-decoration:none;transition:color 150ms cubic-bezier(.4,0,.2,1),border-color 150ms cubic-bezier(.4,0,.2,1)}.ds-btn-ghost:hover{border-color:var(--color-accent,#38bdf8);color:var(--color-accent,#38bdf8)}.ds-btn-ghost:focus-visible{outline:2px solid var(--color-accent,#38bdf8);outline-offset:2px}"
+    },
+    {
+      "name": "Link Pill",
+      "kind": "chip",
+      "refersTo": "link-pill",
+      "description": "External project links inside the sheet.",
+      "html": "<a class=\"ds-link-pill\" href=\"#\">GitHub ↗</a>",
+      "css": ".ds-link-pill{display:inline-block;border:1px solid rgba(255,255,255,.15);border-radius:9999px;padding:6px 16px;font:400 .875rem/1.25rem Geist,ui-sans-serif,system-ui,sans-serif;color:var(--color-ink,#fafafa);text-decoration:none;transition:color 150ms cubic-bezier(.4,0,.2,1),border-color 150ms cubic-bezier(.4,0,.2,1)}.ds-link-pill:hover{border-color:#38bdf8;color:#38bdf8}.ds-link-pill:focus-visible{outline:2px solid #38bdf8;outline-offset:2px}"
+    },
+    {
+      "name": "Tag Chip",
+      "kind": "chip",
+      "refersTo": "tag-chip",
+      "description": "Static tech tags under a project.",
+      "html": "<ul class=\"ds-tags\"><li class=\"ds-tag\">PyTorch</li><li class=\"ds-tag\">LangGraph</li></ul>",
+      "css": ".ds-tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}.ds-tag{border:1px solid rgba(255,255,255,.15);border-radius:9999px;padding:4px 12px;font:400 .75rem/1rem 'Geist Mono',ui-monospace,monospace;color:var(--color-ink-dim,#a1a1aa)}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Raised zinc container with hairline edge; interactive cards add an azure pointer glow.",
+      "html": "<article class=\"ds-card\"><h3 class=\"ds-card-title\">Knee MRI Detect</h3><p class=\"ds-card-body\">Detection model for knee MRI.</p><p class=\"ds-card-meta\">2023 - 2024</p></article>",
+      "css": ".ds-card{background:var(--color-surface-2,#131316);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:32px;color:#fafafa;font-family:Geist,ui-sans-serif,system-ui,sans-serif;transition:border-color 150ms cubic-bezier(.4,0,.2,1),box-shadow 150ms}.ds-card:hover{border-color:rgba(56,189,248,.5);box-shadow:0 0 24px rgba(56,189,248,.15)}.ds-card-title{margin:0;font-size:1.25rem;line-height:1.75rem;font-weight:400;letter-spacing:-.025em}.ds-card-body{margin:8px 0 0;color:#a1a1aa;line-height:1.625}.ds-card-meta{margin:8px 0 0;font:400 .875rem/1.25rem 'Geist Mono',ui-monospace,monospace;color:#a1a1aa}"
+    },
+    {
+      "name": "Metric",
+      "kind": "custom",
+      "refersTo": "metric-tile",
+      "description": "Label over mono numeral (CountUp in the app).",
+      "html": "<dl class=\"ds-metric\"><dt>Inference FPS</dt><dd>30</dd></dl>",
+      "css": ".ds-metric{margin:0}.ds-metric dt{font:400 .875rem/1.25rem Geist,ui-sans-serif,system-ui,sans-serif;color:#a1a1aa}.ds-metric dd{margin:0;font:400 1.875rem/2.25rem 'Geist Mono',ui-monospace,monospace;color:#fafafa}"
+    },
+    {
+      "name": "Pill Nav",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "Floating desktop nav cluster; hover fills azure.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">Work</a><a href=\"#\">Experience</a><a href=\"#\">Contact</a></nav>",
+      "css": ".ds-nav{display:inline-flex;gap:4px;padding:4px;border-radius:9999px;background:rgba(19,19,22,.6);backdrop-filter:blur(12px)}.ds-nav a{padding:8px 18px;border-radius:9999px;color:#fafafa;text-decoration:none;font:400 .875rem/1.25rem Geist,ui-sans-serif,system-ui,sans-serif;transition:background-color 150ms,color 150ms}.ds-nav a:hover{background:#38bdf8;color:#09090b}.ds-nav a:focus-visible{outline:2px solid #38bdf8;outline-offset:2px}"
+    },
+    {
+      "name": "Stone Eyebrow",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Signature per-stone label and title in the gauntlet section; hue comes from the stone.",
+      "html": "<div class=\"ds-stone\" style=\"--stone:#2D7CFF\"><p class=\"ds-stone-eyebrow\"><span></span>04 / 06 · Space Stone</p><h3 class=\"ds-stone-title\">Gesture Controller</h3></div>",
+      "css": ".ds-stone-eyebrow{display:flex;align-items:center;gap:12px;margin:0;font:400 .75rem/1rem 'Geist Mono',ui-monospace,monospace;letter-spacing:.3em;text-transform:uppercase;color:var(--stone)}.ds-stone-eyebrow span{width:8px;height:8px;background:var(--stone)}.ds-stone-title{margin:20px 0 0;font:400 3rem/1.05 Geist,ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#fafafa}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Vault at Night",
+    "overview": "A near-black zinc room where every surface is a shade of the same dark, and a single azure signal marks what can be touched, followed, or trusted. The portfolio is built as an experience for recruiters and hiring engineers: scroll is the camera, sections pin and stack like physical pages sliding over one another, and the centerpiece is a 3D Infinity Gauntlet whose six stones each carry one project. Everything else stays quiet so the motion and the proof can speak.\n\nDensity is moderate and editorial: generous section rhythm (96px vertical), headlines set at regular weight with tight negative tracking, dim zinc body copy, and monospaced figures for anything measured (metrics, dates, benchmark rows, the identity card). Depth comes from tonal layering and hairline borders, not from shadows; the only heavy shadow is the one cast by a page riding over the page beneath it.\n\nThe React Bits component family (SplitText, TextType, DecryptedText, BorderGlow, SpecularButton, Silk, Beams, CountUp, PillNav, StaggeredMenu, TiltedCard, SpotlightCard, HalftoneReveal, ScrollVelocity, ShinyText, GlassIcons) is the native vocabulary of this world. Every WebGL piece sits inside a fallback boundary that renders a plain, on-palette equivalent; reduced motion swaps the gauntlet scroll for a static grid of the same projects.",
+    "keyCharacteristics": [
+      "Two zinc surfaces, one azure accent, white-alpha hairlines.",
+      "Geist for words, Geist Mono for numbers and metadata.",
+      "Regular-weight headlines with -0.05em tracking; no bold headings.",
+      "20px cards, full pills for actions and tags, 28px page edges.",
+      "Scroll-driven pinning and page stacking; spring physics for direct manipulation.",
+      "The six stone colors exist only inside the gauntlet section."
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Azure is the only accent outside the gauntlet. It marks interaction (hover, focus, primary CTA) and ambient light, never a second content category.",
+        "section": "colors"
+      },
+      {
+        "name": "The Stones Stay Home Rule",
+        "body": "Stone hues appear only inside the six-stones section, bound to their own project. They never become general UI colors.",
+        "section": "colors"
+      },
+      {
+        "name": "The Not-White Rule",
+        "body": "Text is `#fafafa` or `#a1a1aa`; pure `#fff` is not a text color here.",
+        "section": "colors"
+      },
+      {
+        "name": "The Light Hand Rule",
+        "body": "Headings are weight 400; hierarchy comes from size and tight tracking. Bold is reserved for decorative giant type (ghost stone numerals at 18vw and 6% white, the TechMarquee strip).",
+        "section": "typography"
+      },
+      {
+        "name": "The Numbers Are Mono Rule",
+        "body": "Any measured value, date, or index is set in Geist Mono.",
+        "section": "typography"
+      },
+      {
+        "name": "The Light Not Lift Rule",
+        "body": "Cards do not cast shadows. Emphasis comes from glow and spotlight in azure, which the surface reacts to under the pointer.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Recede Rule",
+        "body": "A page being covered scales to 0.94 and dims toward surface at up to 60% opacity, and its corners round to 28px as it leaves.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep every surface on Vault Black (#09090b) or Raised Zinc (#131316) and draw edges with 1px white-alpha hairlines (10%, 15%, 20%).",
+      "**Do** use azure (#38bdf8) for hover, focus (2px outline, 2px offset), the primary CTA, and ambient light, and nowhere as a content color.",
+      "**Do** set headings at weight 400 with -0.05em tracking (-0.025em for titles) and put every number, date, and index in Geist Mono.",
+      "**Do** use 20px corners for cards, 16px for media nested inside them, 28px for moving pages, and full pills for actions, tags, and nav.",
+      "**Do** wrap every WebGL component in a fallback that renders a plain, on-palette equivalent, and give every scroll-pinned experience a static reduced-motion layout with the same content.",
+      "**Do** keep stacked pages and chrome on the z ladder: work 10, experience 20, tail 30, nav 40, sheet 50.",
+      "**Do** use springs (bounce 0, 0.4s default) for anything the user drags or flicks."
+    ],
+    "donts": [
+      "**Don't** introduce a second accent; the six stone hues are the only other colors and they stay inside the gauntlet section.",
+      "**Don't** use pure white (#fff) for text or bold weights for headings.",
+      "**Don't** put drop shadows on cards; the only shadow is the page-lift edge (0 -30px 80px rgba(0,0,0,0.55)) and the lit stone diamond glow.",
+      "**Don't** add a full-width blurred nav bar; the nav is a floating pill cluster with its own blur.",
+      "**Don't** animate anything outside reduced-motion control, or let a sheet's scrim opacity be written by more than one source.",
+      "**Don't** leave a vendored React Bits component on its stock palette (white panels, neutral-900 cards, rounded-3xl); reskin it to these tokens."
+    ]
+  }
+}

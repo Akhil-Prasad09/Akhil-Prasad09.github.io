@@ -6,6 +6,14 @@ import WebGLBoundary from "@/components/bits/WebGLBoundary";
 import { profile } from "@/data/content";
 import { HeroSilk } from "./HeroSilk";
 
+// Real, measured numbers only (see each repo's README).
+const HERO_DEMOS = [
+  { name: "Emotion tracker", what: "Your webcam, a CNN, no upload", proof: "70.6% FER-2013", href: "https://akhil-prasad09.github.io/cag-emotion-tracker/" },
+  { name: "E2EE chat", what: "Try to break it as the server", proof: "key-swap caught", href: "https://akhil-prasad09.github.io/e2ee-chat/" },
+  { name: "Knee MRI", what: "Upload a scan, see Grad-CAM", proof: "AUC 0.943", href: "https://akhil-prasad09.github.io/knee-mri-detect/" },
+  { name: "Gesture controller", what: "Play music with your hand", proof: "MediaPipe", href: "https://akhil-prasad09.github.io/gesture-media-controller/" },
+];
+
 export function Hero() {
   return (
     <section className="relative grid min-h-[100dvh] grid-cols-1 items-center gap-10 overflow-hidden px-4 pb-16 pt-20 lg:grid-cols-[7fr_5fr] lg:gap-12 lg:px-8 lg:pt-24">
@@ -78,19 +86,35 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="relative z-10 hidden lg:block">
+      <div className="relative z-10">
         <BorderGlow
           borderRadius={20}
           glowColor="198 93 60"
           glowIntensity={0.4}
           backgroundColor="#131316"
-          className="p-8"
+          className="p-6 md:p-8"
         >
-          <div className="font-mono text-sm">
-            <p className="text-ink">{profile.name}</p>
-            <p className="mt-2 text-ink-dim">{profile.role}</p>
-            <p className="mt-2 text-ink-dim">{profile.location}</p>
-          </div>
+          <p className="text-ink">{profile.name}</p>
+          <p className="mt-1 text-sm text-ink-dim">{profile.role} {profile.location}.</p>
+          <h2 className="mt-6 text-sm font-medium text-ink">Try it live, in your browser</h2>
+          <ul className="mt-3 divide-y divide-white/10">
+            {HERO_DEMOS.map((d) => (
+              <li key={d.href}>
+                <a
+                  href={d.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-baseline justify-between gap-4 py-3 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+                >
+                  <span>
+                    <span className="text-ink transition-colors group-hover:text-accent">{d.name}</span>
+                    <span className="block text-sm text-ink-dim">{d.what}</span>
+                  </span>
+                  <span className="shrink-0 font-mono text-sm text-accent">{d.proof} ↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </BorderGlow>
       </div>
     </section>

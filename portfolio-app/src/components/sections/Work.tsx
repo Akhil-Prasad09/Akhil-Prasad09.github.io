@@ -5,13 +5,14 @@ import { projects } from "@/data/content";
 import { WorkCell } from "./WorkCell";
 import { ProjectSheet } from "./ProjectSheet";
 
-export function Work() {
+export function Work({ slugs, heading = "Selected work", id = "work" }: { slugs?: string[]; heading?: string; id?: string } = {}) {
+  const shown = slugs ? projects.filter(p => slugs.includes(p.slug)) : projects;
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   return (
-    <section id="work" className="mx-auto max-w-7xl overflow-x-clip px-4 py-24">
-      <h2 className="mb-10 text-4xl tracking-tighter">Selected work</h2>
+    <section id={id} className="mx-auto max-w-7xl overflow-x-clip px-4 py-24">
+      <h2 className="mb-10 text-4xl tracking-tighter">{heading}</h2>
       <div className="grid grid-flow-dense grid-cols-1 gap-5 md:grid-cols-6 md:auto-rows-[minmax(180px,auto)]">
-        {projects.map(p => (
+        {shown.map(p => (
           <WorkCell key={p.slug} project={p} onOpen={setOpenSlug} />
         ))}
       </div>
