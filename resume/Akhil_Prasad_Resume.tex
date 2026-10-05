@@ -8,6 +8,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[english]{babel}
 \usepackage{tabularx}
+\usepackage{needspace}
 \usepackage[T1]{fontenc}
 
 \pagestyle{empty}
@@ -122,6 +123,16 @@ classes} (human agreement $\approx$ 65\%), up from 38\% for the team's hand-craf
 prototype embeddings --- holding the full webcam pipeline at \textbf{about 8 ms per frame on CPU}.}
             \resumeItem{Led a 3-person team from architecture through delivery; shipped a Streamlit dashboard and presented results to a
 faculty review panel.}
+          \resumeItemListEnd
+
+      \needspace{5\baselineskip}
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/Akhil-Prasad09/e2ee-chat}{E2EE Chat --- End-to-End Encrypted Group Chat}} $|$ \emph{Python, cryptography, PyQt5, Sockets}}{2026}
+          \resumeItemListStart
+            \resumeItem{Rebuilt my internship chat app with end-to-end encryption: on-device X25519/Ed25519 identities, AES-256-GCM messages with
+per-recipient key wrapping under ephemeral X25519 keys, and Ed25519-signed envelopes; the relay server only stores ciphertext it cannot read.}
+            \resumeItem{Defended against a malicious server with key pinning and Signal-style safety numbers; \textbf{14 tests} show tampering, forged
+senders and a \textbf{server key-swap attack} are rejected; also fixed an HTML-injection bug in the original GUI.}
           \resumeItemListEnd
 
       \resumeProjectHeading
